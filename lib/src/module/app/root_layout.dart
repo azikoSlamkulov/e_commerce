@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'destinations.dart' as my_items;
+import 'navigation_items.dart' as my_items;
 
 class RootLayout extends StatelessWidget {
   const RootLayout({
@@ -12,7 +12,6 @@ class RootLayout extends StatelessWidget {
 
   final Widget child;
   final int currentIndex;
-  static const _navigationRailKey = ValueKey('navigationRailKey');
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +23,6 @@ class RootLayout extends StatelessWidget {
         }
 
         return Scaffold(
-          //key: _navigationRailKey,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: child,
           bottomNavigationBar: BottomNavigationBar(
@@ -45,21 +43,6 @@ class RootLayout extends StatelessWidget {
                   ),
                 )
                 .toList(),
-
-            // items: const [
-            //   BottomNavigationBarItem(
-            //     icon: Icon(Icons.book),
-            //     label: '1',
-            //   ),
-            //   BottomNavigationBarItem(
-            //     icon: Icon(Icons.directions),
-            //     label: '2',
-            //   ),
-            //   BottomNavigationBarItem(
-            //     icon: Icon(Icons.home),
-            //     label: '3',
-            //   ),
-            // ],
             onTap: onSelectTab,
           ),
         );

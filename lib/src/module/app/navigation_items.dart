@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../util/app_constants/assets/app_assets.dart';
+import '../../util/app_constants/assets/app_assets.dart';
 
 List<NavigationItems> items = [
   NavigationItems(
