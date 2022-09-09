@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "113719629632",
+    "project_id": "e-commerce-dab1e",
+    "storage_bucket": "e-commerce-dab1e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:113719629632:android:7a4d14d0e4a7ab92f1cca5",
+        "android_client_info": {
+          "package_name": "com.aziko.e_commerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "113719629632-8d7ooitouhi5e0gjv4h5el14rhppgfev.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKYWVCnZa9rrYUqvhLAHQXR-sxAONJlHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "113719629632-8d7ooitouhi5e0gjv4h5el14rhppgfev.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "113719629632-3mjkbd50s1u45pgi8o3kr9dnnea5s3vp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.eCommerce"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

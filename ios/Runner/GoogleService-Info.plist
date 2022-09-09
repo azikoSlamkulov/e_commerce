@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>113719629632-c05gm42ueueplf2nh0dcutj19i1td79u.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.113719629632-c05gm42ueueplf2nh0dcutj19i1td79u</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>113719629632-buve15jkufdqnkr13jtifc5ceivh9vu5.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBgj55HMIdGwIbxHZsTrOMHHU6bqjQobz4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>113719629632</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aziko.eCommerce</string>
+	<key>PROJECT_ID</key>
+	<string>e-commerce-dab1e</string>
+	<key>STORAGE_BUCKET</key>
+	<string>e-commerce-dab1e.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:113719629632:ios:a48b267867624545f1cca5</string>
+</dict>
+</plist>
