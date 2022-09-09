@@ -198,7 +198,7 @@ class SignInView extends StatelessWidget {
             ),
           ),
           //label: Icon(Icons.arrow_right)),
-          label: AppAssets.arrow_right(
+          label: AppAssets.arrowRight(
             width: 30,
             height: 20,
           ),

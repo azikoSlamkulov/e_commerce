@@ -1,43 +1,53 @@
 import 'package:flutter/material.dart';
 
-const List<NavigationDestination> destinations = [
-  NavigationDestination(
+import '../util/app_constants/assets/app_assets.dart';
+
+List<NavigationItems> items = [
+  NavigationItems(
     label: 'Home',
-    icon: Icon(Icons.home),
+    //icon: Icon(Icons.home),
+    icon: AppAssets.homeIcon(width: 30, height: 30),
+    selectedIcon: AppAssets.homeIconRed(width: 30, height: 30),
     route: '/',
   ),
-  NavigationDestination(
+  NavigationItems(
     label: 'Shop',
-    icon: Icon(Icons.add),
+    icon: AppAssets.shopIcon(width: 30, height: 30),
+    selectedIcon: AppAssets.shopIconRed(width: 30, height: 30),
     route: '/shop',
   ),
-  NavigationDestination(
+  NavigationItems(
     label: 'Bag',
-    icon: Icon(Icons.book),
+    icon: AppAssets.bagIcon(width: 30, height: 30),
+    selectedIcon: AppAssets.bagIconRed(width: 30, height: 30),
     route: '/bag',
   ),
-  NavigationDestination(
+  NavigationItems(
     label: 'Favorites',
-    icon: Icon(Icons.person),
+    icon: AppAssets.favoritesIcon(width: 30, height: 30),
+    selectedIcon: AppAssets.favoritesIconRed(width: 30, height: 30),
     route: '/favorites',
   ),
-  NavigationDestination(
+  NavigationItems(
     label: 'Profile',
-    icon: Icon(Icons.person),
+    icon: AppAssets.profileIcon(width: 30, height: 30),
+    selectedIcon: AppAssets.profileIconRed(width: 30, height: 30),
     route: '/profile',
   ),
 ];
 
-class NavigationDestination {
-  const NavigationDestination({
+class NavigationItems {
+  const NavigationItems({
     required this.route,
     required this.label,
     required this.icon,
+    this.selectedIcon,
     this.child,
   });
 
   final String route;
   final String label;
-  final Icon icon;
+  final Widget? icon;
+  final Widget? selectedIcon;
   final Widget? child;
 }

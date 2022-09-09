@@ -133,6 +133,7 @@ class PasswordRecoveryView extends StatelessWidget {
       onPressed: () async {
         if (formKey.currentState!.validate()) {
           log('reg');
+          //TODO Добавить востановление пароля
           // BlocProvider.of<AuthBloc>(context).add(
           //   SignUpEvent(
           //     name: nameCont.text,

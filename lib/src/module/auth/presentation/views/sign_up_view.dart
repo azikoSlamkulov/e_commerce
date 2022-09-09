@@ -86,7 +86,10 @@ class SignUpView extends StatelessWidget {
                   AppSized.h100,
                   const Text(
                     'Или зарегистрируйтесь с помощью соц. сетей.',
-                    style: TextStyle(fontSize: 16),
+                    style: TextStyle(
+                      fontSize: 16,
+                      //color: AppColors.black,
+                    ),
                   ),
                   AppSized.h30,
                   Row(
@@ -164,7 +167,7 @@ class SignUpView extends StatelessWidget {
             ),
           ),
           //label: Icon(Icons.arrow_right)),
-          label: AppAssets.arrow_right(
+          label: AppAssets.arrowRight(
             width: 30,
             height: 20,
           ),
@@ -190,13 +193,13 @@ class SignUpView extends StatelessWidget {
       onPressed: () async {
         if (formKey.currentState!.validate()) {
           log('reg');
-          // BlocProvider.of<AuthBloc>(context).add(
-          //   SignUpEvent(
-          //     name: nameCont.text,
-          //     email: emailCont.text,
-          //     password: passwordCont.text,
-          //   ),
-          // );
+          BlocProvider.of<AuthBloc>(context).add(
+            SignUpEvent(
+              name: nameCont.text,
+              email: emailCont.text,
+              password: passwordCont.text,
+            ),
+          );
         }
       },
     );

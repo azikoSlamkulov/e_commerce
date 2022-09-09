@@ -144,43 +144,43 @@ class AppRouter {
         ),
       ),
     ),
-    redirect: (state) {
-      final homeLocation = state.subloc == APP_PAGE.home.toPath;
-      final loadingLocation = state.subloc == APP_PAGE.loading.toPath;
-      final signInLocation = state.subloc == APP_PAGE.signIn.toPath;
-      final signUpLocation = state.subloc == APP_PAGE.signUp.toPath;
-      final passwordRecoveryLocation =
-          state.subloc == APP_PAGE.passwordRecovery.toPath;
-      //final errorLocation = state.subloc == APP_PAGE.error.toPath;
+    // redirect: (state) {
+    //   final homeLocation = state.subloc == APP_PAGE.home.toPath;
+    //   final loadingLocation = state.subloc == APP_PAGE.loading.toPath;
+    //   final signInLocation = state.subloc == APP_PAGE.signIn.toPath;
+    //   final signUpLocation = state.subloc == APP_PAGE.signUp.toPath;
+    //   final passwordRecoveryLocation =
+    //       state.subloc == APP_PAGE.passwordRecovery.toPath;
+    //   //final errorLocation = state.subloc == APP_PAGE.error.toPath;
 
-      final isLoading = authBloc.state is LoadingState;
-      final isAuthenticated = authBloc.state is AuthenticatedState;
-      final isUnAuthenticated = authBloc.state is UnAuthenticatedState;
-      final isOpenSignIn = authBloc.state is OpenSignInState;
-      final isOpenPasswordRecovery =
-          authBloc.state is OpenPasswordRecoveryState;
+    //   final isLoading = authBloc.state is LoadingState;
+    //   final isAuthenticated = authBloc.state is AuthenticatedState;
+    //   final isUnAuthenticated = authBloc.state is UnAuthenticatedState;
+    //   final isOpenSignIn = authBloc.state is OpenSignInState;
+    //   final isOpenPasswordRecovery =
+    //       authBloc.state is OpenPasswordRecoveryState;
 
-      if (isLoading) {
-        log('1');
-        return loadingLocation ? null : APP_PAGE.loading.toPath;
-      } else if (isUnAuthenticated) {
-        log('2');
-        return signUpLocation ? null : APP_PAGE.signUp.toPath;
-      } else if (isOpenSignIn) {
-        log('3');
-        return signInLocation ? null : APP_PAGE.signIn.toPath;
-      } else if (isOpenPasswordRecovery) {
-        log('4');
-        return passwordRecoveryLocation
-            ? null
-            : APP_PAGE.passwordRecovery.toPath;
-      } else if (isAuthenticated) {
-        log('5');
-        return null;
-        //return homeLocation ? null : APP_PAGE.home.toPath;
-      }
-      //else {return null;}
-    },
+    //   if (isLoading) {
+    //     log('1');
+    //     return loadingLocation ? null : APP_PAGE.loading.toPath;
+    //   } else if (isUnAuthenticated) {
+    //     log('2');
+    //     return signUpLocation ? null : APP_PAGE.signUp.toPath;
+    //   } else if (isOpenSignIn) {
+    //     log('3');
+    //     return signInLocation ? null : APP_PAGE.signIn.toPath;
+    //   } else if (isOpenPasswordRecovery) {
+    //     log('4');
+    //     return passwordRecoveryLocation
+    //         ? null
+    //         : APP_PAGE.passwordRecovery.toPath;
+    //   } else if (isAuthenticated) {
+    //     log('5');
+    //     return null;
+    //     //return homeLocation ? null : APP_PAGE.home.toPath;
+    //   }
+    //   //else {return null;}
+    // },
   );
 }
 
