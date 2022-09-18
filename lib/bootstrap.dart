@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:e_commerce/locator.dart';
+import 'package:e_commerce/src/module/auth/presentation/logic/auth_bloc.dart';
+import 'package:e_commerce/src/module/home/presention/logic/product_bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'src/module/auth/presentation/logic/auth_bloc.dart';
-import 'src/module/auth/presentation/logic/auth_event.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -24,9 +22,6 @@ class AppBlocObserver extends BlocObserver {
 
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp(
-  //   options: DefaultFirebaseOptions.currentPlatform,
-  // );
   await init();
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
@@ -36,37 +31,11 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => sl<AuthBloc>()..add(GetCurrentUserEvent()),
-        ),
-        // BlocProvider<TestBloc>(create: (context) => TestBloc()),
-        // //BlocProvider<UserBloc>(create: (context) => sl<UserBloc>()),
-        // BlocProvider<TimerCubit>(create: (context) => TimerCubit()),
-        // BlocProvider<PasswordCubit>(create: (context) => PasswordCubit()),
+            //create: (context) => sl<AuthBloc>()..add(GetCurrentUserEvent()),
+            create: (context) => sl<AuthBloc>()),
+        BlocProvider<ProductBloc>(create: (context) => sl<ProductBloc>()),
       ],
       child: await builder(),
     ),
   );
-
-  // await runZonedGuarded(
-  //   () async {
-  //     await BlocOverrides.runZoned(
-  //       //() async => runApp(await builder()),
-  //       () async => runApp(
-  //         MultiBlocProvider(
-  //           providers: [
-  //             BlocProvider<AuthBloc>(
-  //               create: (context) => sl<AuthBloc>()..add(GetCurrentUserEvent()),
-  //             ),
-  //             BlocProvider<TestBloc>(create: (context) => TestBloc()),
-  //             //BlocProvider<UserBloc>(create: (context) => sl<UserBloc>()),
-  //             BlocProvider<TimerCubit>(create: (context) => TimerCubit()),
-  //           ],
-  //           child: await builder(),
-  //         ),
-  //       ),
-  //       blocObserver: AppBlocObserver(),
-  //     );
-  //   },
-  //   (error, stackTrace) => log(error.toString(), stackTrace: stackTrace),
-  // );
 }

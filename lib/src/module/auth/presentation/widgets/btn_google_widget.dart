@@ -18,7 +18,7 @@ class WidgetBtnGoogle extends StatelessWidget {
         child: Container(
           height: 45,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(5),
               color: const Color(0xffFFF1F0),
               border: Border.all(
                 width: 0.5,

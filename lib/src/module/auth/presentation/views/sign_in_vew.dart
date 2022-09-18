@@ -4,10 +4,12 @@ import 'package:e_commerce/src/module/auth/presentation/views/sign_up_view.dart'
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../app/routes/router_utils.dart';
 import '../../../../util/app_constants/assets/app_assets.dart';
 import '../../../../util/app_constants/colors/app_colors.dart';
-import '../../../../util/app_constants/spaces/spaces.dart';
+import '../../../../util/app_constants/sized/spaces.dart';
 import '../../../../util/app_widgets/buttons/custom_elevated_button.dart';
 import '../../../../util/app_widgets/inputs/custom_text_form_field.dart';
 
@@ -60,7 +62,7 @@ class SignInView extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         onPressed: () {
                           BlocProvider.of<AuthBloc>(context).add(
-                            CancelEvent(),
+                            OpenSignUpEvent(),
                           );
                         },
                         icon: const Icon(
@@ -104,24 +106,33 @@ class SignInView extends StatelessWidget {
                     style: TextStyle(fontSize: 16),
                   ),
                   AppSized.h30,
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      WidgetBtnFacebook(
-                        onTap: () {},
-                      ),
+                      WidgetBtnFacebook(onTap: () {}),
                       AppSized.w20,
                       WidgetBtnGoogle(
-                        onTap: () {
-                          BlocProvider.of<AuthBloc>(context).add(
-                            SignInWithGoogleEvent(),
-                          );
-                        },
+                        onTap: () => BlocProvider.of<AuthBloc>(context).add(
+                          SignInWithGoogleEvent(),
+                        ),
                       ),
+                      // IconButton(
+                      //   iconSize: 50,
+                      //   icon: AppAssets.facebookLogo(),
+                      //   onPressed: () {},
+                      // ),
+                      // AppSized.w20,
+                      // IconButton(
+                      //   iconSize: 47,
+                      //   icon: AppAssets.googleLogo(),
+                      //   onPressed: () {
+                      //     BlocProvider.of<AuthBloc>(context).add(
+                      //       SignInWithGoogleEvent(),
+                      //     );
+                      //   },
+                      // ),
                     ],
                   ),
-
                   //const SizedBox(height: 10),
                 ],
               ),
@@ -186,6 +197,7 @@ class SignInView extends StatelessWidget {
       children: [
         TextButton.icon(
           onPressed: () {
+            // GoRouter.of(context).goNamed(APP_PAGE.passwordRecovery.toName);
             BlocProvider.of<AuthBloc>(context).add(
               OpenPasswordRecoveryEvent(),
             );
@@ -209,7 +221,7 @@ class SignInView extends StatelessWidget {
 
   _registrationBtn(BuildContext context) {
     return CustomElevatedButton(
-      bgColor: AppColors.red,
+      bgColor: AppColors.mainColor,
       sizedBoxWidth: MediaQuery.of(context).size.width * 0.90,
       text: const Text(
         'Авторизация',

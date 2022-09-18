@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../util/app_constants/colors/app_colors.dart';
-import '../../../../util/app_constants/spaces/spaces.dart';
+import '../../../../util/app_constants/sized/spaces.dart';
 import '../../../../util/app_widgets/buttons/custom_elevated_button.dart';
 import '../../../../util/app_widgets/inputs/custom_text_form_field.dart';
 import '../logic/auth_bloc.dart';
@@ -73,9 +73,9 @@ class PasswordRecoveryView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: const [
                       Text(
-                        'Востановление пароля',
+                        'Восстановление пароля',
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           //fontFamily:
                         ),
@@ -118,7 +118,7 @@ class PasswordRecoveryView extends StatelessWidget {
 
   _button(BuildContext context) {
     return CustomElevatedButton(
-      bgColor: AppColors.red,
+      bgColor: AppColors.mainColor,
       sizedBoxWidth: MediaQuery.of(context).size.width * 0.95,
       //borderRadius: 30,
       text: const Text(

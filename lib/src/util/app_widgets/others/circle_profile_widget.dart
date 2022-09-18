@@ -32,7 +32,7 @@ class CircleProfileWidget extends StatelessWidget {
         shape: BoxShape.circle,
         border: imageUrl.isNotEmpty
             ? Border.all(style: BorderStyle.none)
-            : Border.all(color: AppColors.blue),
+            : Border.all(color: AppColors.black),
       ),
       child: Stack(
         children: [
@@ -47,7 +47,7 @@ class CircleProfileWidget extends StatelessWidget {
               child: FaIcon(
                 icon,
                 size: size,
-                color: AppColors.blue,
+                color: AppColors.black,
               ),
             ),
           isUpdate
@@ -61,7 +61,7 @@ class CircleProfileWidget extends StatelessWidget {
                       size: 30,
                       color: imageUrl.isNotEmpty
                           ? AppColors.mainColor
-                          : AppColors.blue,
+                          : AppColors.black,
                     ),
                   ),
                 )

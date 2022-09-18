@@ -3,5 +3,6 @@ class AppTexts {
   static const String termsAndPolicies = 'Terms & Privacy Policy';
   static const String authUserToCacheKey = 'authUsers';
   static const String userToCacheKey = 'users';
+  static const String allProductsToCacheKey = 'allProducts';
   static const String buttonContinueText = 'Continue';
 }

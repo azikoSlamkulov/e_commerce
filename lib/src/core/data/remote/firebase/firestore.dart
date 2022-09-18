@@ -16,6 +16,12 @@ abstract class FirestoreCore {
     required String collectionName,
     required T Function(Map<String, dynamic> body) fromJson,
   });
+  Future<List<T>> getSortedListByQuery<T>({
+    required String collectionName,
+    required String fieldName,
+    required dynamic query,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
   Future<bool> create({
     //required objectEntity,
     required objectModel,
@@ -75,6 +81,28 @@ class FirestoreCoreImpl implements FirestoreCore {
   }) async {
     List<T> _list = <T>[];
     final _response = await firestoreDB.collection(collectionName).get();
+    for (final _doc in _response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final _object = fromJson(_doc.data());
+      _list.add(_object);
+    }
+    return _list;
+  }
+
+  @override
+  Future<List<T>> getSortedListByQuery<T>({
+    required String collectionName,
+    required String fieldName,
+    required dynamic query,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> _list = <T>[];
+    //final _response = await firestoreDB.collection(collectionName).get();
+    final _response = await firestoreDB
+        .collection(collectionName)
+        .where(fieldName, isEqualTo: query)
+        //.where('isNew', isEqualTo: true)
+        .get();
     for (final _doc in _response.docs) {
       //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
       final _object = fromJson(_doc.data());

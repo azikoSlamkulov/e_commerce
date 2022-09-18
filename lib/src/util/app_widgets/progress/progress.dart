@@ -8,9 +8,8 @@ class ProgressIndicator {
       alignment: Alignment.center,
       padding: const EdgeInsets.only(top: 10.0),
       child: CircularProgressIndicator(
-        backgroundColor: AppColors.mainColor.withOpacity(0.5),
-        valueColor:
-            AlwaysStoppedAnimation(AppColors.mainColor.withOpacity(0.8)),
+        backgroundColor: AppColors.white.withOpacity(0.5),
+        valueColor: AlwaysStoppedAnimation(AppColors.white.withOpacity(0.8)),
       ),
     );
   }

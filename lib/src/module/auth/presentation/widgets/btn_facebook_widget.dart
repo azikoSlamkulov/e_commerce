@@ -18,7 +18,7 @@ class WidgetBtnFacebook extends StatelessWidget {
         child: Container(
           height: 45,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(5),
               color: const Color.fromARGB(255, 219, 228, 243),
               border: Border.all(
                 width: 0.5,
