@@ -3,6 +3,8 @@ enum APP_PAGE {
   signIn,
   signUp,
   home,
+  homeVerTwo,
+  sale,
   error,
   onBoarding,
   shop,
@@ -10,7 +12,6 @@ enum APP_PAGE {
   favorites,
   profile,
   passwordRecovery,
-  allSaleProducts,
   allNewProducts,
 }
 
@@ -27,8 +28,10 @@ extension AppPageExtension on APP_PAGE {
         return "/passwordRecovery";
       case APP_PAGE.home:
         return "/";
-      case APP_PAGE.allSaleProducts:
-        return "allSaleProducts";
+      case APP_PAGE.homeVerTwo:
+        return "homeVerTwo";
+      case APP_PAGE.sale:
+        return "sale";
       case APP_PAGE.allNewProducts:
         return "allNewProducts";
       case APP_PAGE.shop:
@@ -58,12 +61,15 @@ extension AppPageExtension on APP_PAGE {
         return "SIGNUP";
       case APP_PAGE.passwordRecovery:
         return "PASSWORDRECOVERY";
-      case APP_PAGE.allSaleProducts:
-        return "ALLSALEPRODUCTS";
-      case APP_PAGE.allNewProducts:
-        return "ALLNEWPRODUCTS";
+
       case APP_PAGE.home:
         return "HOME";
+      case APP_PAGE.homeVerTwo:
+        return "HOMEVERTWO";
+      case APP_PAGE.sale:
+        return "SALE";
+      case APP_PAGE.allNewProducts:
+        return "ALLNEWPRODUCTS";
       case APP_PAGE.shop:
         return "SHOP";
       case APP_PAGE.bag:
@@ -91,10 +97,14 @@ extension AppPageExtension on APP_PAGE {
         return "My App Sign Up";
       case APP_PAGE.passwordRecovery:
         return "Password Recovery";
-      case APP_PAGE.allSaleProducts:
+      case APP_PAGE.allNewProducts:
         return "Sale";
       case APP_PAGE.home:
         return "My App";
+      case APP_PAGE.homeVerTwo:
+        return "My Home Ver Two";
+      case APP_PAGE.sale:
+        return "Sale";
       case APP_PAGE.shop:
         return "Shop";
       case APP_PAGE.bag:

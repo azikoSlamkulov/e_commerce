@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../locator.dart';
-import '../../../../util/app_constants/assets/app_assets.dart';
-import '../../../../util/app_widgets/buttons/toggle_icon_button.dart';
-import '../../../../util/product_data.dart';
+import '../../util/app_constants/assets/app_assets.dart';
+import '../../util/app_widgets/buttons/toggle_icon_button.dart';
+import '../../util/product_data.dart';
 
 // class AllNewProductsView extends StatelessWidget {
 //   AllNewProductsView({

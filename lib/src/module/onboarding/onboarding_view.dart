@@ -1,5 +1,5 @@
 import 'package:e_commerce/src/module/auth/presentation/logic/auth_event.dart';
-import 'package:e_commerce/src/module/auth/presentation/widgets/onboarding_layout.dart';
+import 'package:e_commerce/src/module/onboarding/onboarding_layout.dart';
 import 'package:e_commerce/src/util/app_constants/colors/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

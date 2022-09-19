@@ -1,4 +1,4 @@
-import 'package:e_commerce/src/module/bag/colered_tab_bar.dart';
+import 'package:e_commerce/src/module/shop/pesentation/widgets/colered_tab_bar.dart';
 import 'package:flutter/material.dart';
 
 // class BagViwe extends StatefulWidget {

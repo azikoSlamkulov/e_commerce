@@ -9,7 +9,6 @@ class AdaptiveNavigation extends StatelessWidget {
     required this.onDestinationSelected,
     required this.mobile,
     required this.tablet,
-    required this.desktop,
   });
 
   final List<NavigationDestination> destinations;
@@ -17,7 +16,6 @@ class AdaptiveNavigation extends StatelessWidget {
   final void Function(int index) onDestinationSelected;
   final Widget mobile;
   final Widget tablet;
-  final Widget desktop;
 
   @override
   Widget build(BuildContext context) {
@@ -52,33 +50,6 @@ class AdaptiveNavigation extends StatelessWidget {
         }
 
         /// Tablet Layout
-        else if (constraints.maxWidth >= 600 && constraints.maxWidth <= 1200) {
-          return Scaffold(
-            body: Row(
-              children: [
-                NavigationRail(
-                  extended: constraints.maxWidth >= 800,
-                  minExtendedWidth: 180,
-                  selectedIndex: selectedIndex,
-                  onDestinationSelected: onDestinationSelected,
-                  selectedLabelTextStyle: const TextStyle(color: Colors.red),
-                  destinations: destinations
-                      .map(
-                        (e) => NavigationRailDestination(
-                          icon: e.icon,
-                          label: Text(e.label),
-                          selectedIcon: e.selectedIcon,
-                        ),
-                      )
-                      .toList(),
-                ),
-                Expanded(child: tablet),
-              ],
-            ),
-          );
-        }
-
-        /// Destop Layout
         return Scaffold(
           body: Row(
             children: [
@@ -98,7 +69,7 @@ class AdaptiveNavigation extends StatelessWidget {
                     )
                     .toList(),
               ),
-              Expanded(child: desktop),
+              Expanded(child: tablet),
             ],
           ),
         );

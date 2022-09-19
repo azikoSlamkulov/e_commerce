@@ -27,10 +27,10 @@ class CustomListView extends StatelessWidget {
     return Column(
       children: [
         Container(
-          margin: REdgeInsets.only(top: 20),
+          margin: REdgeInsets.only(top: 10),
           padding: REdgeInsets.only(
             bottom: 18,
-            top: 33,
+            top: 30,
             right: 20,
             left: 20,
           ),
@@ -52,7 +52,7 @@ class CustomListView extends StatelessWidget {
                   Text(
                     subTitle,
                     style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 11.sp,
                       color: Colors.grey,
                     ),
                   ),
@@ -70,10 +70,11 @@ class CustomListView extends StatelessWidget {
                         //   APP_PAGE.allNewProducts.toName,
                         // );
                       },
-                child: const Text(
+                child: Text(
                   'View all',
                   style: TextStyle(
                     color: Colors.grey,
+                    fontSize: 11.sp,
                   ),
                 ),
               )

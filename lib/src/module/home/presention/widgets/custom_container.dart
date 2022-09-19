@@ -18,7 +18,7 @@ class CustomContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 13),
-      child: Container(
+      child: SizedBox(
         width: 140,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +122,7 @@ class CustomContainer extends StatelessWidget {
                             color: Colors.grey,
                             decoration: TextDecoration.lineThrough),
                       ),
-                      10.horizontalSpace,
+                      5.horizontalSpace,
                       Text(
                         '\$${product.newPrice}',
                         style: TextStyle(fontSize: 14.sp, color: Colors.red),

@@ -1,11 +1,10 @@
 import 'package:e_commerce/src/util/product_data.dart';
 import 'package:e_commerce/src/module/home/presention/widgets/custom_list_view.dart';
-import 'package:e_commerce/src/util/app_widgets/buttons/custom_elevated_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import '../../../app/routes/router_utils.dart';
-import '../widgets/slider_carusel.dart';
+import '../widgets/home_main_image_widget.dart';
 
 // class HomeView extends StatelessWidget {
 //   const HomeView({
@@ -54,62 +53,34 @@ class MobileHomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final allSaleProducts = ProductData().allSaleProducts;
     final allNewProducts = ProductData().allNewProducts;
 
     return Scaffold(
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SliderCarusel(),
-            CustomElevatedButton(
-              sizedBoxHeight: 70.h,
-              sizedBoxWidth: ScreenUtil().screenWidth,
-              paddingHorizontal: 15,
-              paddingVertical: 10,
-              onPressed: () {
-                GoRouter.of(context).goNamed(
-                  APP_PAGE.shop.toName,
-                );
-              },
-              text: Text(
-                'Category',
-                style: TextStyle(fontSize: 18.sp),
+        child: Padding(
+          padding: REdgeInsets.only(bottom: 25),
+          child: Column(
+            children: [
+              HomeMainImageWidget(
+                title: 'Fashion',
+                subTitle: 'sale',
+                onPressed: () {
+                  GoRouter.of(context).goNamed(
+                    APP_PAGE.sale.toName,
+                  );
+                },
+                imageUrl: 'assets/images/image_1.jpg',
               ),
-            ),
-            CustomListView(
-              allProducts: allSaleProducts,
-              title: 'Sale',
-              subTitle: 'Super summer sale',
-              isSale: true,
-            ),
-            CustomListView(
-              allProducts: allNewProducts,
-              title: 'New',
-              subTitle: 'You’ve never seen it before!',
-              isSale: false,
-            ),
-            companyInfo(),
-          ],
+              CustomListView(
+                allProducts: allNewProducts,
+                title: 'New',
+                subTitle: 'You’ve never seen it before!',
+                isSale: false,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
-
-companyInfo() {
-  return Container(
-    margin: REdgeInsets.only(top: 60),
-    height: 120.h,
-    width: double.infinity,
-    decoration: const BoxDecoration(
-      color: Colors.blue,
-    ),
-    child: const Center(
-      child: Text(
-        'Company Info',
-        style: TextStyle(color: Colors.white),
-      ),
-    ),
-  );
 }

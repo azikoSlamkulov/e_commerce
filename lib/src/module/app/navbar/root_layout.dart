@@ -9,13 +9,11 @@ class RootLayout extends StatelessWidget {
     super.key,
     required this.mobile,
     required this.tablet,
-    required this.desktop,
     required this.currentIndex,
   });
 
   final Widget mobile;
   final Widget tablet;
-  final Widget desktop;
   final int currentIndex;
   static const _navigationRailKey = ValueKey('navigationRailKey');
 
@@ -42,7 +40,6 @@ class RootLayout extends StatelessWidget {
               .toList(),
           mobile: mobile,
           tablet: tablet,
-          desktop: desktop,
         );
       },
     );

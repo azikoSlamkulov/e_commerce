@@ -20,7 +20,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.paddingVertical = 0.0,
     this.sizedBoxHeight = 60.0,
     this.sizedBoxWidth = 200.0,
-    this.borderRadius = 30.0,
+    this.borderRadius = 5.0,
     this.bgColor = AppColors.mainColor,
   }) : super(key: key);
 
@@ -35,11 +35,11 @@ class CustomElevatedButton extends StatelessWidget {
       ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          // padding: EdgeInsets.symmetric(
-          //     horizontal: paddingHorizontal!, vertical: paddingVertical!),
-          // shape: RoundedRectangleBorder(
-          //   borderRadius: BorderRadius.circular(borderRadius!),
-          // ),
+          padding: EdgeInsets.symmetric(
+              horizontal: paddingHorizontal!, vertical: paddingVertical!),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(borderRadius!),
+          ),
           //primary: bgColor,
           backgroundColor: bgColor,
         ),

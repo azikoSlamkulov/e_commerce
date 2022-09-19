@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:e_commerce/src/module/app/navbar/root_layout.dart';
+import 'package:e_commerce/src/module/home/presention/views/mobile_home_view_ver_two.dart';
+import 'package:e_commerce/src/module/home/presention/views/tablet_sale_view.dart';
 import 'package:e_commerce/src/module/onboarding/onboarding_view.dart';
-import 'package:e_commerce/src/module/home/presention/views/all_sale_products_view.dart';
-import 'package:e_commerce/src/module/shop/desktop_shop_viwe.dart';
-import 'package:e_commerce/src/module/shop/tablet_shop_viwe.dart';
 import 'package:e_commerce/src/module/app/routes/router_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -15,24 +12,21 @@ import '../../auth/presentation/logic/auth_state.dart';
 import '../../auth/presentation/views/password_recovery.dart';
 import '../../auth/presentation/views/sign_in_vew.dart';
 import '../../auth/presentation/views/sign_up_view.dart';
-import '../../bag/desktop_bag_viwe.dart';
 import '../../bag/mobile_bag_viwe.dart';
 import '../../bag/tablet_bag_viwe.dart';
-import '../../favorites/desktop_favorites_viwe.dart';
 import '../../favorites/mobile_favorites_viwe.dart';
 import '../../favorites/tablet_favorites_viwe.dart';
-import '../../home/domain/entities/product_entity.dart';
-import '../../home/presention/views/all_new_products_view.dart';
-import '../../home/presention/views/desktop_home_view.dart';
 import '../../home/presention/views/mobile_home_view.dart';
+import '../../home/presention/views/mobile_sale_view.dart';
 import '../../home/presention/views/tablet_home_view.dart';
-import '../../profile/presentation/views/desktop_profile_viwe.dart';
+import '../../home/presention/views/tablet_home_view_ver_two.dart';
 import '../../profile/presentation/views/mobile_profile_viwe.dart';
 import '../../profile/presentation/views/tablet_profile_viwe.dart';
-import '../../shop/mobile_shop_viwe.dart';
 import '../../../util/app_constants/colors/app_colors.dart';
 import '../../../util/app_widgets/progress/progress.dart';
-import 'package:path_to_regexp/path_to_regexp.dart';
+
+import '../../shop/pesentation/views/categories/mobile_categories_viwe.dart';
+import '../../shop/pesentation/views/categories/tablet_categories_viwe.dart';
 
 const _pageKey = ValueKey('_pageKey');
 const _scaffoldKey = ValueKey('_scaffoldKey');
@@ -59,24 +53,6 @@ class AppRouter {
           ),
         ),
       ),
-      // GoRoute(
-      //   path: APP_PAGE.signUp.toPath,
-      //   name: APP_PAGE.signUp.toName,
-      //   builder: (context, state) => SignUpView(),
-      //   routes: [
-      //     GoRoute(
-      //         path: APP_PAGE.signIn.toPath,
-      //         name: APP_PAGE.signIn.toName,
-      //         builder: (context, state) => SignInView(),
-      //         routes: [
-      //           GoRoute(
-      //             path: APP_PAGE.passwordRecovery.toPath,
-      //             name: APP_PAGE.passwordRecovery.toName,
-      //             builder: (context, state) => PasswordRecoveryView(),
-      //           ),
-      //         ]),
-      //   ],
-      // ),
       GoRoute(
         path: APP_PAGE.onBoarding.toPath,
         name: APP_PAGE.onBoarding.toName,
@@ -109,27 +85,6 @@ class AppRouter {
       //     //final allSortedProducts = APP_PAGE.home_2(state.params['allSortedProducts']!);
       //     ),
       // Bottom Nav Bar
-      // GoRoute(
-      //   path: APP_PAGE.home.toPath,
-      //   name: APP_PAGE.home.toName,
-      //   builder: (context, state) => HomeViewMain(),
-      //   routes: [
-      //     GoRoute(
-      //       path: APP_PAGE.home_2.toPath,
-      //       name: APP_PAGE.home_2.toName,
-      //       builder: (context, state) {
-      //         final parameters = <ProductEntity>[product];
-      //         final tokens =
-      //             parse(APP_PAGE.home.toPath, parameters: parameters);
-      //         final regExp = tokensToRegExp(tokens);
-      //         final match =
-      //             regExp.matchAsPrefix(state.params['allSortedProducts']!);
-
-      //         return HomeView(allSortedProducts: match!);
-      //       },
-      //     ),
-      //   ],
-      // ),
       GoRoute(
         path: APP_PAGE.home.toPath,
         name: APP_PAGE.home.toName,
@@ -140,32 +95,31 @@ class AppRouter {
             currentIndex: 0,
             mobile: MobileHomeView(),
             tablet: TabletHomeView(),
-            desktop: DesktopHomeView(),
           ),
         ),
         routes: [
-          // GoRoute(
-          //   path: APP_PAGE.allSaleProducts.toPath,
-          //   name: APP_PAGE.allSaleProducts.toName,
-          //   builder: (context, state) => RootLayout(
-          //     key: _scaffoldKey,
-          //     currentIndex: 0,
-          //     child: AllSaleProductsView(),
-
-          //   ),
-          // ),
-          // GoRoute(
-          //   path: APP_PAGE.allNewProducts.toPath,
-          //   name: APP_PAGE.allNewProducts.toName,
-          //   builder: (context, state) => RootLayout(
-          //     key: _scaffoldKey,
-          //     currentIndex: 0,
-          //     child: AllNewProductsView(),
-          //   ),
-          // ),
+          GoRoute(
+            path: APP_PAGE.homeVerTwo.toPath,
+            name: APP_PAGE.homeVerTwo.toName,
+            builder: (context, state) => const RootLayout(
+              key: _scaffoldKey,
+              currentIndex: 0,
+              mobile: MobileHomeViewVerTwo(),
+              tablet: TabletHomeViewVerTwo(),
+            ),
+          ),
+          GoRoute(
+            path: APP_PAGE.sale.toPath,
+            name: APP_PAGE.sale.toName,
+            builder: (context, state) => const RootLayout(
+              key: _scaffoldKey,
+              currentIndex: 0,
+              mobile: MobileSaleView(),
+              tablet: TabletSaleView(),
+            ),
+          ),
         ],
       ),
-
       GoRoute(
         path: APP_PAGE.shop.toPath,
         name: APP_PAGE.shop.toName,
@@ -174,10 +128,8 @@ class AppRouter {
           child: RootLayout(
             key: _scaffoldKey,
             currentIndex: 1,
-            //child: ShopView(),
-            mobile: MobileShopView(),
-            tablet: TabletShopView(),
-            desktop: DesktopShopView(),
+            mobile: MobileCategoriesView(),
+            tablet: TabletCategoriesView(),
           ),
         ),
       ),
@@ -192,7 +144,6 @@ class AppRouter {
             //child: BagViwe(),
             mobile: MobileBagViwe(),
             tablet: TabletBagViwe(),
-            desktop: DesktopBagViwe(),
           ),
         ),
       ),
@@ -207,7 +158,6 @@ class AppRouter {
             //child: FavoritesViwe(),
             mobile: MobileFavoritesViwe(),
             tablet: TabletFavoritesViwe(),
-            desktop: DesktopFavoritesViwe(),
           ),
         ),
       ),
@@ -222,7 +172,6 @@ class AppRouter {
             //child: ProfileViwe(),
             mobile: MobileProfileViwe(),
             tablet: TabletProfileViwe(),
-            desktop: DesktopProfileViwe(),
           ),
         ),
       ),
@@ -241,7 +190,7 @@ class AppRouter {
       ),
     ),
 
-    //Redirect
+    // Redirect
     // redirect: (state) {
     //   final homeLocation = state.subloc == APP_PAGE.home.toPath;
     //   final loadingLocation = state.subloc == APP_PAGE.loading.toPath;
