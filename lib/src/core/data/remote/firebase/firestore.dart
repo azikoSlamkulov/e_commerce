@@ -1,6 +1,9 @@
-import 'dart:developer';
+//import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_commerce/src/core/data/remote/firebase/firebase.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
+//import '../../../../module/shop/data/models/product_model.dart';
+//import '../../../../module/shop/domain/entities/product_entity.dart';
+//import '../fake_data/fake_product_data.dart';
 
 abstract class FirestoreCore {
   Future<bool> checkExists({
@@ -16,16 +19,94 @@ abstract class FirestoreCore {
     required String collectionName,
     required T Function(Map<String, dynamic> body) fromJson,
   });
+  Future<List<T>> getListFromCart<T>({
+    required String userID,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
+  Future<List<T>> getCategoriesList<T>({
+    required String typeName,
+    required String collectionName,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
   Future<List<T>> getSortedListByQuery<T>({
     required String collectionName,
     required String fieldName,
     required dynamic query,
     required T Function(Map<String, dynamic> body) fromJson,
   });
+  Future<List<ProductModel>> getSortedFakeListByQuery<T>({
+    required String collectionName,
+    required String fieldName,
+    required dynamic query,
+    required ProductModel Function(Map<String, dynamic> body) fromJson,
+  });
+  Future<List<T>> getSortedListByQueryWithTwoValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
+  Future<List<T>> getSortedListByQueryWithThreeValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required String thirdFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required dynamic thirdQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
+  Future<List<T>> getSortedListByQueryWithFourValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required String thirdFieldName,
+    required String fourthFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required dynamic thirdQuery,
+    required dynamic fourthQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
+
+  Future<List<T>> getSortedListByQueryWithfiveValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required String thirdFieldName,
+    required String fourthFieldName,
+    required String fifthFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required dynamic thirdQuery,
+    required dynamic fourthQuery,
+    required dynamic fifthQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  });
+
   Future<bool> create({
     //required objectEntity,
     required objectModel,
     required String collectionName,
+  });
+  Future<bool> setProduct({
+    //required objectEntity,
+    required objectModel,
+    // required String collectionName,
+    // required String typeName,
+    // required String categoryName,
+  });
+  Future<bool> setProductToCart({
+    required objectModel,
+  });
+  Future<bool> createCategory({
+    //required objectEntity,
+    required objectModel,
+    required String typeName,
+    required String collectionName,
+    required String categoryName,
   });
   Future<bool> update({
     required objectEntity,
@@ -35,6 +116,10 @@ abstract class FirestoreCore {
   Future<bool> delete({
     required String userID,
     required String collectionName,
+  });
+  Future<bool> deleteProductFromCart({
+    required String userID,
+    required String productID,
   });
 }
 
@@ -90,6 +175,25 @@ class FirestoreCoreImpl implements FirestoreCore {
   }
 
   @override
+  Future<List<T>> getListFromCart<T>({
+    required String userID,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> _list = <T>[];
+    final _response = await firestoreDB
+        .collection('users')
+        .doc(userID)
+        .collection('bags')
+        .get();
+    for (final _doc in _response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final _object = fromJson(_doc.data());
+      _list.add(_object);
+    }
+    return _list;
+  }
+
+  @override
   Future<List<T>> getSortedListByQuery<T>({
     required String collectionName,
     required String fieldName,
@@ -100,8 +204,177 @@ class FirestoreCoreImpl implements FirestoreCore {
     //final _response = await firestoreDB.collection(collectionName).get();
     final _response = await firestoreDB
         .collection(collectionName)
-        .where(fieldName, isEqualTo: query)
-        //.where('isNew', isEqualTo: true)
+        .where(
+          fieldName,
+          isEqualTo: query,
+        )
+        .get();
+    for (final _doc in _response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final _object = fromJson(_doc.data());
+      _list.add(_object);
+    }
+    return _list;
+  }
+
+  @override
+  Future<List<ProductModel>> getSortedFakeListByQuery<T>({
+    required String collectionName,
+    required String fieldName,
+    required dynamic query,
+    required ProductModel Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<ProductModel> _list = FakeProductData().allFakeProducts;
+    return _list;
+  }
+
+  @override
+  Future<List<T>> getSortedListByQueryWithTwoValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> _list = <T>[];
+    //final _response = await firestoreDB.collection(collectionName).get();
+    final _response = await firestoreDB
+        .collection(collectionName)
+        .where(
+          firstFieldName,
+          isEqualTo: firstQuery,
+        )
+        .where(
+          secondFieldName,
+          isEqualTo: secondQuery,
+        )
+        .get();
+    for (final _doc in _response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final _object = fromJson(_doc.data());
+      _list.add(_object);
+    }
+    return _list;
+  }
+
+  @override
+  Future<List<T>> getSortedListByQueryWithThreeValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required String thirdFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required dynamic thirdQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> _list = <T>[];
+    //final _response = await firestoreDB.collection(collectionName).get();
+    final _response = await firestoreDB
+        .collection(collectionName)
+        .where(
+          firstFieldName,
+          isEqualTo: firstQuery,
+        )
+        .where(
+          secondFieldName,
+          isEqualTo: secondQuery,
+        )
+        .where(
+          thirdFieldName,
+          isEqualTo: thirdQuery,
+        )
+        .get();
+    for (final _doc in _response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final _object = fromJson(_doc.data());
+      _list.add(_object);
+    }
+    return _list;
+  }
+
+  @override
+  Future<List<T>> getSortedListByQueryWithFourValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required String thirdFieldName,
+    required String fourthFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required dynamic thirdQuery,
+    required dynamic fourthQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> _list = <T>[];
+    //final _response = await firestoreDB.collection(collectionName).get();
+    final _response = await firestoreDB
+        .collection(collectionName)
+        .where(
+          firstFieldName,
+          isEqualTo: firstQuery,
+        )
+        .where(
+          secondFieldName,
+          isEqualTo: secondQuery,
+        )
+        .where(
+          thirdFieldName,
+          isEqualTo: thirdQuery,
+        )
+        .where(
+          fourthFieldName,
+          isEqualTo: fourthQuery,
+        )
+        .get();
+    for (final _doc in _response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final _object = fromJson(_doc.data());
+      _list.add(_object);
+    }
+    return _list;
+  }
+
+  @override
+  Future<List<T>> getSortedListByQueryWithfiveValues<T>({
+    required String collectionName,
+    required String firstFieldName,
+    required String secondFieldName,
+    required String thirdFieldName,
+    required String fourthFieldName,
+    required String fifthFieldName,
+    required dynamic firstQuery,
+    required dynamic secondQuery,
+    required dynamic thirdQuery,
+    required dynamic fourthQuery,
+    required dynamic fifthQuery,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> _list = <T>[];
+    //final _response = await firestoreDB.collection(collectionName).get();
+    final _response = await firestoreDB
+        .collection(collectionName)
+        .where(
+          firstFieldName,
+          isEqualTo: firstQuery,
+        )
+        .where(
+          secondFieldName,
+          isEqualTo: secondQuery,
+        )
+        .where(
+          thirdFieldName,
+          isEqualTo: thirdQuery,
+        )
+        .where(
+          fourthQuery,
+          isEqualTo: fourthQuery,
+        )
+        .where(
+          fifthFieldName,
+          isEqualTo: fifthQuery,
+        )
         .get();
     for (final _doc in _response.docs) {
       //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
@@ -124,6 +397,58 @@ class FirestoreCoreImpl implements FirestoreCore {
   //       .onError((error, stackTrace) => false);
   // }
 
+  // @override
+  // Future<bool> create({
+  //   //required objectEntity,
+  //   required objectModel,
+  //   required String collectionName,
+  // }) async {
+  //   return await firestoreDB
+  //       .collection(collectionName)
+  //       // .doc(user.userID)
+  //       // .collection('profile')
+  //       .doc(objectModel.userID)
+  //       .get()
+  //       .then((_doc) {
+  //     final newObject = objectModel.toJson();
+  //     if (!_doc.exists) {
+  //       firestoreDB
+  //           .collection(collectionName)
+  //           .doc(objectModel.userID)
+  //           .set(newObject, SetOptions(merge: true));
+  //     }
+  //     return true;
+  //   }).onError((error, stackTrace) {
+  //     return false;
+  //   });
+  // }
+
+  @override
+  Future<bool> setProductToCart({
+    required objectModel,
+  }) async {
+    return await firestoreDB
+        .collection('users')
+        .doc(objectModel.userID)
+        .collection('bags')
+        .doc(objectModel.productID)
+        .get()
+        .then((_doc) {
+      final newObject = objectModel.toJson();
+      if (!_doc.exists) {
+        firestoreDB
+            .collection('users')
+            .doc(objectModel.userID)
+            .collection('bags')
+            .doc(objectModel.productID)
+            .set(newObject, SetOptions(merge: true));
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
   @override
   Future<bool> create({
     //required objectEntity,
@@ -134,14 +459,111 @@ class FirestoreCoreImpl implements FirestoreCore {
         .collection(collectionName)
         // .doc(user.userID)
         // .collection('profile')
-        .doc(objectModel.userID)
+        .doc()
         .get()
         .then((_doc) {
       final newObject = objectModel.toJson();
       if (!_doc.exists) {
         firestoreDB
             .collection(collectionName)
-            .doc(objectModel.userID)
+            .doc()
+            .set(newObject, SetOptions(merge: true));
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  @override
+  Future<bool> setProduct({
+    //required objectEntity,
+    required objectModel,
+    //required String typeName,
+    // required String collectionName,
+    // required String categoryName,
+  }) async {
+    return await firestoreDB
+        .collection('products')
+        .doc(objectModel.type)
+        .collection(objectModel.type)
+        .doc(objectModel.collection)
+        .collection(objectModel.collection)
+        .doc(objectModel.category)
+        .collection(objectModel.category)
+        .doc()
+        .get()
+        .then((_doc) {
+      final newObject = objectModel.toJson();
+      if (!_doc.exists) {
+        firestoreDB
+            .collection('products')
+            .doc(objectModel.type)
+            .collection(objectModel.type)
+            .doc(objectModel.collection)
+            .collection(objectModel.collection)
+            .doc(objectModel.category)
+            .collection(objectModel.category)
+            .doc()
+            .set(newObject, SetOptions(merge: true));
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  Future<List<T>> getCategoriesList<T>({
+    required String typeName,
+    required String collectionName,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> list = <T>[];
+    final response = await firestoreDB
+        .collection('categories')
+        .where('type', isEqualTo: typeName)
+        .where('collection', isEqualTo: collectionName)
+        .get();
+    for (final doc in response.docs) {
+      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+      final object = fromJson(doc.data());
+      list.add(object);
+    }
+    return list;
+  }
+
+  @override
+  Future<bool> createCategory({
+    //required objectEntity,
+    required objectModel,
+    required String typeName,
+    required String collectionName,
+    required String categoryName,
+  }) async {
+    return await firestoreDB
+        .collection('categories')
+        .doc(typeName)
+        .collection(typeName)
+        // .doc(user.userID)
+        // .collection('profile')
+        .doc(collectionName)
+        .collection(collectionName)
+        // .doc('2')
+        // .collection(categoryName)
+        .doc()
+        .get()
+        .then((_doc) {
+      final newObject = objectModel.toJson();
+      if (!_doc.exists) {
+        firestoreDB
+            .collection('categories')
+            .doc(typeName)
+            .collection(typeName)
+            .doc(collectionName)
+            .collection(collectionName)
+            // .doc('2')
+            // .collection(categoryName)
+            .doc()
             .set(newObject, SetOptions(merge: true));
       }
       return true;
@@ -212,6 +634,21 @@ class FirestoreCoreImpl implements FirestoreCore {
     return await firestoreDB
         .collection(collectionName)
         .doc(userID)
+        .delete()
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+  }
+
+  @override
+  Future<bool> deleteProductFromCart({
+    required String userID,
+    required String productID,
+  }) async {
+    return await firestoreDB
+        .collection('users')
+        .doc(userID)
+        .collection('bags')
+        .doc(productID)
         .delete()
         .then((value) => true)
         .onError((error, stackTrace) => false);

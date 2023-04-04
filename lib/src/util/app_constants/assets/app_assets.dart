@@ -30,6 +30,10 @@ class AppAssets {
     'image4': '$_images/image_4.jpg',
     'image5': '$_images/image_5.jpg',
     'image6': '$_images/image_6.jpg',
+    'collections_new': '$_images/collections_new.jpg',
+    'collections_clothes': '$_images/collections_clothes.jpg',
+    'collections_shoes': '$_images/collections_shoes.jpeg',
+    'collections_accesories': '$_images/collections_accesories.jpg',
 
     // Icons
     'onboarding_icon_1': '$_onBoardingIcons/clothes_men.png',
@@ -64,6 +68,13 @@ class AppAssets {
   static AssetImage image4() => AssetImage(_paths['image4']!);
   static AssetImage image5() => AssetImage(_paths['image5']!);
   static AssetImage image6() => AssetImage(_paths['image6']!);
+  // static AssetImage collectionsNew() => AssetImage(_paths['collections_new']!);
+  // static AssetImage collectionsClothes() =>
+  //     AssetImage(_paths['collections_clothes']!);
+  // static AssetImage collectionsShoes() =>
+  //     AssetImage(_paths['collections_shoes']!);
+  // static AssetImage collectionsAccesories() =>
+  //     AssetImage(_paths['collections_accesories']!);
 
   /// navbar icons
   static Image homeIcon({required double width, required double height}) =>
@@ -100,6 +111,38 @@ class AppAssets {
       Image.asset(_paths['arrow_right']!, width: width, height: height);
   static Image chevronBack({required double width, required double height}) =>
       Image.asset(_paths['chevron_back']!, width: width, height: height);
+  static Image collectionsNew(
+          {required double width, required double height}) =>
+      Image.asset(
+        _paths['collections_new']!,
+        width: width,
+        height: height,
+        fit: BoxFit.fill,
+      );
+  static Image collectionsClothes(
+          {required double width, required double height}) =>
+      Image.asset(
+        _paths['collections_clothes']!,
+        width: width,
+        height: height,
+        fit: BoxFit.fill,
+      );
+  static Image collectionsShoes(
+          {required double width, required double height}) =>
+      Image.asset(
+        _paths['collections_shoes']!,
+        width: width,
+        height: height,
+        fit: BoxFit.fill,
+      );
+  static Image collectionsAccesories(
+          {required double width, required double height}) =>
+      Image.asset(
+        _paths['collections_accesories']!,
+        width: width,
+        height: height,
+        fit: BoxFit.fill,
+      );
 
   ///example
   // static Image emblem({required double width, required double height}) =>

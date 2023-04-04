@@ -8,9 +8,9 @@ class AuthState extends Equatable {
   List<Object> get props => [];
 }
 
-class InitialState extends AuthState {}
+class AuthInitialState extends AuthState {}
 
-class LoadingState extends AuthState {}
+class AuthLoadingState extends AuthState {}
 
 class UnAuthenticatedState extends AuthState {}
 

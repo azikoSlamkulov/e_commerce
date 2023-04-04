@@ -1,51 +1,101 @@
-enum APP_PAGE {
+enum AppPage {
+  /// Auth
   loading,
   signIn,
   signUp,
+
+  /// Home
   home,
   homeVerTwo,
   sale,
   error,
   onBoarding,
-  shop,
+
+  /// Shop
+  shopCategoriesFirst,
+  shopCategoriesSecond,
+  shopCatalog,
+  shopFilters,
+  shopBrand,
+  shopProductCard,
+  shopRatingAndReviews,
+
+  /// Bag
   bag,
+
+  /// Favorites
   favorites,
+
+  /// Profile
   profile,
   passwordRecovery,
   allNewProducts,
+
+  /// Admin
+  admin,
+  mobileAddProduct,
 }
 
-extension AppPageExtension on APP_PAGE {
+extension AppPageExtension on AppPage {
   String get toPath {
     switch (this) {
-      case APP_PAGE.loading:
+      case AppPage.loading:
         return "/splash";
-      case APP_PAGE.signUp:
-        return "/signUp";
-      case APP_PAGE.signIn:
-        return "/signIn";
-      case APP_PAGE.passwordRecovery:
-        return "/passwordRecovery";
-      case APP_PAGE.home:
-        return "/";
-      case APP_PAGE.homeVerTwo:
-        return "homeVerTwo";
-      case APP_PAGE.sale:
-        return "sale";
-      case APP_PAGE.allNewProducts:
-        return "allNewProducts";
-      case APP_PAGE.shop:
-        return "/shop";
-      case APP_PAGE.bag:
-        return "/bag";
-      case APP_PAGE.favorites:
-        return "/favorites";
-      case APP_PAGE.profile:
-        return "/profile";
-      case APP_PAGE.onBoarding:
+      case AppPage.onBoarding:
         return "/start";
-      case APP_PAGE.error:
+      case AppPage.signUp:
+        return "signUp";
+      case AppPage.signIn:
+        return "signIn";
+      case AppPage.passwordRecovery:
+        return "/passwordRecovery";
+
+      /// Home
+      case AppPage.home:
+        return "/";
+      case AppPage.homeVerTwo:
+        return "homeVerTwo";
+      case AppPage.sale:
+        return "sale";
+      case AppPage.allNewProducts:
+        return "allNewProducts";
+
+      /// Shop
+      case AppPage.shopCategoriesFirst:
+        return "/shopCategoriesFirst";
+      case AppPage.shopCategoriesSecond:
+        return "shopCategoriesSecond/:type/:collection";
+      case AppPage.shopCatalog:
+        return "shopCatalog";
+      case AppPage.shopFilters:
+        return "shopFilters";
+      case AppPage.shopBrand:
+        return "shopBrand";
+      case AppPage.shopProductCard:
+        return "shopProductCard";
+      case AppPage.shopRatingAndReviews:
+        return "shopTatingAndReviews";
+
+      /// Bag
+      case AppPage.bag:
+        return "/bag";
+
+      /// Favorites
+      case AppPage.favorites:
+        return "/favorites";
+
+      /// Profile
+      case AppPage.profile:
+        return "/profile";
+      case AppPage.error:
         return "/error";
+
+      /// Admin
+      case AppPage.admin:
+        return "/admin";
+      case AppPage.mobileAddProduct:
+        return "/mobileAddProduct";
+
       default:
         return "/";
     }
@@ -53,35 +103,63 @@ extension AppPageExtension on APP_PAGE {
 
   String get toName {
     switch (this) {
-      case APP_PAGE.loading:
+      case AppPage.loading:
         return "SPLASH";
-      case APP_PAGE.signIn:
+      case AppPage.signIn:
         return "SIGNIN";
-      case APP_PAGE.signUp:
+      case AppPage.signUp:
         return "SIGNUP";
-      case APP_PAGE.passwordRecovery:
+      case AppPage.passwordRecovery:
         return "PASSWORDRECOVERY";
 
-      case APP_PAGE.home:
+      /// Home
+      case AppPage.home:
         return "HOME";
-      case APP_PAGE.homeVerTwo:
+      case AppPage.homeVerTwo:
         return "HOMEVERTWO";
-      case APP_PAGE.sale:
+      case AppPage.sale:
         return "SALE";
-      case APP_PAGE.allNewProducts:
+      case AppPage.allNewProducts:
         return "ALLNEWPRODUCTS";
-      case APP_PAGE.shop:
-        return "SHOP";
-      case APP_PAGE.bag:
+
+      /// Shop
+      case AppPage.shopCategoriesFirst:
+        return "SHOPCATEGORIESFIRST";
+      case AppPage.shopCategoriesSecond:
+        return "SHOPCATEGORIESSECOND";
+      case AppPage.shopCatalog:
+        return "SHOPCATALOG";
+      case AppPage.shopFilters:
+        return "SHOPFILTERS";
+      case AppPage.shopBrand:
+        return "SHOPBRAND";
+      case AppPage.shopProductCard:
+        return "SHOPPRODUCTCARD";
+      case AppPage.shopRatingAndReviews:
+        return "SHOPRATINGANDREVIEWS";
+
+      /// Bag
+      case AppPage.bag:
         return "BAG";
-      case APP_PAGE.favorites:
+
+      /// Favorites
+      case AppPage.favorites:
         return "FAVORITES";
-      case APP_PAGE.profile:
+
+      /// Profile
+      case AppPage.profile:
         return "PROFILE";
-      case APP_PAGE.onBoarding:
+      case AppPage.onBoarding:
         return "START";
-      case APP_PAGE.error:
+      case AppPage.error:
         return "ERROR";
+
+      /// Admin
+      case AppPage.admin:
+        return "ADMIN";
+      case AppPage.mobileAddProduct:
+        return "MOBILEADDPRODUCT";
+
       default:
         return "HOME";
     }
@@ -89,34 +167,61 @@ extension AppPageExtension on APP_PAGE {
 
   String get toTitle {
     switch (this) {
-      case APP_PAGE.loading:
+      case AppPage.loading:
         return "My App Splash";
-      case APP_PAGE.signIn:
+      case AppPage.signIn:
         return "My App Sign In";
-      case APP_PAGE.signUp:
+      case AppPage.signUp:
         return "My App Sign Up";
-      case APP_PAGE.passwordRecovery:
+      case AppPage.passwordRecovery:
         return "Password Recovery";
-      case APP_PAGE.allNewProducts:
+
+      case AppPage.allNewProducts:
         return "Sale";
-      case APP_PAGE.home:
+
+      /// Home
+      case AppPage.home:
         return "My App";
-      case APP_PAGE.homeVerTwo:
+      case AppPage.homeVerTwo:
         return "My Home Ver Two";
-      case APP_PAGE.sale:
+      case AppPage.sale:
         return "Sale";
-      case APP_PAGE.shop:
-        return "Shop";
-      case APP_PAGE.bag:
+
+      /// Shop
+      case AppPage.shopCategoriesFirst:
+        return "shopCategoriesFirst";
+      case AppPage.shopCategoriesSecond:
+        return "shopCategoriesSecond";
+      case AppPage.shopCatalog:
+        return "shopCatalog";
+      case AppPage.shopFilters:
+        return "shopFilters";
+      case AppPage.shopBrand:
+        return "shopBrand";
+      case AppPage.shopProductCard:
+        return "shopProductCard";
+      case AppPage.shopRatingAndReviews:
+        return "shopTatingAndReviews";
+
+      /// Bag
+      case AppPage.bag:
         return "Bag";
-      case APP_PAGE.favorites:
+
+      /// Favorites
+      case AppPage.favorites:
         return "Favorites";
-      case APP_PAGE.profile:
+
+      /// Profile
+      case AppPage.profile:
         return "Profile";
-      case APP_PAGE.onBoarding:
+      case AppPage.onBoarding:
         return "Welcome to My App";
-      case APP_PAGE.error:
+      case AppPage.error:
         return "My App Error";
+
+      /// Admin
+      case AppPage.admin:
+        return "admin";
       default:
         return "My App";
     }

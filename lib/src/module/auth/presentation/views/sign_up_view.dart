@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:e_commerce/src/module/auth/presentation/views/sign_in_vew.dart';
 import 'package:e_commerce/src/util/app_constants/assets/app_assets.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../../../util/app_constants/text_styles/app_text_styles.dart';
 import '../../../app/routes/router_utils.dart';
 import '../../../../util/app_constants/colors/app_colors.dart';
 import '../../../../util/app_constants/sized/spaces.dart';
@@ -15,18 +17,6 @@ import '../logic/auth_bloc.dart';
 import '../logic/auth_event.dart';
 import '../widgets/btn_facebook_widget.dart';
 import '../widgets/btn_google_widget.dart';
-
-// class SignUpView extends StatelessWidget {
-//   const SignUpView({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return BlocProvider(
-//       create: (context) => sl<AuthBloc>(),
-//       child: SignUp2View(),
-//     );
-//   }
-// }
 
 class SignUpView extends StatelessWidget {
   SignUpView({
@@ -61,14 +51,10 @@ class SignUpView extends StatelessWidget {
                   AppSized.h60,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Регистрация',
-                        style: TextStyle(
-                          fontSize: 34,
-                          fontWeight: FontWeight.bold,
-                          //fontFamily:
-                        ),
+                        style: AppTextStyles.black34Bold,
                       ),
                     ],
                   ),
@@ -82,12 +68,9 @@ class SignUpView extends StatelessWidget {
                   AppSized.h30,
                   _button(context),
                   AppSized.h100,
-                  const Text(
+                  Text(
                     'Или зарегистрируйтесь с помощью соц. сетей.',
-                    style: TextStyle(
-                      fontSize: 16,
-                      //color: AppColors.black,
-                    ),
+                    style: AppTextStyles.black16,
                   ),
                   AppSized.h30,
                   Row(
@@ -164,17 +147,20 @@ class SignUpView extends StatelessWidget {
       children: [
         TextButton.icon(
           onPressed: () {
-            //GoRouter.of(context).goNamed(APP_PAGE.signIn.toName);
-            BlocProvider.of<AuthBloc>(context).add(
-              OpenSignInEvent(),
+            //GoRouter.of(context).goNamed(AppPage.signIn.toName);
+            // BlocProvider.of<AuthBloc>(context).add(
+            //   OpenSignInEvent(),
+            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignInView(),
+              ),
             );
           },
-          icon: const Text(
+          icon: Text(
             'У вас уже есть аккаунт?',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.black,
-            ),
+            style: AppTextStyles.black16,
           ),
           //label: Icon(Icons.arrow_right)),
           label: AppAssets.arrowRight(
@@ -191,14 +177,9 @@ class SignUpView extends StatelessWidget {
       //bgColor: AppColors.mainColor,
       sizedBoxWidth: MediaQuery.of(context).size.width * 0.95,
       //borderRadius: 30,
-      text: const Text(
+      text: Text(
         'Регистрация',
-        style: TextStyle(
-          //color: AppColors.blue,
-          fontSize: 18,
-          //fontWeight: FontWeight.bold,
-          //fontFamily:
-        ),
+        style: AppTextStyles.white18Bold,
       ),
       onPressed: () async {
         if (formKey.currentState!.validate()) {

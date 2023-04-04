@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
@@ -22,6 +23,7 @@ class CustomTextFormField extends StatelessWidget {
     this.autofocus,
     this.sizedBoxHeight = 55.0,
     this.sizedBoxWidth = 200.0,
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
 
@@ -45,6 +47,7 @@ class CustomTextFormField extends StatelessWidget {
   final bool? autofocus;
   final double? sizedBoxHeight;
   final double? sizedBoxWidth;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +55,9 @@ class CustomTextFormField extends StatelessWidget {
       height: sizedBoxHeight,
       width: sizedBoxWidth,
       child: TextFormField(
+        enabled: enabled,
+        //minLines: 10,
+        maxLines: 10,
         controller: controller!,
         keyboardType: keyboardType,
         //style: AppTextStyles.mulishBlack16w600,
@@ -109,7 +115,8 @@ class CustomTextFormField extends StatelessWidget {
               style: BorderStyle.solid,
             ),
           ),
-          contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 10.0, 0.0),
+          contentPadding: REdgeInsets.fromLTRB(20.0, 20.0, 10.0, 0.0),
+          //contentPadding: REdgeInsets.symmetric(horizontal: 20, vertical: 10),
           // errorStyle: AppTextStyles.mulishMainColor16w600,
         ),
         validator: validator ??

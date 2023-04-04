@@ -1,7 +1,4 @@
-import 'package:clippy_flutter/clippy_flutter.dart';
-import 'package:flutter/material.dart';
-
-import '../../util/app_constants/colors/app_colors.dart';
+import 'onboarding.dart';
 
 class OnboardingLayout extends StatefulWidget {
   final String title, description, imageLink;

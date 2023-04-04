@@ -1,11 +1,13 @@
 import 'dart:developer';
 
+import 'package:e_commerce/src/module/auth/presentation/views/password_recovery.dart';
 import 'package:e_commerce/src/module/auth/presentation/views/sign_up_view.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../util/app_constants/text_styles/app_text_styles.dart';
 import '../../../app/routes/router_utils.dart';
 import '../../../../util/app_constants/assets/app_assets.dart';
 import '../../../../util/app_constants/colors/app_colors.dart';
@@ -61,9 +63,11 @@ class SignInView extends StatelessWidget {
                         padding: EdgeInsets.zero,
                         alignment: Alignment.centerLeft,
                         onPressed: () {
-                          BlocProvider.of<AuthBloc>(context).add(
-                            OpenSignUpEvent(),
-                          );
+                          //GoRouter.of(context).goNamed(AppPage.signUp.toName);
+                          // BlocProvider.of<AuthBloc>(context).add(
+                          //   OpenSignUpEvent(),
+                          // );
+                          Navigator.pop(context);
                         },
                         icon: const Icon(
                           Icons.chevron_left_sharp,
@@ -79,14 +83,10 @@ class SignInView extends StatelessWidget {
                   AppSized.h15,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Авторизация',
-                        style: TextStyle(
-                          fontSize: 34,
-                          fontWeight: FontWeight.bold,
-                          //fontFamily:
-                        ),
+                        style: AppTextStyles.black34Bold,
                       ),
                     ],
                   ),
@@ -101,9 +101,10 @@ class SignInView extends StatelessWidget {
                   AppSized.h30,
                   _registrationBtn(context),
                   AppSized.h150,
-                  const Text(
+                  Text(
                     'Или авторизуйтесь с помощью соц. сетей.',
-                    style: TextStyle(fontSize: 16),
+                    style: AppTextStyles.black16,
+                    //style: TextStyle(fontSize: 16),
                   ),
                   AppSized.h30,
                   Row(
@@ -197,17 +198,20 @@ class SignInView extends StatelessWidget {
       children: [
         TextButton.icon(
           onPressed: () {
-            // GoRouter.of(context).goNamed(APP_PAGE.passwordRecovery.toName);
-            BlocProvider.of<AuthBloc>(context).add(
-              OpenPasswordRecoveryEvent(),
+            //GoRouter.of(context).goNamed(AppPage.passwordRecovery.toName);
+            // BlocProvider.of<AuthBloc>(context).add(
+            //   OpenPasswordRecoveryEvent(),
+            // );
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => PasswordRecoveryView(),
+              ),
             );
           },
-          icon: const Text(
+          icon: Text(
             'Забыли пароль?',
-            style: TextStyle(
-              fontSize: 16,
-              color: AppColors.black,
-            ),
+            style: AppTextStyles.black16,
           ),
           //label: Icon(Icons.arrow_right)),
           label: AppAssets.arrowRight(
@@ -223,9 +227,10 @@ class SignInView extends StatelessWidget {
     return CustomElevatedButton(
       bgColor: AppColors.mainColor,
       sizedBoxWidth: MediaQuery.of(context).size.width * 0.90,
-      text: const Text(
+      text: Text(
         'Авторизация',
-        style: TextStyle(fontSize: 18),
+        style: AppTextStyles.white18Bold,
+        //style: TextStyle(fontSize: 18),
       ),
       onPressed: () async {
         // Navigator.push(

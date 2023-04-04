@@ -23,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.signInWithGoogle,
     required this.signUp,
     required this.signOut,
-  }) : super(LoadingState()) {
+  }) : super(UnAuthenticatedState()) {
     on<GetCurrentUserEvent>(_getCurrentUser);
     on<SignInWithEmailEvent>(_signInWithEmail);
     on<SignInWithGoogleEvent>(_signInWithGoogle);
@@ -71,7 +71,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _signInWithEmail(
       SignInWithEmailEvent event, Emitter<AuthState> emit) async {
-    emit(LoadingState());
+    emit(AuthLoadingState());
     final user = await signInWithEmail(
       SignInWithEmailParams(
         email: event.email,
@@ -86,7 +86,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _signInWithGoogle(
       SignInWithGoogleEvent event, Emitter<AuthState> emit) async {
-    emit(LoadingState());
+    emit(AuthLoadingState());
     final user = await signInWithGoogle.signInWithGoogle();
     user.fold(
       (error) => emit(const AuthenticationFailureState('')),
@@ -95,7 +95,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _signUp(SignUpEvent event, Emitter<AuthState> emit) async {
-    emit(LoadingState());
+    emit(AuthLoadingState());
     final userCredential = await signUp(
       SignUpParams(
         email: event.email,
@@ -109,7 +109,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _signOut(SignOutEvent event, Emitter<AuthState> emit) async {
-    emit(LoadingState());
+    emit(AuthLoadingState());
     final isSignedOut = await signOut.signOut();
     isSignedOut.fold(
       (error) => emit(const AuthenticationFailureState('')),

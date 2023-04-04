@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../util/app_constants/assets/app_assets.dart';
+import '../../../../util/app_constants/text_styles/app_text_styles.dart';
 
 class WidgetBtnFacebook extends StatelessWidget {
   final VoidCallback? onTap;
@@ -34,8 +35,9 @@ class WidgetBtnFacebook extends StatelessWidget {
                   height: 24,
                 ),
               ),
-              const Text(
+              Text(
                 'Facebook',
+                style: AppTextStyles.black14,
                 //style: FONT_CONST.REGULAR_GRAY4_12,
               )
             ],

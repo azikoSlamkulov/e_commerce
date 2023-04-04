@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:e_commerce/src/util/app_constants/assets/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -13,14 +14,14 @@ class CircleProfileWidget extends StatelessWidget {
     required this.isUpdate,
     required this.imageUrl,
     this.icon,
-    this.size,
+    this.size = 25,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback onTap;
   String imageUrl;
   final IconData? icon;
-  final double? size;
+  final double size;
   final bool isUpdate;
 
   @override
@@ -28,11 +29,11 @@ class CircleProfileWidget extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(15.0),
       decoration: BoxDecoration(
-        color: AppColors.bgColorCircleProfile,
+        //color: AppColors.bgColorCircleProfile,
         shape: BoxShape.circle,
         border: imageUrl.isNotEmpty
             ? Border.all(style: BorderStyle.none)
-            : Border.all(color: AppColors.black),
+            : Border.all(color: AppColors.grey),
       ),
       child: Stack(
         children: [
@@ -44,11 +45,12 @@ class CircleProfileWidget extends StatelessWidget {
           else
             Padding(
               padding: const EdgeInsets.all(35.0),
-              child: FaIcon(
-                icon,
-                size: size,
-                color: AppColors.black,
-              ),
+              // child: FaIcon(
+              //   icon,
+              //   size: size,
+              //   color: AppColors.black,
+              // ),
+              child: AppAssets.profileIcon(width: size, height: size),
             ),
           isUpdate
               ? Positioned(

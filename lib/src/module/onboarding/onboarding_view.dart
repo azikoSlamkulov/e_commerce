@@ -1,13 +1,4 @@
-import 'package:e_commerce/src/module/auth/presentation/logic/auth_event.dart';
-import 'package:e_commerce/src/module/onboarding/onboarding_layout.dart';
-import 'package:e_commerce/src/util/app_constants/colors/app_colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
-import '../app/routes/router_utils.dart';
-import '../auth/presentation/logic/auth_bloc.dart';
+import 'onboarding.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});
@@ -105,9 +96,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                           ),
                         ),
                         onPressed: () async {
-                          //GoRouter.of(context).goNamed(APP_PAGE.signUp.toName);
-                          BlocProvider.of<AuthBloc>(context).add(
-                            OpenSignUpEvent(),
+                          //context.goNamed(AppPage.signUp.toName);
+                          // BlocProvider.of<AuthBloc>(context).add(
+                          //   OpenSignUpEvent(),
+                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpView(),
+                            ),
                           );
                         },
                       ),
