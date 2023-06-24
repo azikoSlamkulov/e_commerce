@@ -1,12 +1,5 @@
 import 'dart:ffi';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../module/shop/domain/entities/product_entity.dart';
-import '../app_constants/text_styles/app_text_styles.dart';
-import 'buttons/favorite_toggle_icon_button.dart';
 
 class CustomHorizontalContainer extends StatelessWidget {
   const CustomHorizontalContainer({

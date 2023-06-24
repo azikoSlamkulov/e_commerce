@@ -1,8 +1,6 @@
 export 'bar/bar.dart';
 export 'buttons/buttons.dart';
 export 'circle_profile_widget.dart';
-export 'custom_horizontal_container.dart';
-export 'custom_vertical_container.dart';
 export 'dialogs/dialogs.dart';
 export 'inputs/inputs.dart';
 export 'others/others.dart';

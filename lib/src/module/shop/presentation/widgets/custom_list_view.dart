@@ -10,23 +10,9 @@ class CustomListView extends StatelessWidget {
   const CustomListView({
     super.key,
     required this.allProducts,
-    required this.title,
-    required this.subTitle,
-    this.showSubTitle = true,
-    this.smallBtn = 'View all',
-    required this.isSale,
-    this.titleFontSize = 34,
-    //this.scrollDirection = Axis.vertical,
   });
 
   final List<ProductEntity> allProducts;
-  final String title;
-  final String subTitle;
-  final bool showSubTitle;
-  final String smallBtn;
-  final bool isSale;
-  final double titleFontSize;
-  //final Axis scrollDirection;
 
   @override
   Widget build(BuildContext context) {
