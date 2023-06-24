@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import '../../../../../core/data/local/sharedpreferences/local_storage.dart';
-import '../../../../../util/app_constants/texts/app_texts.dart';
-import '../../models/auth_user_model.dart';
+import '../../../../../../lib.dart';
 
 abstract class LocalAuth {
   Future<bool>? addUserToCache(AuthUserModel userModel);

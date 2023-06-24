@@ -1,11 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:e_commerce/src/module/bag/data/data_source/remote_product_from_cart.dart';
-import 'package:e_commerce/src/module/bag/data/models/bag_model.dart';
-import 'package:e_commerce/src/module/bag/domain/entities/bag_entity.dart';
-import 'package:e_commerce/src/module/bag/domain/repositories/bag_repo.dart';
 
-import '../../../../core/error/exception.dart';
-import '../../../../core/error/failure.dart';
+import '../../../../../lib.dart';
 
 class BagRepoImpl implements BagRepo {
   BagRepoImpl({

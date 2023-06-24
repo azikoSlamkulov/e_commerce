@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:e_commerce/lib.dart';
 
 class MobileBagViwe extends StatelessWidget {
@@ -65,7 +64,7 @@ class NestedMobileBagViwe extends StatelessWidget {
     super.key,
   });
 
-  List<BagEntity> allProducts;
+  final List<BagEntity> allProducts;
   double totalAmount;
 
   @override

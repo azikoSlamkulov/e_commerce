@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../app_constants/colors/app_colors.dart';
-import '../buttons/custom_elevated_button.dart';
+// import '../../app_constants/colors/app_colors.dart';
+// import '../buttons/custom_elevated_button.dart';
+
+import 'package:e_commerce/lib.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   const CustomBottomNavBar({super.key});

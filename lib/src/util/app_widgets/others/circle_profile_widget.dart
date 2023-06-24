@@ -1,12 +1,14 @@
-import 'dart:io';
+//import 'dart:io';
 
-import 'package:e_commerce/src/util/app_constants/assets/assets.dart';
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+// import 'package:e_commerce/src/util/app_constants/assets/assets.dart';
+// import 'package:flutter/material.dart';
 // import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 // import 'package:image_picker/image_picker.dart';
 
-import '../../app_constants/colors/app_colors.dart';
+//import '../../app_constants/colors/app_colors.dart';
+
+import 'package:e_commerce/lib.dart';
 
 class CircleProfileWidget extends StatelessWidget {
   CircleProfileWidget({
@@ -14,14 +16,14 @@ class CircleProfileWidget extends StatelessWidget {
     required this.isUpdate,
     required this.imageUrl,
     this.icon,
-    this.size = 25,
+    this.size,
     Key? key,
   }) : super(key: key);
 
   final VoidCallback onTap;
-  String imageUrl;
+  final String imageUrl;
   final IconData? icon;
-  final double size;
+  final double? size;
   final bool isUpdate;
 
   @override
@@ -50,7 +52,8 @@ class CircleProfileWidget extends StatelessWidget {
               //   size: size,
               //   color: AppColors.black,
               // ),
-              child: AppAssets.profileIcon(width: size, height: size),
+              child:
+                  AppAssets.profileIcon(width: size ?? 25, height: size ?? 25),
             ),
           isUpdate
               ? Positioned(

@@ -1,10 +1,4 @@
-import 'package:e_commerce/lib.dart';
-import 'package:e_commerce/src/module/bag/domain/usecases/delete_product_from_cart.dart';
-import 'package:e_commerce/src/module/shop/presentation/logic/orientation_toggle_btn/orientation_cubit.dart';
-import 'package:e_commerce/src/module/shop/presentation/logic/product/product_bloc.dart';
-import 'package:e_commerce/src/module/shop/presentation/logic/sort_toggle_btn/sort_toggle_btn_cubit.dart';
-import 'package:e_commerce/src/module/shop/presentation/logic/tab_bar/tab_bar_cubit.dart';
-//import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'lib.dart';
 
 final sl = GetIt.instance;
 
@@ -27,13 +21,17 @@ Future<void> init() async {
     ),
   );
 
-  sl.registerFactory(() => ProductBloc(
-        //getProduct: sl(),
+  sl.registerFactory(() => ProducBloc(
+        //getProductDatails: sl(),
         getAllProducts: sl(),
         getAllSortedProducts: sl(),
         getAllSortedProductsWithTwoValues: sl(),
         getAllSortedProductsWithThreeValues: sl(),
       ));
+
+  // sl.registerFactory(() => ProductBloc(
+  //       getProduct: sl(),
+  //     ));
 
   sl.registerFactory(() => CategoriesBloc(
         getCategories: sl(),
@@ -47,6 +45,12 @@ Future<void> init() async {
         setProductToCart: sl(),
         getAllProductsFromCart: sl(),
         deleteProductFromCart: sl(),
+      ));
+
+  sl.registerFactory(() => FavoritesBloc(
+        addProductToFavorites: sl(),
+        getAllFavoritesProducts: sl(),
+        deleteProductFromFavorites: sl(),
       ));
 
   sl.registerFactory(() => CounterCubit());
@@ -69,12 +73,17 @@ Future<void> init() async {
       () => GetAllSortedProductsByQueryWithTwoValues(sl()));
   sl.registerLazySingleton(
       () => GetAllSortedProductsByQueryWithThreeValues(sl()));
-  sl.registerLazySingleton(() => GetProduct(sl()));
-  sl.registerLazySingleton(() => GetCategories(sl()));
+  sl.registerLazySingleton(() => GetProductDatails(sl()));
+  sl.registerLazySingleton(() => GetAllCategories(sl()));
   sl.registerLazySingleton(() => GetAllBrands(sl()));
   sl.registerLazySingleton(() => SetProductToCart(sl()));
   sl.registerLazySingleton(() => GetAllProductsFromCart(sl()));
   sl.registerLazySingleton(() => DeleteProductFromCart(sl()));
+  sl.registerLazySingleton(() => AddProductToFavorites(sl()));
+  sl.registerLazySingleton(() => GetAllFavoritesProducts(sl()));
+  sl.registerLazySingleton(() => DeleteProductFromFavorites(sl()));
+  sl.registerLazySingleton(() => GetProductSizesList(sl()));
+  sl.registerLazySingleton(() => GetProductQuantity(sl()));
 
   ///Repositories
   sl.registerLazySingleton<AuthRepo>(
@@ -108,6 +117,12 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerLazySingleton<FavoritesRepo>(
+    () => FavoritesRepoImpl(
+      remoteFavorites: sl(),
+    ),
+  );
+
   ///datasource
   sl.registerLazySingleton<FirebaseAuthData>(
     () => FirebaseAuthDataImpl(
@@ -137,6 +152,12 @@ Future<void> init() async {
 
   sl.registerLazySingleton<RemoteProductsFromCart>(
     () => RemoteProductsFromCartImpl(
+      firestore: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton<RemoteFavorites>(
+    () => RemoteFavoritesImpl(
       firestore: sl(),
     ),
   );

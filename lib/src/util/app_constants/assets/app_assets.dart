@@ -7,8 +7,8 @@ class AppAssets {
   static const String _onBoardingIcons = 'assets/png/icons/onboarding';
   static const String _images = 'assets/images';
   static const String _homeSliderImages = 'assets/images/home_slider';
-  static const String _onBoardingImages =
-      'assets/images/home_slider/onboarding';
+  // static const String _onBoardingImages =
+  //     'assets/images/home_slider/onboarding';
 
   static final Map<String, String> _paths = {
     ///example
@@ -34,6 +34,7 @@ class AppAssets {
     'collections_clothes': '$_images/collections_clothes.jpg',
     'collections_shoes': '$_images/collections_shoes.jpeg',
     'collections_accesories': '$_images/collections_accesories.jpg',
+    'success': '$_images/success_image.jpg',
 
     // Icons
     'onboarding_icon_1': '$_onBoardingIcons/clothes_men.png',
@@ -44,6 +45,20 @@ class AppAssets {
     'facebook_logo': '$_icons/facebook_logo.png',
     'arrow_right': '$_icons/arrow_right.png',
     'chevron_back': '$_icons/chevron_back.png',
+    'dhl': '$_icons/dhl.png',
+    'fedex': '$_icons/fedex.png',
+    'usps': '$_icons/usps.png',
+
+    ///card
+    'card_1': '$_icons/card_1.png',
+    'card_2': '$_icons/card_2.png',
+    'mastercard': '$_icons/mastercard.png',
+    'mastercard_white': '$_icons/mastercard_white.png',
+    'visa': '$_icons/visa.png',
+    'helper_icon': '$_icons/help_outline.png',
+    'chip_icon': '$_icons/chip.png',
+
+    'success_icon': '$_icons/success_icon.png',
 
     /// navbar icons
     'home_icon': '$_navBarIcons/home_icon.png',
@@ -68,6 +83,12 @@ class AppAssets {
   static AssetImage image4() => AssetImage(_paths['image4']!);
   static AssetImage image5() => AssetImage(_paths['image5']!);
   static AssetImage image6() => AssetImage(_paths['image6']!);
+
+  static AssetImage successBgImage() => AssetImage(_paths['success']!);
+
+  ///card
+  static AssetImage card_1() => AssetImage(_paths['card_1']!);
+  static AssetImage card_2() => AssetImage(_paths['card_2']!);
   // static AssetImage collectionsNew() => AssetImage(_paths['collections_new']!);
   // static AssetImage collectionsClothes() =>
   //     AssetImage(_paths['collections_clothes']!);
@@ -75,6 +96,12 @@ class AppAssets {
   //     AssetImage(_paths['collections_shoes']!);
   // static AssetImage collectionsAccesories() =>
   //     AssetImage(_paths['collections_accesories']!);
+
+  static AssetImage mastercard_2() => AssetImage(_paths['mastercard']!);
+  static AssetImage dhlImage() => AssetImage(_paths['dhl']!);
+  static AssetImage fedexImage() => AssetImage(_paths['fedex']!);
+  static AssetImage uspsImage() => AssetImage(_paths['usps']!);
+  static AssetImage chip() => AssetImage(_paths['chip_icon']!);
 
   /// navbar icons
   static Image homeIcon({required double width, required double height}) =>
@@ -100,6 +127,36 @@ class AppAssets {
   static Image profileIconRed(
           {required double width, required double height}) =>
       Image.asset(_paths['profile_icon_red']!, width: width, height: height);
+
+  /// card
+  static Image cardImage_1({required double width, required double height}) =>
+      Image.asset(_paths['card_1']!,
+          width: width, height: height, fit: BoxFit.fill);
+  static Image cardImage_2({required double width, required double height}) =>
+      Image.asset(_paths['card_2']!,
+          width: width, height: height, fit: BoxFit.fill);
+  static Image mastercard({required double width, required double height}) =>
+      Image.asset(_paths['mastercard']!, width: width, height: height);
+  static Image mastercardWhite(
+          {required double width, required double height}) =>
+      Image.asset(_paths['mastercard_white']!, width: width, height: height);
+  static Image visa({required double width, required double height}) =>
+      Image.asset(_paths['visa']!, width: width, height: height);
+  static Image helperIcon({required double width, required double height}) =>
+      Image.asset(_paths['helper_icon']!, width: width, height: height);
+
+  static Image dhl({required double width, required double height}) =>
+      Image.asset(_paths['dhl']!, width: width, height: height);
+  static Image fedex({required double width, required double height}) =>
+      Image.asset(_paths['fedex']!, width: width, height: height);
+  static Image usps({required double width, required double height}) =>
+      Image.asset(_paths['usps']!, width: width, height: height);
+
+  static Image chipIcon({required double width, required double height}) =>
+      Image.asset(_paths['chip_icon']!, width: width, height: height);
+
+  static Image successIcon({required double width, required double height}) =>
+      Image.asset(_paths['success_icon']!, width: width, height: height);
 
   static Image flutterLogo({required double width, required double height}) =>
       Image.asset(_paths['verification']!, width: width, height: height);

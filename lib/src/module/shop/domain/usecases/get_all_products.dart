@@ -1,8 +1,5 @@
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/failure.dart';
-import '../entities/product_entity.dart';
-import '../repositories/product_repo.dart';
+import 'package:e_commerce/lib.dart';
 
 class GetAllProducts {
   final ProductRepo productRepo;

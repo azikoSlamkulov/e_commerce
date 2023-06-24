@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:e_commerce/lib.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     required this.controller,
     this.labelText,
     this.labelStyle,
+    this.initialValue,
     this.hintText,
     this.hintStyle,
     this.counterText,
@@ -24,12 +26,14 @@ class CustomTextFormField extends StatelessWidget {
     this.sizedBoxHeight = 55.0,
     this.sizedBoxWidth = 200.0,
     this.enabled = true,
+    this.maxLines = 1,
     Key? key,
   }) : super(key: key);
 
   final TextEditingController? controller;
   final String? counterText;
   final String? labelText;
+  final String? initialValue;
   final TextStyle? labelStyle;
   final String? hintText;
   final TextStyle? hintStyle;
@@ -48,6 +52,7 @@ class CustomTextFormField extends StatelessWidget {
   final double? sizedBoxHeight;
   final double? sizedBoxWidth;
   final bool enabled;
+  final int maxLines;
 
   @override
   Widget build(BuildContext context) {
@@ -55,19 +60,21 @@ class CustomTextFormField extends StatelessWidget {
       height: sizedBoxHeight,
       width: sizedBoxWidth,
       child: TextFormField(
+        //initialValue: '',
         enabled: enabled,
         //minLines: 10,
-        maxLines: 10,
+        maxLines: maxLines,
         controller: controller!,
         keyboardType: keyboardType,
         //style: AppTextStyles.mulishBlack16w600,
         //style: TextStyle(color: AppColors.white),
+        style: const TextStyle(color: Colors.black),
         decoration: InputDecoration(
           //focusColor: AppColors.red,
           labelText: labelText,
           labelStyle: labelStyle ?? const TextStyle(color: Colors.black26),
-          //hintText: hintText!,
-          //hintStyle: TextStyle(color: AppColors.black26),
+          hintText: hintText ?? '',
+          hintStyle: labelStyle ?? const TextStyle(color: AppColors.black26),
           // hintStyle: AppTextStyles.mulishBlack14w600.copyWith(
           //   color: AppColors.black.withOpacity(0.5),
           // ),

@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+import 'package:e_commerce/lib.dart';
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  //with PreferredSizeWidget
   CustomAppBar({
     key,
     required this.title,
+    this.bgColor = Colors.white,
     this.showBackBtn = true,
     this.showSearchBtn = false,
     this.showShareBtn = false,
@@ -15,6 +19,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   final Size preferredSize;
   final String title;
+  final Color bgColor;
   final bool showBackBtn;
   final bool showSearchBtn;
   final bool showShareBtn;
@@ -23,7 +28,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.white,
+      backgroundColor: bgColor,
       title: Text(
         title,
         style: TextStyle(
@@ -40,7 +45,9 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 color: Colors.black,
                 size: 35.h,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
             )
           : SizedBox(
               width: 50.h,

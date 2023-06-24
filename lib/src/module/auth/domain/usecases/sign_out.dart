@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/failure.dart';
-import '../repositories/auth_repo.dart';
+import 'package:e_commerce/lib.dart';
 
 class SignOut {
   final AuthRepo authRepo;

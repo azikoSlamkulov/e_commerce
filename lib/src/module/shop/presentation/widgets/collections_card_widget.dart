@@ -1,22 +1,16 @@
-import 'package:e_commerce/src/module/shop/domain/entities/category_entity.dart';
-import 'package:e_commerce/src/util/app_constants/colors/app_colors.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
-
-import '../../../../util/app_constants/text_styles/app_text_styles.dart';
+import 'package:e_commerce/lib.dart';
 
 class CollectionsCardWidget extends StatelessWidget {
-  CollectionsCardWidget({
-    super.key,
+  const CollectionsCardWidget({
     required this.collectionName,
     required this.selectedTabIndex,
+    super.key,
     this.image,
   });
 
-  String collectionName;
-  int selectedTabIndex;
-  Image? image;
+  final String collectionName;
+  final int selectedTabIndex;
+  final Image? image;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +19,7 @@ class CollectionsCardWidget extends StatelessWidget {
             onTap: () {
               List<CategoryEntity> allCategories = [];
               context.goNamed(
-                "shopCatalog",
+                AppPage.catalog.name,
                 queryParams: {
                   'type': selectedTabIndex == 0
                       ? 'Women'
@@ -81,7 +75,7 @@ class CollectionsCardWidget extends StatelessWidget {
               if (collectionName == 'New') {
                 List<CategoryEntity> allCategories = [];
                 context.goNamed(
-                  "shopCatalog",
+                  AppPage.catalog.name,
                   queryParams: {
                     'type': selectedTabIndex == 0
                         ? 'Women'
@@ -95,7 +89,7 @@ class CollectionsCardWidget extends StatelessWidget {
                 );
               } else {
                 context.goNamed(
-                  "shopCategoriesSecond",
+                  AppPage.categories.name,
                   params: {
                     'type': selectedTabIndex == 0
                         ? 'Women'

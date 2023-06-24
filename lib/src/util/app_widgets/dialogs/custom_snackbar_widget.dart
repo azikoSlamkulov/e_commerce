@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
+import 'package:e_commerce/lib.dart';
 
 class CustomSnackBarWidget extends StatelessWidget {
   CustomSnackBarWidget({
@@ -11,12 +12,12 @@ class CustomSnackBarWidget extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  String? title;
-  String? contentText;
-  Color? borderColor;
-  Color? colorText;
-  Color? backgroundColor;
-  Widget? messageText;
+  final String? title;
+  final String? contentText;
+  final Color? borderColor;
+  final Color? colorText;
+  final Color? backgroundColor;
+  final Widget? messageText;
 
   @override
   Widget build(BuildContext context) {

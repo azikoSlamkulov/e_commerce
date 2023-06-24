@@ -1,5 +1,4 @@
-import 'package:e_commerce/src/core/data/remote/firebase/firestore.dart';
-import 'package:e_commerce/src/module/shop/data/models/category_model.dart';
+import 'package:e_commerce/lib.dart';
 
 abstract class RemoteCategories {
   Future<List<CategoryModel>> getCategories({
@@ -23,5 +22,9 @@ class RemoteCategoriesImpl implements RemoteCategories {
       collectionName: collection,
       fromJson: categoryFromJson,
     );
+    // return FakeCategoriesData().getCategories(
+    //   type: type,
+    //   collection: collection,
+    // );
   }
 }

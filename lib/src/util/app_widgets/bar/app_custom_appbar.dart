@@ -1,6 +1,4 @@
-import 'package:e_commerce/src/util/app_widgets/inputs/my%20search_delegate.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:e_commerce/lib.dart';
 
 class AppCustomAppBar extends StatelessWidget {
   const AppCustomAppBar({

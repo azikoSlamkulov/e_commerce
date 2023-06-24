@@ -1,10 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
-
-import '../../../../core/error/failure.dart';
-import '../../../../core/usecases/usecase.dart';
-import '../entities/product_entity.dart';
-import '../repositories/product_repo.dart';
+import 'package:e_commerce/lib.dart';
 
 // class GetAllSortedProductsByQuery {
 //   final ProductRepo productRepo;

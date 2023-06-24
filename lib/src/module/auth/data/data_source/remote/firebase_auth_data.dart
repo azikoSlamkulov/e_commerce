@@ -1,9 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
-import '../../../../../core/data/remote/firebase/firebase_auth.dart';
-import '../../../../../core/data/remote/firebase/firestore.dart';
-import '../../models/auth_user_model.dart';
+import 'package:e_commerce/lib.dart';
 
 abstract class FirebaseAuthData {
   // CurrentUser

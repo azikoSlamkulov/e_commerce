@@ -1,4 +1,5 @@
-import 'onboarding.dart';
+import '../../../lib.dart';
+import 'package:clippy_flutter/clippy_flutter.dart';
 
 class OnboardingLayout extends StatefulWidget {
   final String title, description, imageLink;

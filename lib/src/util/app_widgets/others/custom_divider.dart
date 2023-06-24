@@ -1,4 +1,6 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
+
+import 'package:e_commerce/lib.dart';
 
 class CustomDivider extends StatelessWidget {
   const CustomDivider({

@@ -1,10 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:e_commerce/src/module/bag/domain/repositories/bag_repo.dart';
-
-import 'package:equatable/equatable.dart';
-
-import '../../../../core/error/failure.dart';
-import '../../../../core/usecases/usecase.dart';
+import 'package:e_commerce/lib.dart';
 
 class DeleteProductFromCart extends UseCase<bool, DeleteProductFromCartParams> {
   final BagRepo bagRepo;

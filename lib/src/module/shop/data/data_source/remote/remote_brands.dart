@@ -1,5 +1,4 @@
-import '../../../../../core/data/remote/firebase/firestore.dart';
-import '../../models/brand_model.dart';
+import 'package:e_commerce/lib.dart';
 
 abstract class RemoteBrands {
   Future<List<BrandModel>> getAllBrands();
@@ -16,5 +15,6 @@ class RemoteBrandsImpl implements RemoteBrands {
       collectionName: 'brands',
       fromJson: brandFromJson,
     );
+    //return FakeBrandData().brands;
   }
 }

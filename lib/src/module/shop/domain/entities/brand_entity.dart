@@ -1,4 +1,4 @@
-import 'package:equatable/equatable.dart';
+import 'package:e_commerce/lib.dart';
 
 class BrandEntity extends Equatable {
   final String? id;

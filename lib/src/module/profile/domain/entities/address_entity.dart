@@ -7,7 +7,7 @@ class AddressEntity extends Equatable {
   final String? city;
   final String? region;
   final String? country;
-  bool? isCheked;
+  final bool? isCheked;
 
   AddressEntity({
     this.id,

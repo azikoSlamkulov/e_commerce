@@ -1,18 +1,18 @@
-import 'package:equatable/equatable.dart';
+import 'package:e_commerce/lib.dart';
 
 class CategoryEntity extends Equatable {
   final String? id;
   final String? type;
-  final String? collection;
-  final String? category;
+  final String? collectionName;
+  final String? categoryName;
   final String? imageURL;
   bool? isCheked;
 
   CategoryEntity({
     this.id,
     this.type,
-    this.collection,
-    this.category,
+    this.collectionName,
+    this.categoryName,
     this.imageURL,
     this.isCheked,
   });
@@ -21,8 +21,8 @@ class CategoryEntity extends Equatable {
   List<Object?> get props => [
         id,
         type,
-        collection,
-        category,
+        collectionName,
+        categoryName,
         imageURL,
         isCheked,
       ];

@@ -7,7 +7,7 @@ class CardEntity extends Equatable {
   final String? expireDate;
   final String? cvv;
   final Image? cardImage;
-  bool? isCheked;
+  final bool? isCheked;
 
   CardEntity({
     this.id,

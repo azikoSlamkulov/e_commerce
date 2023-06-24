@@ -1,1 +1,2 @@
-export 'remote_product_from_cart.dart';
+export 'local/local.dart';
+export 'remote/remote.dart';

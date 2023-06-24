@@ -1,7 +1,8 @@
-import 'package:e_commerce/src/util/app_constants/colors/app_colors.dart';
-import 'package:e_commerce/src/util/app_constants/text_styles/app_text_styles.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'package:e_commerce/src/util/app_constants/colors/app_colors.dart';
+// import 'package:e_commerce/src/util/app_constants/text_styles/app_text_styles.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:e_commerce/lib.dart';
 
 class CustomSnackbar {
   getSnackbar({

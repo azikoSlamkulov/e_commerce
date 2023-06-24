@@ -1,47 +1,55 @@
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:e_commerce/src/core/error/failure.dart';
-import 'package:e_commerce/src/module/shop/domain/entities/product_entity.dart';
-import 'package:e_commerce/src/module/shop/domain/usecases/get_all_products.dart';
-import 'package:e_commerce/src/module/shop/domain/usecases/get_all_sorted_products_by_query.dart';
-import 'package:e_commerce/src/module/shop/domain/usecases/get_all_sorted_products_by_query_with_three_value.dart';
-import 'package:e_commerce/src/module/shop/domain/usecases/get_all_sorted_products_by_query_with_two_value.dart';
-import 'package:equatable/equatable.dart';
+import 'package:e_commerce/lib.dart';
 
 part 'product_event.dart';
 part 'product_state.dart';
 
-class ProductBloc extends Bloc<ProductEvent, ProductState> {
+class ProducBloc extends Bloc<ProductEvent, ProductState> {
+  //final GetProductDatails getProductDatails;
   final GetAllProducts getAllProducts;
   final GetAllSortedProductsByQuery getAllSortedProducts;
   final GetAllSortedProductsByQueryWithTwoValues
       getAllSortedProductsWithTwoValues;
   final GetAllSortedProductsByQueryWithThreeValues
       getAllSortedProductsWithThreeValues;
-  ProductBloc({
+  ProducBloc({
+    //required this.getProductDatails,
     required this.getAllProducts,
     required this.getAllSortedProducts,
     required this.getAllSortedProductsWithTwoValues,
     required this.getAllSortedProductsWithThreeValues,
-  }) : super(ProductLoadingState()) {
-    on<GetAllProductEvent>(_getAllProducts);
+  }) : super(LoadingProductstState()) {
+    //on<GetProductDatailsEvent>(_getProductDatails);
+    on<GetProductsListEvent>(_getAllProducts);
     on<GetAllSortedProductsByQueryEvent>(_getAllSortedProductsByQuery);
-    on<GetSortedProductsEvent>(_getSortedProducts);
+    on<GetProductsByQueryEvent>(_getProductsByQuery);
   }
 
+  // void _getProductDatails(
+  //     GetProductDatailsEvent event, Emitter<ProductsListState> emit) async {
+  //   emit(LoadingProductsListState());
+  //   final product = await getProductDatails.call(
+  //     GetProductDatailsParams(
+  //       productID: event.productID!,
+  //     ),
+  //   );
+  //   product.fold(
+  //     (error) => emit(const ProductListFailureState('')),
+  //     (product) => emit(LoadedProductDatailsState(product)),
+  //   );
+  // }
+
   void _getAllProducts(
-      GetAllProductEvent event, Emitter<ProductState> emit) async {
-    emit(ProductLoadingState());
+      GetProductsListEvent event, Emitter<ProductState> emit) async {
     final allProducts = await getAllProducts.getAllProducts();
     allProducts.fold(
       (error) => emit(const ProductFailureState('')),
-      (allProducts) => emit(LoadedAllProductsState(allProducts)),
+      (allProducts) => emit(LoadedProductsState(allProducts)),
     );
   }
 
   void _getAllSortedProductsByQuery(GetAllSortedProductsByQueryEvent event,
       Emitter<ProductState> emit) async {
-    emit(ProductLoadingState());
     final sortedProducts = await getAllSortedProducts.call(
       GetAllSortedProductsByQueryParams(
         fieldName: event.fieldName,
@@ -50,47 +58,80 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     );
     sortedProducts.fold(
       (error) => emit(const ProductFailureState('')),
-      (sortedProducts) => emit(LoadedAllProductsState(sortedProducts)),
+      (sortedProducts) => emit(LoadedProductsState(sortedProducts)),
     );
   }
 
-  void _getSortedProducts(
-      GetSortedProductsEvent event, Emitter<ProductState> emit) async {
-    emit(ProductLoadingState());
+  void _getProductsByQuery(
+      GetProductsByQueryEvent event, Emitter<ProductState> emit) async {
     final Either<Failure, List<ProductEntity>> sortedProducts;
-    if (event.thirdQuery == 'all') {
-      sortedProducts = await getAllSortedProductsWithTwoValues.call(
-        GetAllSortedProductsByQueryWithTwoValuesParams(
-          firstQuery: event.firstQuery,
-          secondQuery: event.secondQuery,
-        ),
-      );
-    } else if (event.thirdQuery == 'New') {
-      sortedProducts = await getAllSortedProducts.call(
-        const GetAllSortedProductsByQueryParams(
-          fieldName: 'isNew',
-          query: true,
-        ),
-      );
-    } else if (event.thirdQuery == 'Sale') {
-      sortedProducts = await getAllSortedProducts.call(
-        const GetAllSortedProductsByQueryParams(
-          fieldName: 'isSale',
-          query: true,
-        ),
-      );
-    } else {
-      sortedProducts = await getAllSortedProductsWithThreeValues.call(
-        GetAllSortedProductsByQueryWithThreeValuesParams(
-          firstQuery: event.firstQuery,
-          secondQuery: event.secondQuery,
-          thirdQuery: event.thirdQuery,
-        ),
-      );
+    switch (event.thirdQuery) {
+      case 'all':
+        sortedProducts = await getAllSortedProductsWithTwoValues.call(
+          GetAllSortedProductsByQueryWithTwoValuesParams(
+            firstQuery: event.firstQuery,
+            secondQuery: event.secondQuery,
+          ),
+        );
+        break;
+      case 'New':
+        sortedProducts = await getAllSortedProducts.call(
+          const GetAllSortedProductsByQueryParams(
+            fieldName: 'isNew',
+            query: true,
+          ),
+        );
+        break;
+      case 'Sale':
+        sortedProducts = await getAllSortedProducts.call(
+          const GetAllSortedProductsByQueryParams(
+            fieldName: 'isSale',
+            query: true,
+          ),
+        );
+        break;
+      default:
+        sortedProducts = await getAllSortedProductsWithThreeValues.call(
+          GetAllSortedProductsByQueryWithThreeValuesParams(
+            firstQuery: event.firstQuery,
+            secondQuery: event.secondQuery,
+            thirdQuery: event.thirdQuery,
+          ),
+        );
     }
+    // if (event.thirdQuery == 'all') {
+    //   sortedProducts = await getAllSortedProductsWithTwoValues.call(
+    //     GetAllSortedProductsByQueryWithTwoValuesParams(
+    //       firstQuery: event.firstQuery,
+    //       secondQuery: event.secondQuery,
+    //     ),
+    //   );
+    // } else if (event.thirdQuery == 'New') {
+    //   sortedProducts = await getAllSortedProducts.call(
+    //     const GetAllSortedProductsByQueryParams(
+    //       fieldName: 'isNew',
+    //       query: true,
+    //     ),
+    //   );
+    // } else if (event.thirdQuery == 'Sale') {
+    //   sortedProducts = await getAllSortedProducts.call(
+    //     const GetAllSortedProductsByQueryParams(
+    //       fieldName: 'isSale',
+    //       query: true,
+    //     ),
+    //   );
+    // } else {
+    //   sortedProducts = await getAllSortedProductsWithThreeValues.call(
+    //     GetAllSortedProductsByQueryWithThreeValuesParams(
+    //       firstQuery: event.firstQuery,
+    //       secondQuery: event.secondQuery,
+    //       thirdQuery: event.thirdQuery,
+    //     ),
+    //   );
+    // }
     sortedProducts.fold(
       (error) => emit(const ProductFailureState('')),
-      (sortedProducts) => emit(LoadedAllProductsState(sortedProducts)),
+      (sortedProducts) => emit(LoadedProductsState(sortedProducts)),
     );
   }
 }

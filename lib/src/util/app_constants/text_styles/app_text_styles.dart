@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+//import 'package:google_fonts/google_fonts.dart';
 
 import '../colors/app_colors.dart';
 
@@ -78,6 +78,11 @@ class AppTextStyles {
     color: AppColors.white,
   );
 
+  static TextStyle white10 = TextStyle(
+    fontSize: 10.0.sp,
+    color: AppColors.white,
+  );
+
   static TextStyle white11 = TextStyle(
     fontSize: 11.0.sp,
     color: AppColors.white,
@@ -88,6 +93,12 @@ class AppTextStyles {
     color: AppColors.white,
   );
 
+  static TextStyle white14Bold = TextStyle(
+    fontSize: 14.0.sp,
+    color: AppColors.white,
+    fontWeight: FontWeight.bold,
+  );
+
   static TextStyle white18Bold = TextStyle(
     fontSize: 18.0.sp,
     color: AppColors.white,
@@ -96,6 +107,11 @@ class AppTextStyles {
 
   static TextStyle white20 = TextStyle(
     fontSize: 20.0.sp,
+    color: AppColors.white,
+  );
+
+  static TextStyle white32 = TextStyle(
+    fontSize: 32.0.sp,
     color: AppColors.white,
   );
 
@@ -139,51 +155,20 @@ class AppTextStyles {
   );
 
   /// red
+  static TextStyle red14 = TextStyle(
+    fontSize: 14.0.sp,
+    color: AppColors.red,
+  );
+
   static TextStyle red14Bold = TextStyle(
     fontSize: 14.0.sp,
     color: AppColors.red,
     fontWeight: FontWeight.bold,
   );
-  // static TextStyle mulishBlack27w900 = GoogleFonts.mulish(
-  //   fontSize: 27.0,
-  //   color: AppColors.black,
-  //   fontWeight: FontWeight.w900,
-  // );
-  // static TextStyle mulishBlack24w900 = GoogleFonts.mulish(
-  //   fontSize: 24.0,
-  //   color: AppColors.black,
-  //   fontWeight: FontWeight.w900,
-  // );
-  // static TextStyle mulishBlack14w600 = GoogleFonts.mulish(
-  //   fontSize: 14.0,
-  //   color: AppColors.black,
-  //   fontWeight: FontWeight.w600,
-  // );
-  // static TextStyle mulishWhite16w600 = GoogleFonts.mulish(
-  //   fontSize: 16.0,
-  //   color: AppColors.white,
-  //   fontWeight: FontWeight.w600,
-  // );
-  // static TextStyle mulishBlack16w600 = GoogleFonts.mulish(
-  //   fontSize: 16.0,
-  //   color: AppColors.black,
-  //   fontWeight: FontWeight.w600,
-  // );
-  // static TextStyle mulishMainColor16w600 = GoogleFonts.mulish(
-  //   fontSize: 16.0,
-  //   color: AppColors.mainColor,
-  //   fontWeight: FontWeight.w600,
-  // );
 
-  // static TextStyle mulishBlack18w600 = GoogleFonts.mulish(
-  //   fontSize: 18.0,
-  //   color: AppColors.black,
-  //   fontWeight: FontWeight.w600,
-  // );
-
-  // static TextStyle mulishRed18w900 = GoogleFonts.mulish(
-  //   fontSize: 18.0,
-  //   color: AppColors.red,
-  //   fontWeight: FontWeight.w700,
-  // );
+  /// green
+  static TextStyle green14 = TextStyle(
+    fontSize: 14.0.sp,
+    color: AppColors.green,
+  );
 }

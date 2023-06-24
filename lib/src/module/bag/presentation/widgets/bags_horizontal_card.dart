@@ -1,26 +1,16 @@
-import 'dart:developer';
-
-import 'package:e_commerce/src/module/bag/bag.dart';
-import 'package:e_commerce/src/module/bag/presentation/logic/counter/counter.dart';
-import 'package:e_commerce/src/module/bag/presentation/widgets/counter_widget.dart';
-import 'package:e_commerce/src/util/app_constants/colors/app_colors.dart';
-import 'package:e_commerce/src/util/app_constants/text_styles/app_text_styles.dart';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../domain/entities/bag_entity.dart';
+import 'package:e_commerce/lib.dart';
 
 class BagHorizontalCard extends StatefulWidget {
   const BagHorizontalCard({
     super.key,
     required this.product,
     required this.onTap,
+    this.callback,
   });
 
   final BagEntity product;
   final VoidCallback onTap;
+  final ValueSetter<double>? callback;
 
   @override
   State<BagHorizontalCard> createState() => _BagHorizontalCardState();
@@ -39,6 +29,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
   void increment() => setState(() {
         _quantity++;
         _price = _price! + widget.product.price!;
+        widget.callback!(_price!);
       });
 
   void decrement() {
@@ -47,6 +38,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
         setState(() {
           _quantity--;
           _price = _price! - widget.product.price!;
+          widget.callback!(_price!);
         });
       }
     });
@@ -63,7 +55,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0.r),
         ),
-        margin: REdgeInsets.only(top: 16, left: 16, right: 16, bottom: 20),
+        margin: REdgeInsets.only(bottom: 16),
         //color: Colors.redAccent.shade100,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -119,7 +111,8 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
                                   style: AppTextStyles.grey11,
                                 ),
                                 Text(
-                                  widget.product.color!,
+                                  //widget.product.color!,
+                                  'color',
                                   style: AppTextStyles.black11,
                                 ),
                                 10.horizontalSpace,
@@ -128,7 +121,8 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
                                   style: AppTextStyles.grey11,
                                 ),
                                 Text(
-                                  widget.product.size!,
+                                  //widget.product.size!,
+                                  'Size: ',
                                   style: AppTextStyles.black11,
                                 ),
                               ],

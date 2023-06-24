@@ -1,15 +1,6 @@
 import 'dart:developer';
-
-import 'package:e_commerce/src/module/shop/data/models/product_model.dart';
-import 'package:flutter/material.dart';
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/exception.dart';
-import '../../../../core/error/failure.dart';
-import '../../domain/entities/product_entity.dart';
-import '../../domain/repositories/product_repo.dart';
-import '../data_source/local/local_product_data.dart';
-import '../data_source/remote/remote_product.dart';
+import 'package:e_commerce/lib.dart';
 
 class ProductRepoImpl implements ProductRepo {
   ProductRepoImpl({
@@ -19,10 +10,11 @@ class ProductRepoImpl implements ProductRepo {
   final RemoteProduct remoteProduct;
 
   @override
-  Future<Either<Failure, ProductEntity>> getProduct(
+  Future<Either<Failure, ProductEntity>> getProductDatails(
       {required String productID}) async {
     try {
-      final product = await remoteProduct.getProduct(productID: productID);
+      final product =
+          await remoteProduct.getProductDatails(productID: productID);
       return Right(product);
     } on ServerException {
       return Left(ServerFailure());
@@ -100,5 +92,36 @@ class ProductRepoImpl implements ProductRepo {
       {required String productID}) {
     // TODO: implement checkProductExist
     throw UnimplementedError();
+  }
+
+  @override
+  Future<Either<Failure, List<ProductSizeEntity>>> getProductSizesList(
+      {required String productID}) async {
+    try {
+      final allSizes = await remoteProduct.getProductSizesList(
+        productID: productID,
+      );
+      //log('====>>>>>>>  $allProducts');
+      return Right(allSizes);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductSizeEntity>> getProductQuantity({
+    required String productID,
+    required String productSize,
+  }) async {
+    try {
+      final quantity = await remoteProduct.getProductQuantity(
+        productID: productID,
+        productSize: productSize,
+      );
+      //log('====>>>>>>>  $allProducts');
+      return Right(quantity);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }

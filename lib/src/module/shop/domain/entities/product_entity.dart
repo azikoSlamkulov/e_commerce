@@ -1,11 +1,11 @@
-import 'package:equatable/equatable.dart';
+import 'package:e_commerce/lib.dart';
 
 class ProductEntity extends Equatable {
   final String? id;
   //final String? name;
   final String? type;
-  final String? collection;
-  final String? category;
+  final String? collectionName;
+  final String? categoryName;
   final String? brand;
   final String? color;
   final String? size;
@@ -16,7 +16,7 @@ class ProductEntity extends Equatable {
   final double? newPrice;
   final int? quantity;
   final String? description;
-  //final double? rating;
+  //final List<String>? rating;
   final String? imgUrl;
   final String? createdDate;
 
@@ -24,8 +24,8 @@ class ProductEntity extends Equatable {
     this.id,
     //this.name,
     this.type,
-    this.collection,
-    this.category,
+    this.collectionName,
+    this.categoryName,
     this.brand,
     this.color,
     this.size,
@@ -47,9 +47,9 @@ class ProductEntity extends Equatable {
         //name,
         brand,
         type,
-        collection,
+        collectionName,
         price,
-        category,
+        categoryName,
         brand,
         color,
         size,

@@ -1,18 +1,14 @@
 import 'package:dartz/dartz.dart';
-import 'package:equatable/equatable.dart';
+import 'package:e_commerce/lib.dart';
 
-import '../../../../core/error/failure.dart';
-import '../../../../core/usecases/usecase.dart';
-import '../entities/auth_user_entity.dart';
-import '../repositories/auth_repo.dart';
-
-class SignInWithEmail extends UseCase<AuthUser, SignInWithEmailParams> {
+class SignInWithEmail extends UseCase<AuthUserEntity, SignInWithEmailParams> {
   final AuthRepo authRepo;
 
   SignInWithEmail(this.authRepo);
 
   @override
-  Future<Either<Failure, AuthUser>> call(SignInWithEmailParams params) async {
+  Future<Either<Failure, AuthUserEntity>> call(
+      SignInWithEmailParams params) async {
     return await authRepo.signInWithEmail(
       email: params.email,
       password: params.password,

@@ -1,444 +1,499 @@
-import 'package:e_commerce/src/module/shop/domain/entities/product_entity.dart';
-
-import '../../../../module/shop/domain/entities/brand_entity.dart';
-import '../../../../module/shop/domain/entities/category_entity.dart';
-import 'fake_category_entity.dart';
+import 'package:e_commerce/lib.dart';
 
 class FakeCategoriesData {
-  List<BrandEntity> FakeBrands = [
-    BrandEntity(
-      id: '0',
-      name: 'Adidas',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '1',
-      name: 'Nike',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '2',
-      name: 'Polo',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '3',
-      name: 'Gucci',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '4',
-      name: 'Reebok',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '5',
-      name: 'Patagonia',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '6',
-      name: 'Everlane',
-      isCheked: false,
-    ),
-    BrandEntity(
-      id: '7',
-      name: 'Reformation',
-      isCheked: false,
-    ),
-  ];
+  List<CategoryModel> getCategories({
+    required String type,
+    required String collection,
+  }) {
+    final fakeCategoriesList = allFakeCategories
+        .where((i) => i.type == type)
+        //.toList()
+        .where((i) => i.collectionName == collection)
+        .toList();
+    return fakeCategoriesList;
+  }
 
-  List<FakeCategoryEntity> FakeCategories = [
+  List<CategoryModel> allFakeCategories = [
     /// accesories
     /// clothes
     /// shoes
-    // women
-    FakeCategoryEntity(
+    /// women
+    // CategoryModel(
+    //   id: '0',
+    //   type: 'Women',
+    //   collectionName: 'Clothes',
+    //   categoryName: 'all',
+    //   isCheked: false,
+    // ),
+    CategoryModel(
       id: '0',
-      type: 'women',
-      collection: 'clothes',
-      name: 'all',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Wedding dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
-      id: '0',
-      type: 'women',
-      collection: 'clothes',
-      name: 'Wedding dress',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '1',
-      type: 'women',
-      collection: 'clothes',
-      name: 'Sweater',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Sweater',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '2',
-      type: 'women',
-      collection: 'clothes',
-      name: 'T-shirt',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'T-shirt',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '3',
-      type: 'women',
-      collection: 'clothes',
-      name: 'Sheath dress',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Sheath dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '4',
-      type: 'women',
-      collection: 'clothes',
-      name: 'Dress',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '5',
-      type: 'women',
-      collection: 'clothes',
-      name: 'Long coat',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Long coat',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '0',
-      type: 'women',
-      collection: 'shoes',
-      name: 'Sneakers',
+      type: 'Women',
+      collectionName: 'Shoes',
+      categoryName: 'Sneakers',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '1',
-      type: 'women',
-      collection: 'shoes',
-      name: 'Calf boots',
+      type: 'Women',
+      collectionName: 'Shoes',
+      categoryName: 'Calf boots',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '2',
-      type: 'women',
-      collection: 'shoes',
-      name: 'Wedges',
+      type: 'Women',
+      collectionName: 'Shoes',
+      categoryName: 'Wedges',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '3',
-      type: 'women',
-      collection: 'shoes',
-      name: 'Court shoes',
+      type: 'Women',
+      collectionName: 'Shoes',
+      categoryName: 'Court shoes',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '4',
-      type: 'women',
-      collection: 'shoes',
-      name: 'Platform heels',
+      type: 'Women',
+      collectionName: 'Shoes',
+      categoryName: 'Platform heels',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '5',
-      type: 'women',
-      collection: 'shoes',
-      name: 'Stilettos',
+      type: 'Women',
+      collectionName: 'Shoes',
+      categoryName: 'Stilettos',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '0',
-      type: 'women',
-      collection: 'accesories',
-      name: 'Sunglasses',
+      type: 'Women',
+      collectionName: 'Accesories',
+      categoryName: 'Sunglasses',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '1',
-      type: 'women',
-      collection: 'accesories',
-      name: 'Apron',
+      type: 'Women',
+      collectionName: 'Accesories',
+      categoryName: 'Apron',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '2',
-      type: 'women',
-      collection: 'accesories',
-      name: 'Necklace',
+      type: 'Women',
+      collectionName: 'Accesories',
+      categoryName: 'Necklace',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '3',
-      type: 'women',
-      collection: 'accesories',
-      name: 'Watch',
+      type: 'Women',
+      collectionName: 'Accesories',
+      categoryName: 'Watch',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '4',
-      type: 'women',
-      collection: 'accesories',
-      name: 'Socks',
+      type: 'Women',
+      collectionName: 'Accesories',
+      categoryName: 'Socks',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '5',
-      type: 'women',
-      collection: 'accesories',
-      name: 'Tie',
-      isCheked: false,
-    ),
-    // men
-    FakeCategoryEntity(
-      id: '0',
-      type: 'men',
-      collection: 'clothes',
-      name: 'Tops',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '1',
-      type: 'men',
-      collection: 'clothes',
-      name: 'Shirts',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '2',
-      type: 'men',
-      collection: 'clothes',
-      name: 'Cardigans',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '3',
-      type: 'men',
-      collection: 'clothes',
-      name: 'Knitwear',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '4',
-      type: 'men',
-      collection: 'clothes',
-      name: 'Jacket',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '5',
-      type: 'men',
-      collection: 'clothes',
-      name: 'Blazers',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '0',
-      type: 'men',
-      collection: 'shoes',
-      name: 'Chelsea boot',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '1',
-      type: 'men',
-      collection: 'shoes',
-      name: 'Trainer',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '2',
-      type: 'men',
-      collection: 'shoes',
-      name: 'Chukka Boot',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '3',
-      type: 'men',
-      collection: 'shoes',
-      name: 'Loafer',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '4',
-      type: 'men',
-      collection: 'shoes',
-      name: 'Service Boot',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '5',
-      type: 'men',
-      collection: 'shoes',
-      name: 'Moccasins',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '0',
-      type: 'men',
-      collection: 'accesories',
-      name: 'Sunglasses',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '1',
-      type: 'men',
-      collection: 'accesories',
-      name: 'Socks',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '2',
-      type: 'men',
-      collection: 'accesories',
-      name: 'Tie',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '3',
-      type: 'men',
-      collection: 'accesories',
-      name: 'Bow tie',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '4',
-      type: 'men',
-      collection: 'accesories',
-      name: 'Purse',
-      isCheked: false,
-    ),
-    FakeCategoryEntity(
-      id: '5',
-      type: 'men',
-      collection: 'accesories',
-      name: 'Umbrella',
+      type: 'Women',
+      collectionName: 'Accesories',
+      categoryName: 'Tie',
       isCheked: false,
     ),
 
-    // kids
-    FakeCategoryEntity(
+    /// -----------------------------------------------------------------------------------------------------
+
+    CategoryModel(
       id: '0',
-      type: 'kids',
-      collection: 'clothes',
-      name: 'Tops',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Wedding dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '1',
-      type: 'kids',
-      collection: 'clothes',
-      name: 'Shirts',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Sweater',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '2',
-      type: 'kids',
-      collection: 'clothes',
-      name: 'Cardigans',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'T-shirt',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '3',
-      type: 'kids',
-      collection: 'clothes',
-      name: 'Knitwear',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Sheath dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '4',
-      type: 'kids',
-      collection: 'clothes',
-      name: 'Jacket',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '5',
-      type: 'kids',
-      collection: 'clothes',
-      name: 'Blazers',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Long coat',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '0',
-      type: 'kids',
-      collection: 'shoes',
-      name: 'Chelsea boot',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Wedding dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '1',
-      type: 'kids',
-      collection: 'shoes',
-      name: 'Trainer',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Sweater',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '2',
-      type: 'kids',
-      collection: 'shoes',
-      name: 'Chukka Boot',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'T-shirt',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '3',
-      type: 'kids',
-      collection: 'shoes',
-      name: 'Loafer',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Sheath dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '4',
-      type: 'kids',
-      collection: 'shoes',
-      name: 'Service Boot',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Dress',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '5',
-      type: 'kids',
-      collection: 'shoes',
-      name: 'Moccasins',
+      type: 'Women',
+      collectionName: 'Clothes',
+      categoryName: 'Long coat',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+
+    /// --------------------------------------------------------------------------------------------------------------------
+
+    /// men
+    CategoryModel(
       id: '0',
-      type: 'kids',
-      collection: 'accesories',
-      name: 'Sunglasses',
+      type: 'Men',
+      collectionName: 'Clothes',
+      categoryName: 'Tops',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '1',
-      type: 'kids',
-      collection: 'accesories',
-      name: 'Socks',
+      type: 'Men',
+      collectionName: 'Clothes',
+      categoryName: 'Shirts',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '2',
-      type: 'kids',
-      collection: 'accesories',
-      name: 'Tie',
+      type: 'Men',
+      collectionName: 'Clothes',
+      categoryName: 'Cardigans',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '3',
-      type: 'kids',
-      collection: 'accesories',
-      name: 'Bow tie',
+      type: 'Men',
+      collectionName: 'Clothes',
+      categoryName: 'Knitwear',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '4',
-      type: 'kids',
-      collection: 'accesories',
-      name: 'Purse',
+      type: 'Men',
+      collectionName: 'Clothes',
+      categoryName: 'Jacket',
       isCheked: false,
     ),
-    FakeCategoryEntity(
+    CategoryModel(
       id: '5',
-      type: 'kids',
-      collection: 'accesories',
-      name: 'Umbrella',
+      type: 'Men',
+      collectionName: 'Clothes',
+      categoryName: 'Blazers',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '0',
+      type: 'Men',
+      collectionName: 'Shoes',
+      categoryName: 'Chelsea boot',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '1',
+      type: 'Men',
+      collectionName: 'Shoes',
+      categoryName: 'Trainer',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '2',
+      type: 'Men',
+      collectionName: 'Shoes',
+      categoryName: 'Chukka Boot',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '3',
+      type: 'Men',
+      collectionName: 'Shoes',
+      categoryName: 'Loafer',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '4',
+      type: 'Men',
+      collectionName: 'Shoes',
+      categoryName: 'Service Boot',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '5',
+      type: 'Men',
+      collectionName: 'Shoes',
+      categoryName: 'Moccasins',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '0',
+      type: 'Men',
+      collectionName: 'Accesories',
+      categoryName: 'Sunglasses',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '1',
+      type: 'Men',
+      collectionName: 'Accesories',
+      categoryName: 'Socks',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '2',
+      type: 'Men',
+      collectionName: 'Accesories',
+      categoryName: 'Tie',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '3',
+      type: 'Men',
+      collectionName: 'Accesories',
+      categoryName: 'Bow tie',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '4',
+      type: 'Men',
+      collectionName: 'Accesories',
+      categoryName: 'Purse',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '5',
+      type: 'Men',
+      collectionName: 'Accesories',
+      categoryName: 'Umbrella',
+      isCheked: false,
+    ),
+
+    /// kids
+    CategoryModel(
+      id: '0',
+      type: 'Kids',
+      collectionName: 'Clothes',
+      categoryName: 'Tops',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '1',
+      type: 'Kids',
+      collectionName: 'Clothes',
+      categoryName: 'Shirts',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '2',
+      type: 'Kids',
+      collectionName: 'Clothes',
+      categoryName: 'Cardigans',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '3',
+      type: 'Kids',
+      collectionName: 'Clothes',
+      categoryName: 'Knitwear',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '4',
+      type: 'Kids',
+      collectionName: 'Clothes',
+      categoryName: 'Jacket',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '5',
+      type: 'Kids',
+      collectionName: 'Clothes',
+      categoryName: 'Blazers',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '0',
+      type: 'Kids',
+      collectionName: 'Shoes',
+      categoryName: 'Chelsea boot',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '1',
+      type: 'Kids',
+      collectionName: 'Shoes',
+      categoryName: 'Trainer',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '2',
+      type: 'Kids',
+      collectionName: 'Shoes',
+      categoryName: 'Chukka Boot',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '3',
+      type: 'Kids',
+      collectionName: 'Shoes',
+      categoryName: 'Loafer',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '4',
+      type: 'Kids',
+      collectionName: 'Shoes',
+      categoryName: 'Service Boot',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '5',
+      type: 'Kids',
+      collectionName: 'Shoes',
+      categoryName: 'Moccasins',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '0',
+      type: 'Kids',
+      collectionName: 'Accesories',
+      categoryName: 'Sunglasses',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '1',
+      type: 'Kids',
+      collectionName: 'Accesories',
+      categoryName: 'Socks',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '2',
+      type: 'Kids',
+      collectionName: 'Accesories',
+      categoryName: 'Tie',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '3',
+      type: 'Kids',
+      collectionName: 'Accesories',
+      categoryName: 'Bow tie',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '4',
+      type: 'Kids',
+      collectionName: 'Accesories',
+      categoryName: 'Purse',
+      isCheked: false,
+    ),
+    CategoryModel(
+      id: '5',
+      type: 'Kids',
+      collectionName: 'Accesories',
+      categoryName: 'Umbrella',
       isCheked: false,
     ),
   ];

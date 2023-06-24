@@ -1,13 +1,21 @@
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/failure.dart';
-import '../entities/product_entity.dart';
+import 'package:e_commerce/lib.dart';
 
 abstract class ProductRepo {
-  Future<Either<Failure, ProductEntity>> getProduct(
-      {required String productID});
+  Future<Either<Failure, ProductEntity>> getProductDatails({
+    required String productID,
+  });
 
   Future<Either<Failure, List<ProductEntity>>> getAllProducts();
+
+  Future<Either<Failure, List<ProductSizeEntity>>> getProductSizesList({
+    required String productID,
+  });
+
+  Future<Either<Failure, ProductSizeEntity>> getProductQuantity({
+    required String productID,
+    required String productSize,
+  });
 
   Future<Either<Failure, List<ProductEntity>>> getAllSortedProductsByQuery({
     required String fieldName,

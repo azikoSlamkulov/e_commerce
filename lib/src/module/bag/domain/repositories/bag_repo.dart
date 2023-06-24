@@ -1,7 +1,5 @@
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/failure.dart';
-import '../entities/bag_entity.dart';
+import 'package:e_commerce/lib.dart';
 
 abstract class BagRepo {
   Future<Either<Failure, List<BagEntity>>> getAllProductsFromCart({

@@ -27,7 +27,7 @@ class MobileProfileViwe extends StatelessWidget {
 class NestedMobileProfileViwe extends StatelessWidget {
   NestedMobileProfileViwe({required this.user, Key? key}) : super(key: key);
 
-  AuthUserEntity user;
+  final AuthUserEntity user;
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +49,19 @@ class NestedMobileProfileViwe extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('My Profile', style: AppTextStyles.black34Bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('My Profile', style: AppTextStyles.black34Bold),
+                        TextButton(
+                            onPressed: () {
+                              BlocProvider.of<AuthBloc>(context).add(
+                                SignOutEvent(),
+                              );
+                            },
+                            child: Text('Exit')),
+                      ],
+                    ),
                     24.verticalSpace,
                     InkWell(
                       onTap: () => profileBottomSheet(context),

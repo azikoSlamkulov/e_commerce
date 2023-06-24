@@ -1,2 +1,1 @@
-export 'auth_user_entity.dart';
-export 'entity.dart';
+export 'user_entity.dart';

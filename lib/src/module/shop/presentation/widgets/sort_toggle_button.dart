@@ -1,12 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../../../core/data/remote/fake_data/fake_category_entity.dart';
-import '../logic/product_bloc/product_bloc.dart';
-import '../logic/product_bloc/product_event.dart';
-import '../logic/sort_toggle_btn/sort_toggle_btn_cubit.dart';
-import '../logic/sort_toggle_button_cubit/sort_toggle_button_cubit.dart';
+import 'package:e_commerce/lib.dart';
 
 class SortToggleButton extends StatefulWidget {
   const SortToggleButton({

@@ -1,4 +1,5 @@
-import 'onboarding.dart';
+import '../../../lib.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingView extends StatefulWidget {
   const OnboardingView({super.key});

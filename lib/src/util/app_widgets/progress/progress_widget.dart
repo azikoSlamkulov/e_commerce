@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../app_constants/colors/app_colors.dart';
+import 'package:e_commerce/lib.dart';
 
 class CustomProgressIndicator {
   circularProgress({semanticsLabel}) {

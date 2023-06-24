@@ -1,31 +1,30 @@
-import '../../../../../core/data/remote/fake_data/fake_data.dart';
-import '../../../../../core/data/remote/firebase/firestore.dart';
-import '../../models/product_model.dart';
+import 'package:e_commerce/lib.dart';
 
 abstract class RemoteProduct {
   //Future<bool> checkUserExists({required String? userID});
-  Future<ProductModel> getProduct({required String productID});
-  Future<List<ProductModel>> getAllProducts();
-  Future<List<ProductModel>> getAllSortedProductsByQuery({
+  Future<ProductModel> getProductDatails({required String productID});
+  Future<List<ProductsListModel>> getAllProducts();
+  Future<List<ProductsListModel>> getAllSortedProductsByQuery({
     required String fieldName,
     required dynamic query,
   });
-  Future<List<ProductModel>> getSortedListByQueryWithTwoValues({
-    // required String firstFieldName,
-    // required String secondFieldName,
-    // required String thirdFieldName,
+  Future<List<ProductsListModel>> getSortedListByQueryWithTwoValues({
     required dynamic firstQuery,
     required dynamic secondQuery,
   });
-  Future<List<ProductModel>> getSortedListByQueryWithThreeValues({
-    // required String firstFieldName,
-    // required String secondFieldName,
-    // required String thirdFieldName,
+  Future<List<ProductsListModel>> getSortedListByQueryWithThreeValues({
     required dynamic firstQuery,
     required dynamic secondQuery,
     required dynamic thirdQuery,
   });
   Future<bool?> checkProductExist({required productID});
+  Future<List<ProductSizeModel>> getProductSizesList({
+    required String productID,
+  });
+  Future<ProductSizeModel> getProductQuantity({
+    required String productID,
+    required String productSize,
+  });
 }
 
 class RemoteProductImpl implements RemoteProduct {
@@ -38,24 +37,25 @@ class RemoteProductImpl implements RemoteProduct {
   });
 
   @override
-  Future<ProductModel> getProduct({required String productID}) async {
+  Future<ProductModel> getProductDatails({required String productID}) async {
     return await firestore.get(
       id: productID,
       collectionName: 'products',
-      fromJson: productFromJson,
+      fromJson: productDatailsFromJson,
     );
   }
 
   @override
-  Future<List<ProductModel>> getAllProducts() async {
+  Future<List<ProductsListModel>> getAllProducts() async {
     return await firestore.getList(
       collectionName: 'products',
       fromJson: productFromJson,
     );
+    //return FakeProductData().allFakeProducts;
   }
 
   @override
-  Future<List<ProductModel>> getAllSortedProductsByQuery({
+  Future<List<ProductsListModel>> getAllSortedProductsByQuery({
     required String fieldName,
     required dynamic query,
   }) async {
@@ -65,10 +65,14 @@ class RemoteProductImpl implements RemoteProduct {
       query: query,
       fromJson: productFromJson,
     );
+    // return FakeProductData().getProductsByQuery(
+    //   fieldName: fieldName,
+    //   query: query,
+    // );
   }
 
   @override
-  Future<List<ProductModel>> getSortedListByQueryWithTwoValues({
+  Future<List<ProductsListModel>> getSortedListByQueryWithTwoValues({
     required dynamic firstQuery,
     required dynamic secondQuery,
   }) async {
@@ -80,10 +84,14 @@ class RemoteProductImpl implements RemoteProduct {
       secondQuery: secondQuery,
       fromJson: productFromJson,
     );
+    // return FakeProductData().getProductsWithTwoValues(
+    //   type: firstQuery,
+    //   collection: secondQuery,
+    // );
   }
 
   @override
-  Future<List<ProductModel>> getSortedListByQueryWithThreeValues({
+  Future<List<ProductsListModel>> getSortedListByQueryWithThreeValues({
     required dynamic firstQuery,
     required dynamic secondQuery,
     required dynamic thirdQuery,
@@ -98,7 +106,7 @@ class RemoteProductImpl implements RemoteProduct {
       thirdQuery: thirdQuery,
       fromJson: productFromJson,
     );
-    // return await fakeData.getSortedProducts(
+    // return FakeProductData().getFakeProductsWithThreeValues(
     //   type: firstQuery,
     //   collection: secondQuery,
     //   category: thirdQuery,
@@ -110,93 +118,39 @@ class RemoteProductImpl implements RemoteProduct {
     // TODO: implement checkProductExist
     throw UnimplementedError();
   }
+
+  @override
+  Future<List<ProductSizeModel>> getProductSizesList({
+    required String productID,
+  }) async {
+    return await firestore.getListFromCollectionByProductID(
+      firstCollection: 'products',
+      secondCollection: 'productSizes',
+      productID: productID,
+      fromJson: productSizeFromJson,
+    );
+    // return FakeProductData().getProductsByQuery(
+    //   fieldName: fieldName,
+    //   query: query,
+    // );
+  }
+
+  @override
+  Future<ProductSizeModel> getProductQuantity({
+    required String productID,
+    required String productSize,
+  }) async {
+    return await firestore.getProductQuantity(
+      firstCollection: 'products',
+      secondCollection: 'productSizes',
+      productID: productID,
+      fieldName: 'size',
+      query: productSize,
+      fromJson: productSizeFromJson,
+    );
+    // return FakeProductData().getProductsByQuery(
+    //   fieldName: fieldName,
+    //   query: query,
+    // );
+  }
 }
-
-// class RemoteProductImpl implements RemoteProduct {
-//   //final List<ProductModel> destinations;
-
-//   RemoteProductImpl();
-
-//   List<ProductModel> destinations = [
-//     ProductModel(
-//       productID: '1',
-//       brandName: 'adidas',
-//       item: 'afff',
-//       rating: 5,
-//       price: 100,
-//       photoURL: '/',
-//     ),
-//     ProductModel(
-//       productID: '2',
-//       brandName: 'nike',
-//       item: 'aaaa',
-//       rating: 5,
-//       price: 200,
-//       photoURL: '/',
-//     ),
-//     ProductModel(
-//       productID: '3',
-//       brandName: 'asa',
-//       item: '',
-//       rating: 5,
-//       price: 50,
-//       photoURL: '/',
-//     ),
-//     ProductModel(
-//       productID: '4',
-//       brandName: 'fafa',
-//       item: '',
-//       rating: 5,
-//       price: 300,
-//       photoURL: '/',
-//     ),
-//     ProductModel(
-//       productID: '5',
-//       brandName: 'sdf',
-//       item: '',
-//       rating: 5,
-//       price: 400,
-//       photoURL: '/',
-//     ),
-//   ];
-
-//   // @override
-//   // Future<ProductModel> getProduct({required String productID}) async {
-//   //   return ProductModel(
-//   //     productID: productID,
-//   //     brandName: destinations.brandName,
-//   //     item: destinations.item,
-//   //     rating: destinations.rating,
-//   //     price: destinations.price,
-//   //     photoURL: destinations.photoURL,
-//   //   );
-//   // }
-
-//   @override
-//   Future<List<ProductModel>> getAllProducts() async {
-//     // final allProducts = ProductModel(
-//     //   productID: destinations.productID,
-//     //   brandName: destinations.brandName,
-//     //   item: destinations.item,
-//     //   rating: destinations.rating,
-//     //   price: destinations.price,
-//     //   photoURL: destinations.photoURL,
-//     // );
-
-//     final allProducts = destinations;
-
-//     return allProducts;
-//   }
-
-//   @override
-//   Future<bool?> checkProductExist({required productID}) {
-//     // TODO: implement checkProductExist
-//     throw UnimplementedError();
-//   }
-
-//   @override
-//   Future<ProductModel> getProduct({required String productID}) {
-//     // TODO: implement getProduct
-//     throw UnimplementedError();
-//   }
-// }

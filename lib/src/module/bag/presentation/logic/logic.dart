@@ -1,2 +1,2 @@
-export 'bloc/bloc.dart';
-export 'counter/counter_cubit.dart';
+export 'bag/bag.dart';
+export 'counter/counter.dart';

@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../../onboarding/onboarding.dart';
+import 'package:e_commerce/lib.dart';
 
 class AuthCheckView extends StatelessWidget {
   const AuthCheckView({super.key});

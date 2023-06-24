@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:e_commerce/lib.dart';
 
 abstract class RemoteProductsFromCart {
