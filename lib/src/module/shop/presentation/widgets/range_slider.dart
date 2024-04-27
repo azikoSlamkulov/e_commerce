@@ -1,7 +1,14 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RangeSliderWidget extends StatefulWidget {
-  const RangeSliderWidget({super.key});
+  const RangeSliderWidget({
+    required this.currentRangeValuesCallback,
+    super.key,
+  });
+
+  final ValueSetter<RangeValues> currentRangeValuesCallback;
 
   @override
   State<RangeSliderWidget> createState() => _RangeSliderWidgetState();
@@ -34,6 +41,7 @@ class _RangeSliderWidgetState extends State<RangeSliderWidget> {
             onChanged: (RangeValues values) {
               setState(() {
                 _currentRangeValues = values;
+                widget.currentRangeValuesCallback(_currentRangeValues);
               });
             },
           ),

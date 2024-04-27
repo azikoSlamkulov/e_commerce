@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:e_commerce/lib.dart';
 
 abstract class FavoritesRepo {
-  Future<Either<Failure, List<ProductEntity>>> getAllFavoritesProducts({
+  Future<Either<Failure, List<FavoriteEntity>>> getAllFavoritesProducts({
     required String userID,
   });
 

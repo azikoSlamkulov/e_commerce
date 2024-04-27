@@ -1,4 +1,6 @@
-import '../../../lib.dart';
+import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingView extends StatefulWidget {
@@ -104,7 +106,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignUpView(),
+                              builder: (context) => const SignUpView(),
                             ),
                           );
                         },
@@ -116,7 +118,10 @@ class _OnboardingViewState extends State<OnboardingView> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           TextButton(
-                            child: const Text('Пропустить'),
+                            child: Text(
+                              'Пропустить',
+                              style: AppTextStyles.blue14,
+                            ),
                             onPressed: () => controller.jumpToPage(3),
                           ),
                           Center(
@@ -136,7 +141,10 @@ class _OnboardingViewState extends State<OnboardingView> {
                             ),
                           ),
                           TextButton(
-                            child: const Text('Следующий'),
+                            child: Text(
+                              'Следующий',
+                              style: AppTextStyles.blue14,
+                            ),
                             onPressed: () => controller.nextPage(
                               duration: const Duration(milliseconds: 500),
                               curve: Curves.easeInOut,

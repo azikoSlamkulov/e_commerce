@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:e_commerce/lib.dart';
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';

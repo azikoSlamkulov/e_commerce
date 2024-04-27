@@ -1,4 +1,7 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MobileBagViwe extends StatelessWidget {
   const MobileBagViwe({Key? key}) : super(key: key);
@@ -11,20 +14,21 @@ class MobileBagViwe extends StatelessWidget {
         if (state is AuthenticatedState) {
           userID = state.user.userID!;
           BlocProvider.of<BagBloc>(context).add(
-            GetAllProductFromCartEvent(
-              userID,
-            ),
+            GetAllProductFromCartEvent(),
           );
 
           return BlocListener<BagBloc, BagState>(
             listener: (context, state) {
               if (state is DeletedProductFromCartState) {
                 BlocProvider.of<BagBloc>(context).add(
-                  GetAllProductFromCartEvent(
-                    userID,
-                  ),
+                  GetAllProductFromCartEvent(),
                 );
               }
+              // if (state is NewQuantityState) {
+              //   BlocProvider.of<BagBloc>(context).add(
+              //     GetAllProductFromCartEvent(),
+              //   );
+              // }
             },
             child: BlocBuilder<BagBloc, BagState>(
               builder: (context, state) {
@@ -135,23 +139,17 @@ class NestedMobileBagViwe extends StatelessWidget {
 
                     /// Button
                     30.verticalSpace,
-                    CustomElevatedButton(
-                      sizedBoxHeight: 48.h,
-                      sizedBoxWidth: double.infinity,
-                      borderRadius: 30,
-                      bgColor: AppColors.mainColor,
-                      text: Text(
-                        'CHECK OUT',
-                        style: TextStyle(color: Colors.white, fontSize: 14.sp),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CheckoutView(),
+                    CustomButton(
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MobileCheckoutView(
+                            allProducts: allProducts,
+                            totalAmount: totalAmount,
                           ),
-                        );
-                      },
+                        ),
+                      ),
+                      text: 'CHECK OUT',
                     ),
                   ],
                 ),
@@ -159,9 +157,22 @@ class NestedMobileBagViwe extends StatelessWidget {
             )
           : Align(
               alignment: Alignment.center,
-              child: Text(
-                'Список пуст!',
-                style: AppTextStyles.grey16,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.add_shopping_cart,
+                      color: Colors.grey,
+                      size: 100.h,
+                    ),
+                    50.verticalSpace,
+                    Text(
+                      'Корзина пуста!',
+                      style: AppTextStyles.grey16,
+                    ),
+                  ],
+                ),
               ),
             ),
     );

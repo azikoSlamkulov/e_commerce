@@ -10,7 +10,7 @@ abstract class FavoritesState extends Equatable {
 class LoadingFavoritesState extends FavoritesState {}
 
 class LoadedAllFavoritesProductsState extends FavoritesState {
-  final List<ProductEntity> allProducts;
+  final List<FavoriteEntity> allProducts;
 
   const LoadedAllFavoritesProductsState(this.allProducts);
   @override

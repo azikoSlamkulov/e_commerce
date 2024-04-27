@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce/lib.dart';
+import 'package:equatable/equatable.dart';
 
 class SignUp extends UseCase<AuthUserEntity, SignUpParams> {
   final AuthRepo authRepo;

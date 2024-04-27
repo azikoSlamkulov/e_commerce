@@ -1,7 +1,89 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class CheckoutView extends StatelessWidget {
-  const CheckoutView({super.key});
+class MobileCheckoutView extends StatelessWidget {
+  const MobileCheckoutView({
+    Key? key,
+    required this.allProducts,
+    required this.totalAmount,
+  }) : super(key: key);
+
+  final List<BagEntity> allProducts;
+  final double totalAmount;
+
+  @override
+  Widget build(BuildContext context) {
+    String userID;
+    return BlocBuilder<AuthBloc, AuthState>(
+      builder: (context, state) {
+        if (state is AuthenticatedState) {
+          return NestedCheckoutView(
+            allProducts: allProducts,
+            totalAmount: totalAmount,
+            user: state.user,
+          );
+          // userID = state.user.userID!;
+          // BlocProvider.of<BagBloc>(context).add(
+          //   GetAllProductFromCartEvent(),
+          // );
+
+          // return BlocListener<BagBloc, BagState>(
+          //   listener: (context, state) {
+          //     if (state is DeletedProductFromCartState) {
+          //       BlocProvider.of<BagBloc>(context).add(
+          //         GetAllProductFromCartEvent(),
+          //       );
+          //     }
+          //     // if (state is NewQuantityState) {
+          //     //   BlocProvider.of<BagBloc>(context).add(
+          //     //     GetAllProductFromCartEvent(),
+          //     //   );
+          //     // }
+          //   },
+          //   child: BlocBuilder<BagBloc, BagState>(
+          //     builder: (context, state) {
+          //       if (state is LoadingBagState) {
+          //         return const Center(child: CircularProgressIndicator());
+          //       } else if (state is LoadedAllProductsFromCartState) {
+          //         return NestedMobileBagViwe(
+          //           allProducts: state.allProducts,
+          //           totalAmount: state.totalAmount,
+          //         );
+          //       } else if (state is FailureState) {
+          //         //return MyErrorWidget('${state.exception}');
+          //         return Text('11111');
+          //       }
+          //       return Text('22222');
+          //     },
+          //   ),
+          // );
+        } else if (state is UnAuthenticatedState) {
+          return AuthCheckView();
+        }
+        return const Center(
+          child: Text(
+            'Some Error',
+            style: TextStyle(color: Colors.black),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class NestedCheckoutView extends StatelessWidget {
+  final List<BagEntity> allProducts;
+  final double totalAmount;
+  final AuthUserEntity user;
+
+  const NestedCheckoutView({
+    super.key,
+    required this.allProducts,
+    required this.totalAmount,
+    required this.user,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +123,7 @@ class CheckoutView extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    const MobileShippingAddressView(),
+                                    MobileShippingAddressView(),
                               ),
                             );
                           },
@@ -132,23 +214,31 @@ class CheckoutView extends StatelessWidget {
             45.verticalSpace,
 
             /// Button
-            CustomElevatedButton(
-              sizedBoxHeight: 48.h,
-              sizedBoxWidth: double.infinity,
-              borderRadius: 30,
-              bgColor: AppColors.mainColor,
-              text: Text(
-                'SUBMIT ORDER',
-                style: AppTextStyles.white14,
-              ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SuccessViewSecond(),
+            CustomButton(
+              onPressed: () => BlocProvider.of<BagBloc>(context).add(
+                SetOrderEvent(
+                  OrderEntity(
+                    orderNumber: 1947034,
+                    userID: user.userID,
+                    userName: user.name,
+                    trackingNumber: 'IW3475453455',
+                    //status: 'delivered',
+                    items: allProducts,
+                    shippingAddress: 'United States',
+                    paymentMethod: 'paymentMethod',
+                    deliveryMethod: 'FedEx, 3 days, 15',
+                    discount: '10%, Personal promo code',
+                    totalAmount: totalAmount.toInt(),
                   ),
-                );
-              },
+                ),
+              ),
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const SuccessViewSecond(),
+              //   ),
+              // );
+              text: 'SUBMIT ORDER',
             ),
           ],
         ),

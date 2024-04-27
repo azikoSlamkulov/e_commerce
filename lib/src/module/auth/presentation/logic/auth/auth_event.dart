@@ -1,5 +1,3 @@
-// import 'package:equatable/equatable.dart';
-// import 'package:flutter/material.dart';
 part of 'auth_bloc.dart';
 
 class AuthEvent extends Equatable {

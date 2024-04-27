@@ -1,4 +1,8 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class MobileFavoritesVew extends StatelessWidget {
   const MobileFavoritesVew({
@@ -88,12 +92,12 @@ class NestedMobileFavoritesVew extends StatelessWidget {
   });
 
   final String userID;
-  final List<ProductEntity> allProducts;
+  final List<FavoriteEntity> allProducts;
   final List<CategoryEntity> categories;
 
   @override
   Widget build(BuildContext context) {
-    String _choice;
+    String _choice = 'Newest';
 
     return Scaffold(
       backgroundColor: AppColors.bgColorMain,
@@ -131,8 +135,9 @@ class NestedMobileFavoritesVew extends StatelessWidget {
                     },
                     separatorBuilder: (context, index) => SizedBox(width: 8.h),
                   )
-                : CustomElevatedButton(
-                    text: const Text('CATEGORIES'),
+                : CustomButton(
+                    sizedBoxHeight: 60,
+                    text: 'CATEGORIES',
                     onPressed: () {
                       context.goNamed(
                         AppPage.collections.toName,
@@ -159,7 +164,7 @@ class NestedMobileFavoritesVew extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => MobileFiltersView(),
+                          builder: (context) => MobileCatalogFiltersView(),
                         ),
                       );
                     },
@@ -174,53 +179,56 @@ class NestedMobileFavoritesVew extends StatelessWidget {
                   ),
 
                   // Sort
-                  TextButton.icon(
-                    onPressed: () {
-                      modalBottomSheet(context
-                          // type,
-                          // collection,
-                          // category,
-                          );
-                    },
-                    icon: const Icon(
-                      Icons.swap_vert_outlined,
-                      color: Colors.black,
-                    ),
-                    label: BlocListener<SortToggleBtnCubit, SortToggleBtnState>(
-                      listener: (context, state) {
-                        // if (state is InitialState) {
-                        //   _choice = state.selectedText;
-                        //   BlocProvider.of<ProductBloc>(context).add(
-                        //     GetFakeSortedListEvent(
-                        //       type: type,
-                        //       collection: collection,
-                        //       category: category,
-                        //       choice: state.selectedText,
-                        //     ),
-                        //   );
-                        // } else if (state is SelectedState) {
-                        //   _choice = state.selectedText;
-                        //   BlocProvider.of<ProductBloc>(context).add(
-                        //     GetFakeSortedListEvent(
-                        //       type: type,
-                        //       collection: collection,
-                        //       category: category,
-                        //       choice: state.selectedText,
-                        //     ),
-                        //   );
-                        // }
-                      },
-                      child:
-                          BlocBuilder<SortToggleBtnCubit, SortToggleBtnState>(
-                        builder: (context, state) {
-                          return Text(
-                            state.selectedText,
-                            style: AppTextStyles.black11,
-                          );
-                        },
-                      ),
-                    ),
+                  ProductSortWidget(
+                    selectedSortBtnCallback: (value) => _choice = value,
                   ),
+                  // TextButton.icon(
+                  //   onPressed: () {
+                  //     modalBottomSheet(context
+                  //         // type,
+                  //         // collection,
+                  //         // category,
+                  //         );
+                  //   },
+                  //   icon: const Icon(
+                  //     Icons.swap_vert_outlined,
+                  //     color: Colors.black,
+                  //   ),
+                  //   label: BlocListener<SortToggleBtnCubit, SortToggleBtnState>(
+                  //     listener: (context, state) {
+                  //       // if (state is InitialState) {
+                  //       //   _choice = state.selectedText;
+                  //       //   BlocProvider.of<ProductBloc>(context).add(
+                  //       //     GetFakeSortedListEvent(
+                  //       //       type: type,
+                  //       //       collection: collection,
+                  //       //       category: category,
+                  //       //       choice: state.selectedText,
+                  //       //     ),
+                  //       //   );
+                  //       // } else if (state is SelectedState) {
+                  //       //   _choice = state.selectedText;
+                  //       //   BlocProvider.of<ProductBloc>(context).add(
+                  //       //     GetFakeSortedListEvent(
+                  //       //       type: type,
+                  //       //       collection: collection,
+                  //       //       category: category,
+                  //       //       choice: state.selectedText,
+                  //       //     ),
+                  //       //   );
+                  //       // }
+                  //     },
+                  //     child:
+                  //         BlocBuilder<SortToggleBtnCubit, SortToggleBtnState>(
+                  //       builder: (context, state) {
+                  //         return Text(
+                  //           state.selectedText,
+                  //           style: AppTextStyles.black11,
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
+                  // ),
 
                   /// Orientation
                   IconButton(
@@ -251,9 +259,8 @@ class NestedMobileFavoritesVew extends StatelessWidget {
           BlocBuilder<OrientationCubit, OrientationState>(
             builder: (context, state) {
               return state.orientation
-                  ? Expanded(child: buildFavoritesGridView(userID, allProducts))
-                  : Expanded(
-                      child: buildFavoritesListView(userID, allProducts));
+                  ? FavoritesGridView(userID: userID, products: allProducts)
+                  : FavoritesListView(userID: userID, products: allProducts);
             },
           ),
         ],
@@ -262,107 +269,53 @@ class NestedMobileFavoritesVew extends StatelessWidget {
   }
 }
 
-Widget buildFavoritesGridView(String userID, List<ProductEntity> allProducts) {
-  return allProducts.isNotEmpty
-      ? GridView.builder(
-          padding: REdgeInsets.all(16),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisSpacing: 17.h,
-            //mainAxisSpacing: 17.h,
-            mainAxisExtent: 340.h,
-            crossAxisCount: 2,
-            //childAspectRatio: 90.h / 140.h,
-          ),
-          itemCount: allProducts.length,
-          itemBuilder: (context, index) {
-            final product = allProducts[index];
-            return FavoritesVerticalContainer(
-              userID: userID,
-              product: product,
-              onTap: () {},
-            );
-          },
-        )
-      : Align(
-          alignment: Alignment.center,
-          child: Text(
-            'Список пуст!',
-            style: AppTextStyles.grey16,
-          ),
-        );
-}
-
-Widget buildFavoritesListView(String userID, List<ProductEntity> allProducts) {
-  return allProducts.isNotEmpty
-      ? ListView.separated(
-          padding: REdgeInsets.all(14),
-          itemCount: allProducts.length,
-          //itemExtent: 155.h,
-          itemBuilder: (context, index) {
-            final product = allProducts[index];
-            return FavoritesHorizontalContainer(
-              userID: userID,
-              product: product,
-              onTap: () {},
-            );
-          },
-          separatorBuilder: (context, index) => SizedBox(height: 12.h),
-        )
-      : Align(
-          alignment: Alignment.center,
-          child: Text(
-            'Список пуст!',
-            style: AppTextStyles.grey16,
-          ),
-        );
-}
-
-modalBottomSheet(
-  BuildContext context,
-  // String type,
-  // String collection,
-  // String category,
-) {
-  return showModalBottomSheet<void>(
-    context: context,
-    backgroundColor: Colors.white,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(30.r),
-        topRight: Radius.circular(30.r),
-      ),
-    ),
-    builder: (BuildContext context) {
-      return SizedBox(
-        height: 352.h,
-        child: Column(
-          children: [
-            Center(
-              child: Padding(
-                padding: REdgeInsets.only(top: 36),
-                child: Text(
-                  'Sort by',
-                  style: AppTextStyles.black18Bold,
-                ),
-              ),
-            ),
-            33.verticalSpace,
-            SortToggleButton(
-                // type: type,
-                // collection: collection,
-                // category: category,
-                ),
-            // button(context, 'Popular', false, () => log('Popular')),
-            // button(context, 'Newest', false, () => log('Newest')),
-            // button(context, 'Customer review', false,
-            //     () => log('Customer review')),
-            // button(context, 'Price: lowest to high', true,
-            //     () => log('Price: lowest to high')),
-            // button(context, 'Price: highest to low', false,
-            //     () => log('Price: highest to low')),
-          ],
-        ),
-      );
-    },
-  );
-}
+// modalBottomSheet(
+//   BuildContext context,
+//   // String type,
+//   // String collection,
+//   // String category,
+// ) {
+//   return showModalBottomSheet<void>(
+//     context: context,
+//     backgroundColor: Colors.white,
+//     shape: RoundedRectangleBorder(
+//       borderRadius: BorderRadius.only(
+//         topLeft: Radius.circular(30.r),
+//         topRight: Radius.circular(30.r),
+//       ),
+//     ),
+//     builder: (BuildContext context) {
+//       return SizedBox(
+//         height: 352.h,
+//         child: Column(
+//           children: [
+//             Center(
+//               child: Padding(
+//                 padding: REdgeInsets.only(top: 36),
+//                 child: Text(
+//                   'Sort by',
+//                   style: AppTextStyles.black18Bold,
+//                 ),
+//               ),
+//             ),
+//             33.verticalSpace,
+//             // SortToggleButton(
+//             //   selectedSortText: (value) {},
+//             //   // type: type,
+//             //   // collection: collection,
+//             //   // category: category,
+//             // ),
+//             // button(context, 'Popular', false, () => log('Popular')),
+//             // button(context, 'Newest', false, () => log('Newest')),
+//             // button(context, 'Customer review', false,
+//             //     () => log('Customer review')),
+//             // button(context, 'Price: lowest to high', true,
+//             //     () => log('Price: lowest to high')),
+//             // button(context, 'Price: highest to low', false,
+//             //     () => log('Price: highest to low')),
+//           ],
+//         ),
+//       );
+//     },
+//   );
+// }

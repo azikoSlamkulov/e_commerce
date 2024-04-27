@@ -10,8 +10,17 @@ abstract class BagRepo {
     required BagEntity product,
   });
 
-  Future<Either<Failure, bool>> deleteProductFromCart({
-    required String userID,
+  Future<Either<Failure, bool>> setNewQuantity({
     required String productID,
+    required int newQuantity,
+    required double cardTotalPrice,
+  });
+
+  Future<Either<Failure, bool>> deleteProductFromCart({
+    required String productID,
+  });
+
+  Future<Either<Failure, bool>> setOrder({
+    required OrderEntity order,
   });
 }

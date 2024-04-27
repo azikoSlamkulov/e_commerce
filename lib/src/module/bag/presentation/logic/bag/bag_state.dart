@@ -42,6 +42,18 @@ class DeletedProductFromCartState extends BagState {
   List<Object> get props => [isDeleted];
 }
 
+class AddedOrder extends BagState {
+  final bool isCreated;
+  const AddedOrder(this.isCreated);
+  @override
+  List<Object> get props => [isCreated];
+  // final FakeBagsData allProducts;
+
+  // const AddedProductToCartState({this.allProducts = const FakeBagsData()});
+  // @override
+  // List<Object> get props => [allProducts];
+}
+
 class IncrementesQuantityState extends BagState {
   final int newQuantity;
   final double newPrice;
@@ -54,6 +66,14 @@ class DecrementesQuantityState extends BagState {
   final int newQuantity;
   final double newPrice;
   const DecrementesQuantityState(this.newQuantity, this.newPrice);
+  @override
+  List<Object> get props => [newQuantity, newPrice];
+}
+
+class NewQuantityState extends BagState {
+  final int newQuantity;
+  final double newPrice;
+  const NewQuantityState(this.newQuantity, this.newPrice);
   @override
   List<Object> get props => [newQuantity, newPrice];
 }

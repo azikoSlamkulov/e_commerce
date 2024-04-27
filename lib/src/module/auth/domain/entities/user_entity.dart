@@ -1,4 +1,4 @@
-import 'package:e_commerce/lib.dart';
+import 'package:equatable/equatable.dart';
 
 class AuthUserEntity extends Equatable {
   final String? userID;

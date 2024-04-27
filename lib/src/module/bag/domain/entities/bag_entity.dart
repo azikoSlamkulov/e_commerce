@@ -2,21 +2,21 @@ import 'package:equatable/equatable.dart';
 
 class BagEntity extends Equatable {
   final String? productID;
-  final String? userID;
   final String? name;
   final String? color;
   final String? size;
-  final double? price;
+  final double? pricePerUnit;
+  final double? cardTotalPrice;
   final int? quantity;
   final String? productImgUrl;
 
   const BagEntity({
     this.productID,
-    this.userID,
     this.name,
     this.color,
     this.size,
-    this.price,
+    this.pricePerUnit,
+    this.cardTotalPrice,
     this.quantity,
     this.productImgUrl,
   });
@@ -24,11 +24,11 @@ class BagEntity extends Equatable {
   @override
   List<Object?> get props => [
         productID,
-        userID,
         name,
         color,
         size,
-        price,
+        pricePerUnit,
+        cardTotalPrice,
         quantity,
         productImgUrl,
       ];

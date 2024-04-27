@@ -1,4 +1,7 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BagHorizontalCard extends StatefulWidget {
   const BagHorizontalCard({
@@ -17,32 +20,32 @@ class BagHorizontalCard extends StatefulWidget {
 }
 
 class _BagHorizontalCardState extends State<BagHorizontalCard> {
-  @override
-  void initState() {
-    _price = widget.product.price!;
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   _price = widget.product.price!;
+  //   super.initState();
+  // }
 
-  int _quantity = 1;
-  double? _price;
+  // int _quantity = 1;
+  // double? _price;
 
-  void increment() => setState(() {
-        _quantity++;
-        _price = _price! + widget.product.price!;
-        widget.callback!(_price!);
-      });
+  // void increment() => setState(() {
+  //       _quantity++;
+  //       _price = _price! + widget.product.price!;
+  //       widget.callback!(_price!);
+  //     });
 
-  void decrement() {
-    setState(() {
-      if (_quantity > 1) {
-        setState(() {
-          _quantity--;
-          _price = _price! - widget.product.price!;
-          widget.callback!(_price!);
-        });
-      }
-    });
-  }
+  // void decrement() {
+  //   setState(() {
+  //     if (_quantity > 1) {
+  //       setState(() {
+  //         _quantity--;
+  //         _price = _price! - widget.product.price!;
+  //         widget.callback!(_price!);
+  //       });
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +114,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
                                   style: AppTextStyles.grey11,
                                 ),
                                 Text(
-                                  //widget.product.color!,
-                                  'color',
+                                  widget.product.color!,
                                   style: AppTextStyles.black11,
                                 ),
                                 10.horizontalSpace,
@@ -121,8 +123,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
                                   style: AppTextStyles.grey11,
                                 ),
                                 Text(
-                                  //widget.product.size!,
-                                  'Size: ',
+                                  widget.product.size!,
                                   style: AppTextStyles.black11,
                                 ),
                               ],
@@ -140,7 +141,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
 
                         ///Prise
                         Text(
-                          '$_price\$',
+                          '${widget.product.cardTotalPrice}\$',
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14.sp,
@@ -178,6 +179,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
     return Expanded(
       child: Row(
         children: [
+          /// Decrement
           SizedBox(
             height: 36.h,
             width: 36.h,
@@ -195,19 +197,33 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
                 Icons.remove,
                 color: AppColors.black26,
               ),
-              onPressed: () => decrement(),
+              //onPressed: () => decrement(),
+              onPressed: () {
+                BlocProvider.of<BagBloc>(context).add(
+                  DecrementQuantityEvent(
+                    widget.product,
+                  ),
+                );
+                BlocProvider.of<BagBloc>(context).add(
+                  GetAllProductFromCartEvent(),
+                );
+              },
             ),
           ),
           16.horizontalSpace,
-          BlocBuilder<CounterCubit, CounterState>(
+
+          /// Value
+          BlocBuilder<BagBloc, BagState>(
             builder: (context, state) {
               return Text(
-                '$_quantity',
+                '${widget.product.quantity}',
                 style: const TextStyle(color: Colors.black, fontSize: 14),
               );
             },
           ),
           16.horizontalSpace,
+
+          /// Increment
           SizedBox(
             height: 36.h,
             width: 36.h,
@@ -225,7 +241,17 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
                 Icons.add,
                 color: AppColors.black26,
               ),
-              onPressed: () => increment(),
+              //onPressed: () => increment(),
+              onPressed: () {
+                BlocProvider.of<BagBloc>(context).add(
+                  IncrementQuantityEvent(
+                    widget.product,
+                  ),
+                );
+                BlocProvider.of<BagBloc>(context).add(
+                  GetAllProductFromCartEvent(),
+                );
+              },
             ),
           ),
         ],
@@ -260,10 +286,7 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
       print('I First Item');
     } else if (choice == Constants.secondItem) {
       BlocProvider.of<BagBloc>(context).add(
-        DeleteProductFromCartEvent(
-          widget.product.userID!,
-          widget.product.productID!,
-        ),
+        DeleteProductFromCartEvent(widget.product.productID!),
       );
       setState(() {});
       // log(widget.product.userID!);

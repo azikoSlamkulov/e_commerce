@@ -12,7 +12,7 @@ class AuthRepoImpl implements AuthRepo {
     required this.localAuth,
   });
 
-  final FirebaseAuthData remoteAuth;
+  final FirebaseAuthWithFirestore remoteAuth;
   final LocalAuth localAuth;
 
   @override

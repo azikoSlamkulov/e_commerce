@@ -16,3 +16,24 @@ class GetCategoriesEvent extends CategoriesEvent {
     this.collection,
   );
 }
+
+class GetAllCategoriesEvent extends CategoriesEvent {}
+
+class SetCategoryEvent extends CategoriesEvent {
+  final String type;
+  final String collection;
+  final String category;
+
+  const SetCategoryEvent(
+    this.type,
+    this.collection,
+    this.category,
+  );
+}
+
+class DeleteCategoryEvent extends CategoriesEvent {
+  final String id;
+  final String categoryName;
+
+  const DeleteCategoryEvent({required this.id, required this.categoryName});
+}

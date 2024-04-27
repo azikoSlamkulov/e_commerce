@@ -15,9 +15,9 @@ class GetProductDatailsEvent extends ProductEvent {
 class GetProductsListEvent extends ProductEvent {}
 
 class GetProductsByQueryEvent extends ProductEvent {
-  final dynamic firstQuery;
-  final dynamic secondQuery;
-  final dynamic thirdQuery;
+  final String firstQuery;
+  final String secondQuery;
+  final String thirdQuery;
 
   const GetProductsByQueryEvent({
     required this.firstQuery,
@@ -26,9 +26,12 @@ class GetProductsByQueryEvent extends ProductEvent {
   });
 }
 
-class GetAllSortedProductsByQueryEvent extends ProductEvent {
-  final String fieldName;
-  final dynamic query;
+class GetNewAndSaleProductsEvent extends ProductEvent {}
 
-  const GetAllSortedProductsByQueryEvent(this.fieldName, this.query);
+class SetProductEvent extends ProductEvent {
+  final ProductEntity product;
+
+  const SetProductEvent(this.product);
 }
+
+class GetAllProductEvent extends ProductEvent {}

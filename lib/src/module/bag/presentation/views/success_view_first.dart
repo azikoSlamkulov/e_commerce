@@ -1,4 +1,6 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SuccessViewFirst extends StatelessWidget {
   const SuccessViewFirst({super.key});
@@ -25,16 +27,9 @@ class SuccessViewFirst extends StatelessWidget {
               Text('Thank you for choosing our app!',
                   style: AppTextStyles.black14),
               163.verticalSpace,
-              CustomElevatedButton(
-                sizedBoxHeight: 48.h,
-                sizedBoxWidth: double.infinity,
-                borderRadius: 30,
-                bgColor: AppColors.mainColor,
-                text: Text(
-                  'CONTINUE SHOPPING',
-                  style: AppTextStyles.white14,
-                ),
+              CustomButton(
                 onPressed: () {},
+                text: 'CONTINUE SHOPPING',
               ),
             ],
           ),

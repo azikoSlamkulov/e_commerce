@@ -1,14 +1,12 @@
 import 'package:e_commerce/lib.dart';
+import 'package:equatable/equatable.dart';
 
 class ProductEntity extends Equatable {
-  final String? id;
-  //final String? name;
-  final String? type;
-  final String? collectionName;
-  final String? categoryName;
+  final String? productID;
+  final CategoryEntity? category;
   final String? brand;
-  final String? color;
-  final String? size;
+  final List<ProductColorEntity>? colors;
+  final List<ProductSizeEntity>? sizes;
   final bool? isNew;
   final bool? isSale;
   final int? sale;
@@ -16,19 +14,17 @@ class ProductEntity extends Equatable {
   final double? newPrice;
   final int? quantity;
   final String? description;
-  //final List<String>? rating;
+  final ProductRatingEntity? rating;
+  //final List<ReviewEntity>? review;
   final String? imgUrl;
   final String? createdDate;
 
   const ProductEntity({
-    this.id,
-    //this.name,
-    this.type,
-    this.collectionName,
-    this.categoryName,
+    this.productID,
+    this.category,
     this.brand,
-    this.color,
-    this.size,
+    this.colors,
+    this.sizes,
     this.isNew,
     this.isSale,
     this.sale,
@@ -36,23 +32,21 @@ class ProductEntity extends Equatable {
     this.newPrice,
     this.quantity,
     this.description,
-    //this.rating,
+    this.rating,
+    //this.review,
     this.imgUrl,
     this.createdDate,
   });
 
   @override
   List<Object?> get props => [
-        id,
-        //name,
+        productID,
+        category,
         brand,
-        type,
-        collectionName,
         price,
-        categoryName,
         brand,
-        color,
-        size,
+        colors,
+        sizes,
         isNew,
         isSale,
         sale,
@@ -60,7 +54,8 @@ class ProductEntity extends Equatable {
         newPrice,
         quantity,
         description,
-        //rating,
+        rating,
+        //review,
         imgUrl,
         createdDate,
       ];

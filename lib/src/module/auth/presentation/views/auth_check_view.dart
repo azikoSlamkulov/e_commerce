@@ -1,4 +1,5 @@
 import 'package:e_commerce/lib.dart';
+import 'package:flutter/material.dart';
 
 class AuthCheckView extends StatelessWidget {
   const AuthCheckView({super.key});

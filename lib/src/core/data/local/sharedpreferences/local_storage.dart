@@ -17,8 +17,8 @@ abstract class SharedPreferencesDB {
   Future<bool>? setBool({required String key, required bool value});
 }
 
-class SharedPreferencesImp implements SharedPreferencesDB {
-  SharedPreferencesImp({required this.preferencesCore});
+class SharedPreferencesImpl implements SharedPreferencesDB {
+  SharedPreferencesImpl({required this.preferencesCore});
   SharedPreferences? preferencesCore;
 
   // get string

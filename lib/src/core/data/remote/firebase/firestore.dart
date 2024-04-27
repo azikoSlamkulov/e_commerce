@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_commerce/lib.dart';
 
 abstract class FirestoreCore {
@@ -9,6 +12,14 @@ abstract class FirestoreCore {
     required String id,
     required String collectionName,
     required T Function(Map body) fromJson,
+  });
+  Future<String> getID({
+    required String collectionName,
+  });
+  Future<String> getCollectionIdById({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String userID,
   });
   Future<List<T>> getList<T>({
     required String collectionName,
@@ -46,22 +57,24 @@ abstract class FirestoreCore {
     required dynamic query,
     required T Function(Map<String, dynamic> body) fromJson,
   });
-  Future<List<ProductsListModel>> getSortedFakeListByQuery<T>({
+  Future<List<ProductModel>> getSortedFakeListByQuery<T>({
     required String collectionName,
     required String fieldName,
     required dynamic query,
-    required ProductsListModel Function(Map<String, dynamic> body) fromJson,
+    required ProductModel Function(Map<String, dynamic> body) fromJson,
   });
-  Future<List<T>> getSortedListByQueryWithTwoValues<T>({
+  Future<List<T>> getListByQueryWithTwoValues<T>({
     required String collectionName,
+    required String mainFieldName,
     required String firstFieldName,
     required String secondFieldName,
     required dynamic firstQuery,
     required dynamic secondQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   });
-  Future<List<T>> getSortedListByQueryWithThreeValues<T>({
+  Future<List<T>> getListByQueryWithThreeValues<T>({
     required String collectionName,
+    required String mainFieldName,
     required String firstFieldName,
     required String secondFieldName,
     required String thirdFieldName,
@@ -103,6 +116,11 @@ abstract class FirestoreCore {
     required objectModel,
     required String collectionName,
   });
+  Future<bool> setReview({
+    //required objectEntity,
+    required objectModel,
+    //required String collectionName,
+  });
   Future<bool> setProduct({
     //required objectEntity,
     required objectModel,
@@ -113,7 +131,8 @@ abstract class FirestoreCore {
   Future<bool> setToCollection({
     required String firstCollection,
     required String secondCollection,
-    //required String userID,
+    required String firstID,
+    required String secondID,
     required objectModel,
   });
   Future<bool> createCategory({
@@ -129,7 +148,7 @@ abstract class FirestoreCore {
     required String collectionName,
   });
   Future<bool> delete({
-    required String userID,
+    required String id,
     required String collectionName,
   });
   Future<bool> deleteFromCollection({
@@ -192,6 +211,41 @@ class FirestoreCoreImpl implements FirestoreCore {
     }
     return _list;
   }
+
+  @override
+  Future<String> getID({
+    required String collectionName,
+  }) async {
+    return firestoreDB.collection(collectionName).doc().id;
+  }
+
+  @override
+  Future<String> getCollectionIdById({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String userID,
+  }) async {
+    return firestoreDB
+        .collection(firstCollectionName)
+        .doc(userID)
+        .collection(secondCollectionName)
+        .doc()
+        .id;
+  }
+
+  // @override
+  // Future<String> getCollectionIdById({
+  //   required String firstCcollectionName,
+  //   required String secondCollectionName,
+  //   required objectModel,
+  // }) async {
+  //   return firestoreDB
+  //       .collection(firstCcollectionName)
+  //       .doc(objectModel.userId)
+  //       .collection(secondCollectionName)
+  //       .doc()
+  //       .id;
+  // }
 
   @override
   Future<List<T>> getListFromCollectionByUserID<T>({
@@ -285,11 +339,11 @@ class FirestoreCoreImpl implements FirestoreCore {
   }
 
   @override
-  Future<List<ProductsListModel>> getSortedFakeListByQuery<T>({
+  Future<List<ProductModel>> getSortedFakeListByQuery<T>({
     required String collectionName,
     required String fieldName,
     required dynamic query,
-    required ProductsListModel Function(Map<String, dynamic> body) fromJson,
+    required ProductModel Function(Map<String, dynamic> body) fromJson,
   }) async {
     // List<ProductsListModel> _list = FakeProductData().allFakeProducts;
     // return _list;
@@ -298,8 +352,9 @@ class FirestoreCoreImpl implements FirestoreCore {
   }
 
   @override
-  Future<List<T>> getSortedListByQueryWithTwoValues<T>({
+  Future<List<T>> getListByQueryWithTwoValues<T>({
     required String collectionName,
+    required String mainFieldName,
     required String firstFieldName,
     required String secondFieldName,
     required dynamic firstQuery,
@@ -311,11 +366,11 @@ class FirestoreCoreImpl implements FirestoreCore {
     final _response = await firestoreDB
         .collection(collectionName)
         .where(
-          firstFieldName,
+          mainFieldName + firstFieldName,
           isEqualTo: firstQuery,
         )
         .where(
-          secondFieldName,
+          mainFieldName + secondFieldName,
           isEqualTo: secondQuery,
         )
         .get();
@@ -328,8 +383,9 @@ class FirestoreCoreImpl implements FirestoreCore {
   }
 
   @override
-  Future<List<T>> getSortedListByQueryWithThreeValues<T>({
+  Future<List<T>> getListByQueryWithThreeValues<T>({
     required String collectionName,
+    required String mainFieldName,
     required String firstFieldName,
     required String secondFieldName,
     required String thirdFieldName,
@@ -343,15 +399,15 @@ class FirestoreCoreImpl implements FirestoreCore {
     final _response = await firestoreDB
         .collection(collectionName)
         .where(
-          firstFieldName,
+          mainFieldName + firstFieldName,
           isEqualTo: firstQuery,
         )
         .where(
-          secondFieldName,
+          mainFieldName + secondFieldName,
           isEqualTo: secondQuery,
         )
         .where(
-          thirdFieldName,
+          mainFieldName + thirdFieldName,
           isEqualTo: thirdQuery,
         )
         .get();
@@ -426,23 +482,23 @@ class FirestoreCoreImpl implements FirestoreCore {
         .collection(collectionName)
         .where(
           firstFieldName,
-          isEqualTo: firstQuery,
+          whereIn: firstQuery,
         )
         .where(
           secondFieldName,
-          isEqualTo: secondQuery,
+          whereIn: secondQuery,
         )
         .where(
           thirdFieldName,
-          isEqualTo: thirdQuery,
+          whereIn: thirdQuery,
         )
         .where(
           fourthQuery,
-          isEqualTo: fourthQuery,
+          whereIn: fourthQuery,
         )
         .where(
           fifthFieldName,
-          isEqualTo: fifthQuery,
+          whereIn: fifthQuery,
         )
         .get();
     for (final _doc in _response.docs) {
@@ -496,23 +552,24 @@ class FirestoreCoreImpl implements FirestoreCore {
   Future<bool> setToCollection({
     required String firstCollection,
     required String secondCollection,
-    //required String userID,
+    required String firstID,
+    required String secondID,
     required objectModel,
   }) async {
     return await firestoreDB
         .collection(firstCollection)
-        .doc(objectModel.userID)
+        .doc(firstID)
         .collection(secondCollection)
-        .doc(objectModel.productID)
+        .doc(secondID)
         .get()
         .then((_doc) {
       final newObject = objectModel.toJson();
       if (!_doc.exists) {
         firestoreDB
             .collection(firstCollection)
-            .doc(objectModel.userID)
+            .doc(firstID)
             .collection(secondCollection)
-            .doc(objectModel.productID)
+            .doc(secondID)
             .set(newObject, SetOptions(merge: true));
       }
       return true;
@@ -531,15 +588,74 @@ class FirestoreCoreImpl implements FirestoreCore {
         .collection(collectionName)
         // .doc(user.userID)
         // .collection('profile')
-        .doc()
+        .doc(objectModel.id)
         .get()
         .then((_doc) {
       final newObject = objectModel.toJson();
       if (!_doc.exists) {
         firestoreDB
             .collection(collectionName)
-            .doc()
+            .doc(objectModel.id)
             .set(newObject, SetOptions(merge: true));
+        //log('newObject ====>>>> $newObject');
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  @override
+  Future<bool> setReview({
+    required objectModel,
+    //required String collectionName,
+  }) async {
+    return await firestoreDB
+        .collection('products')
+        .doc(objectModel.productID)
+        .collection('reviews')
+        .doc(objectModel.userID)
+        .get()
+        .then((_doc) {
+      final newObject = objectModel.toJson();
+      if (!_doc.exists) {
+        firestoreDB
+            .collection('products')
+            .doc(objectModel.productID)
+            .collection('reviews')
+            .doc(objectModel.userID)
+            .set(newObject, SetOptions(merge: true));
+      } else {
+        firestoreDB
+            .collection('products')
+            .doc(objectModel.productID)
+            .collection('reviews')
+            .doc(objectModel.userID)
+            .update(newObject);
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  @override
+  Future<bool> update({
+    required objectEntity,
+    required objectModel,
+    required String collectionName,
+  }) async {
+    return await firestoreDB
+        .collection(collectionName)
+        .doc(objectEntity.userID)
+        .get()
+        .then((_userDoc) {
+      final _newUser = objectModel.toJson();
+      if (_userDoc.exists) {
+        firestoreDB
+            .collection(collectionName)
+            .doc(objectEntity.userID)
+            .update(_newUser);
       }
       return true;
     }).onError((error, stackTrace) {
@@ -675,37 +791,13 @@ class FirestoreCoreImpl implements FirestoreCore {
   // }
 
   @override
-  Future<bool> update({
-    required objectEntity,
-    required objectModel,
-    required String collectionName,
-  }) async {
-    return await firestoreDB
-        .collection(collectionName)
-        .doc(objectEntity.userID)
-        .get()
-        .then((_userDoc) {
-      final _newUser = objectModel.toJson();
-      if (_userDoc.exists) {
-        firestoreDB
-            .collection(collectionName)
-            .doc(objectEntity.userID)
-            .update(_newUser);
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
-
-  @override
   Future<bool> delete({
-    required String userID,
+    required String id,
     required String collectionName,
   }) async {
     return await firestoreDB
         .collection(collectionName)
-        .doc(userID)
+        .doc(id)
         .delete()
         .then((value) => true)
         .onError((error, stackTrace) => false);

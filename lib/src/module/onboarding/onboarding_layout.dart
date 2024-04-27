@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import '../../../lib.dart';
 import 'package:clippy_flutter/clippy_flutter.dart';
 
@@ -53,9 +55,11 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
                   width: MediaQuery.of(context).size.width,
                   height: (MediaQuery.of(context).size.height) / 1.7,
                   alignment: Alignment.center,
-                  child: Image.asset(widget.imageLink,
-                      width: 300,
-                      height: (MediaQuery.of(context).size.height) / 2.8),
+                  child: Image.asset(
+                    widget.imageLink,
+                    width: 300,
+                    height: (MediaQuery.of(context).size.height) / 2.8,
+                  ),
                 ),
               ),
             ],

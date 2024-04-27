@@ -1,14 +1,15 @@
 import 'package:dartz/dartz.dart';
+import 'package:equatable/equatable.dart';
 
 import '../../../../../lib.dart';
 
 class GetAllFavoritesProducts
-    extends UseCase<List<ProductEntity>, GetAllFavoritesProductsParams> {
+    extends UseCase<List<FavoriteEntity>, GetAllFavoritesProductsParams> {
   final FavoritesRepo favoritesRepo;
   GetAllFavoritesProducts(this.favoritesRepo);
 
   @override
-  Future<Either<Failure, List<ProductEntity>>> call(
+  Future<Either<Failure, List<FavoriteEntity>>> call(
       GetAllFavoritesProductsParams params) async {
     return await favoritesRepo.getAllFavoritesProducts(
       userID: params.userID,

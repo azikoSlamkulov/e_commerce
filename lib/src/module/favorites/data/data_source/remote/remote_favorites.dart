@@ -1,8 +1,7 @@
 import '../../../../../../lib.dart';
 
 abstract class RemoteFavorites {
-  Future<List<ProductsListModel>> getAllFavoritesProducts(
-      {required String userID});
+  Future<List<FavoriteModel>> getAllFavoritesProducts({required String userID});
 
   Future<bool> addProductToFavorites({
     //required String userID,
@@ -20,9 +19,9 @@ class RemoteFavoritesImpl implements RemoteFavorites {
   RemoteFavoritesImpl({required this.firestore});
 
   @override
-  Future<List<ProductsListModel>> getAllFavoritesProducts(
+  Future<List<FavoriteModel>> getAllFavoritesProducts(
       {required String userID}) async {
-    List<ProductsListModel> list = [];
+    List<ProductModel> list = [];
     // return await firestore.getListFromCollection(
     //   firstCollection: 'users',
     //   secondCollection: 'favorites',
@@ -35,15 +34,16 @@ class RemoteFavoritesImpl implements RemoteFavorites {
       userID: userID,
       fromJson: favoriteProductFromJson,
     );
-    for (var item in favoriteList) {
-      final product = await firestore.get(
-        id: item.productID!,
-        collectionName: 'products',
-        fromJson: productFromJson,
-      );
-      list.add(product);
-    }
-    return list;
+    // for (var item in favoriteList) {
+    //   final product = await firestore.get(
+    //     id: item.productID!,
+    //     collectionName: 'products',
+    //     fromJson: productFromJson,
+    //   );
+    //   list.add(product);
+    // }
+    // return list;
+    return favoriteList;
   }
 
   @override
@@ -54,9 +54,9 @@ class RemoteFavoritesImpl implements RemoteFavorites {
     return await firestore.setToCollection(
       firstCollection: 'users',
       secondCollection: 'favorites',
-      //userID: userID,
+      firstID: product.userID!,
+      secondID: product.productID!,
       objectModel: product,
-      //collectionName: 'bag',
     );
   }
 

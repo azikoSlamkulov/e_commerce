@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce/lib.dart';
+import 'package:equatable/equatable.dart';
 
 class SetProductToCart extends UseCase<bool, SetProductToCartParams> {
   final BagRepo bagRepo;

@@ -1,4 +1,4 @@
-import 'package:e_commerce/lib.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'counter_state.dart';
 

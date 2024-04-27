@@ -9,7 +9,7 @@ class FavoritesRepoImpl implements FavoritesRepo {
   final RemoteFavorites remoteFavorites;
 
   @override
-  Future<Either<Failure, List<ProductEntity>>> getAllFavoritesProducts(
+  Future<Either<Failure, List<FavoriteEntity>>> getAllFavoritesProducts(
       {required String userID}) async {
     try {
       final allProducts =
@@ -31,17 +31,16 @@ class FavoritesRepoImpl implements FavoritesRepo {
         product: FavoriteModel(
           productID: product.productID,
           userID: product.userID,
-          productSize: product.productSize,
-          // categoryName: product.categoryName,
-          // brand: product.brand,
-          // color: product.color,
-          // size: product.size,
-          // price: product.price,
-          // newPrice: product.newPrice,
-          // isSale: product.isSale,
-          // sale: product.sale,
-          // productImgUrl: product.productImgUrl,
-          // createdDate: product.createdDate,
+          size: product.size,
+          color: product.color,
+          categoryName: product.categoryName,
+          brand: product.brand,
+          price: product.price,
+          newPrice: product.newPrice,
+          isSale: product.isSale,
+          sale: product.sale,
+          imgUrl: product.imgUrl,
+          createdDate: product.createdDate,
         ),
       );
       return Right(isCreated);

@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:e_commerce/lib.dart';
+import 'package:equatable/equatable.dart';
 
 class DeleteProductFromCart extends UseCase<bool, DeleteProductFromCartParams> {
   final BagRepo bagRepo;
@@ -7,22 +8,17 @@ class DeleteProductFromCart extends UseCase<bool, DeleteProductFromCartParams> {
 
   @override
   Future<Either<Failure, bool>> call(DeleteProductFromCartParams params) async {
-    return await bagRepo.deleteProductFromCart(
-      userID: params.userID,
-      productID: params.productID,
-    );
+    return await bagRepo.deleteProductFromCart(productID: params.productID);
   }
 }
 
 class DeleteProductFromCartParams extends Equatable {
-  final String userID;
   final String productID;
 
   const DeleteProductFromCartParams({
-    required this.userID,
     required this.productID,
   });
 
   @override
-  List<Object?> get props => [userID, productID];
+  List<Object?> get props => [productID];
 }
