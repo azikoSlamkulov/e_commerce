@@ -3,14 +3,14 @@ import 'package:e_commerce/lib.dart';
 import 'package:equatable/equatable.dart';
 
 class GetAllShippingAddress
-    extends UseCase<List<AddressEntity>, GetAllShippingAddressParams> {
-  final ShippingAddressRepo shippingAddressRepo;
-  GetAllShippingAddress(this.shippingAddressRepo);
+    extends UseCase<List<ShippingAddressEntity>, GetAllShippingAddressParams> {
+  final ProfileRepo profileRepo;
+  GetAllShippingAddress(this.profileRepo);
 
   @override
-  Future<Either<Failure, List<AddressEntity>>> call(
+  Future<Either<Failure, List<ShippingAddressEntity>>> call(
       GetAllShippingAddressParams params) async {
-    return await shippingAddressRepo.getAllShippingAddress(
+    return await profileRepo.getAllShippingAddress(
       userId: params.userId,
     );
   }

@@ -28,10 +28,10 @@ class RemoteFavoritesImpl implements RemoteFavorites {
     //   userID: userID,
     //   fromJson: favoriteProductFromJson,
     // );
-    final favoriteList = await firestore.getListFromCollectionByUserID(
-      firstCollection: 'users',
-      secondCollection: 'favorites',
-      userID: userID,
+    final favoriteList = await firestore.getListFromSecondCollection(
+      firstCollectionName: 'users',
+      secondCollectionName: 'favorites',
+      firstDocId: userID,
       fromJson: favoriteProductFromJson,
     );
     // for (var item in favoriteList) {
@@ -51,11 +51,11 @@ class RemoteFavoritesImpl implements RemoteFavorites {
     //required String userID,
     required FavoriteModel product,
   }) async {
-    return await firestore.setToCollection(
-      firstCollection: 'users',
-      secondCollection: 'favorites',
-      firstID: product.userID!,
-      secondID: product.productID!,
+    return await firestore.setTwoCollections(
+      firstCollectionName: 'users',
+      secondCollectionName: 'favorites',
+      firstDocId: product.userID!,
+      secondDocId: product.productID!,
       objectModel: product,
     );
   }
@@ -65,11 +65,11 @@ class RemoteFavoritesImpl implements RemoteFavorites {
     required String userID,
     required String productID,
   }) async {
-    return await firestore.deleteFromCollection(
-      firstCollection: 'users',
-      secondCollection: 'favorites',
-      userID: userID,
-      productID: productID,
+    return await firestore.deleteDocFromSecondCollection(
+      firstCollectionName: 'users',
+      secondCollectionName: 'favorites',
+      firstDocId: userID,
+      secondDocId: productID,
     );
   }
 }

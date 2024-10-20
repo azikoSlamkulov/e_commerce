@@ -2,61 +2,52 @@ import 'package:e_commerce/lib.dart';
 import 'package:equatable/equatable.dart';
 
 class ProductEntity extends Equatable {
-  final String? productID;
+  final String? id;
   final CategoryEntity? category;
   final String? brand;
-  final List<ProductColorEntity>? colors;
-  final List<ProductSizeEntity>? sizes;
+  final String? color;
   final bool? isNew;
   final bool? isSale;
   final int? sale;
   final double? price;
   final double? newPrice;
-  final int? quantity;
-  final String? description;
-  final ProductRatingEntity? rating;
-  //final List<ReviewEntity>? review;
-  final String? imgUrl;
+  final double? totalRating;
+  final int? totalUser;
+  final String? mainImgUrl;
   final String? createdDate;
 
   const ProductEntity({
-    this.productID,
+    this.id,
     this.category,
     this.brand,
-    this.colors,
-    this.sizes,
+    this.color,
     this.isNew,
     this.isSale,
     this.sale,
     this.price,
     this.newPrice,
-    this.quantity,
-    this.description,
-    this.rating,
-    //this.review,
-    this.imgUrl,
+    this.totalRating,
+    this.totalUser,
+    this.mainImgUrl,
     this.createdDate,
   });
 
   @override
   List<Object?> get props => [
-        productID,
+        id,
         category,
         brand,
+        color,
         price,
         brand,
-        colors,
-        sizes,
         isNew,
         isSale,
         sale,
         price,
         newPrice,
-        quantity,
-        description,
-        rating,
-        //review,
-        imgUrl,
+        totalRating,
+        totalUser,
+        mainImgUrl,
         createdDate,
       ];
 }

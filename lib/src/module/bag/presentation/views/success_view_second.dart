@@ -1,6 +1,7 @@
 import 'package:e_commerce/lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class SuccessViewSecond extends StatelessWidget {
   const SuccessViewSecond({super.key});
@@ -33,7 +34,17 @@ class SuccessViewSecond extends StatelessWidget {
                 CustomButton(
                   sizedBoxHeight: 36.h,
                   sizedBoxWidth: 160.h,
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).go(
+                      AppPage.home.toPath,
+                    );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const MobileHomeView(),
+                    //   ),
+                    // );
+                  },
                   text: 'Continue shopping',
                 ),
               ],

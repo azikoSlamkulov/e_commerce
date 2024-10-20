@@ -16,7 +16,7 @@ class SetProduct extends UseCase<bool, SetProductParams> {
 }
 
 class SetProductParams extends Equatable {
-  final ProductEntity product;
+  final ProductDatailEntity product;
 
   const SetProductParams({
     required this.product,

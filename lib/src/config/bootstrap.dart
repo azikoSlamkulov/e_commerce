@@ -2,8 +2,11 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:e_commerce/lib.dart';
+import 'package:e_commerce/src/module/admin/admin_products/admin_products.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../module/admin/admin_products/presentation/logic/big_image/big_image_cubit.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
@@ -29,49 +32,53 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   runApp(
     MultiBlocProvider(
       providers: [
+        /// Theme
+        BlocProvider<ThemeBloc>(
+          create: (context) => sl<ThemeBloc>(),
+        ),
+
         /// Auth
         BlocProvider<AuthBloc>(
           create: (context) => sl<AuthBloc>()..add(GetCurrentUserEvent()),
         ),
 
         /// Admin
+        BlocProvider<ColorsToggleBtnCubit>(
+          create: (context) => sl<ColorsToggleBtnCubit>(),
+        ),
+        BlocProvider<SizesToggleBtnCubit>(
+          create: (context) => sl<SizesToggleBtnCubit>(),
+        ),
+
+        /// Product
         BlocProvider<ProductBloc>(create: (context) => sl<ProductBloc>()),
         BlocProvider<CategoriesBloc>(create: (context) => sl<CategoriesBloc>()),
         BlocProvider<BagBloc>(create: (context) => sl<BagBloc>()),
         BlocProvider<FavoritesBloc>(create: (context) => sl<FavoritesBloc>()),
         BlocProvider<CounterCubit>(create: (context) => sl<CounterCubit>()),
-        // BlocProvider<SortToggleBtnCubit>(
-        //     create: (context) => sl<SortToggleBtnCubit>()),
-
-        // BlocProvider<CategoryToggleBtnCubit>(
-        //   create: (context) => sl<CategoryToggleBtnCubit>(),
-        // ),
-        // BlocProvider<SizesToggleBtnCubit>(
-        //   create: (context) => sl<SizesToggleBtnCubit>(),
-        // ),
-        // BlocProvider<ColorsToggleBtnCubit>(
-        //   create: (context) => sl<ColorsToggleBtnCubit>(),
-        // ),
-
-        BlocProvider<ReviewsBloc>(
-          create: (context) => sl<ReviewsBloc>(),
+        BlocProvider<BrandsBloc>(create: (context) => sl<BrandsBloc>()),
+        BlocProvider<RatingAndReviewsBloc>(
+          create: (context) => sl<RatingAndReviewsBloc>(),
+        ),
+        BlocProvider<RatingAndReviewsBloc>(
+          create: (context) => sl<RatingAndReviewsBloc>(),
+        ),
+        BlocProvider<ImageCubit>(
+          create: (context) => sl<ImageCubit>(),
+        ),
+        BlocProvider<BigImageCubit>(
+          create: (context) => sl<BigImageCubit>(),
+        ),
+        BlocProvider<SortingBtnCubit>(
+          create: (context) => sl<SortingBtnCubit>(),
+        ),
+        BlocProvider<CounterCubit>(
+          create: (context) => sl<CounterCubit>(),
         ),
 
-        // BlocProvider<TypeToggleBtnCubit>(
-        //     create: (context) => sl<TypeToggleBtnCubit>()),
-
         /// Shop
-        // //BlocProvider<ProductBloc>(create: (context) => sl<ProductBloc>()),
         BlocProvider<OrientationCubit>(
             create: (context) => sl<OrientationCubit>()),
-        // BlocProvider<SortToggleButtonCubit>(
-        //   create: (context) => sl<SortToggleButtonCubit>(),
-        // ),
-        // BlocProvider<MultipleToogleBtnCubit>(
-        //     create: (context) => sl<MultipleToogleBtnCubit>()),
-
-        //BlocProvider<BrandCubit>(create: (context) => sl<BrandCubit>()),
-        //BlocProvider<TabBarCubit>(create: (context) => sl<TabBarCubit>()),
       ],
       child: await builder(),
     ),

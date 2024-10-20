@@ -6,6 +6,7 @@ export 'collections_card_widget.dart';
 export 'company_info_widget.dart';
 export 'custom_horizontal_list_view_widget.dart';
 export 'filter_colors_toggle_btn.dart';
+export 'product_datail_image_widget.dart';
 export 'product_horizontal_card.dart';
 export 'product_sort_widget.dart';
 export 'product_vertical_card.dart';

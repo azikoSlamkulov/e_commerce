@@ -37,16 +37,22 @@ class MobileCatalogView extends StatelessWidget {
       child: BlocBuilder<ProductBloc, ProductState>(
         builder: (context, state) {
           if (state is LoadingProductstState) {
-            //return const LoadingWidget();
-            return const Center(child: CircularProgressIndicator());
+            return const LoadingWidget();
+            //return const Center(child: CircularProgressIndicator());
           } else if (state is LoadedProductsState) {
-            return NestedMobileCatalogView(
-              allProducts: state.allProducts,
-              //allProducts: FakeData().allFakeProducts,
-              collection: collection,
-              type: type,
-              category: category,
-              allCategories: allCategories,
+            context
+                .read<SortingBtnCubit>()
+                .getSortingChoice(1, state.allProducts);
+            return BlocBuilder<SortingBtnCubit, SortingState>(
+              builder: (context, state) {
+                return NestedMobileCatalogView(
+                  allProducts: state.sortedProducts!,
+                  collection: collection,
+                  type: type,
+                  category: category,
+                  allCategories: allCategories,
+                );
+              },
             );
           } else if (state is ProductFailureState) {
             //return MyErrorWidget('//${state.exception}');
@@ -58,13 +64,6 @@ class MobileCatalogView extends StatelessWidget {
         },
       ),
     );
-    // return NestedMobileCatalogView(
-    //   allProducts: allFakeProducts,
-    //   collection: collection,
-    //   type: type,
-    //   category: category,
-    //   allCategories: allCategories,
-    // );
   }
 }
 
@@ -91,77 +90,104 @@ class NestedMobileCatalogView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bgColorMain,
-      appBar: CustomAppBar(
-        title: '$type\'s ${category.toLowerCase()}',
-        showSearchBtn: true,
-      ),
-      body: Column(
-        children: [
-          /// Categories list
-          WidgetGroup(
-            allCategories: allCategories,
-            type: type,
-            collection: collection,
-            category: category,
-          ),
+      appBar: buildAppBar(),
+      body: buildBody(),
+    );
+  }
 
-          /// Products List
-          BlocBuilder<OrientationCubit, OrientationState>(
-            builder: (context, state) {
-              // return state.orientation
-              //     ? CatalogGridView(products: allProducts)
-              //     : CatalogListView(products: allProducts);
+  CustomAppBar buildAppBar() {
+    return CustomAppBar(
+      title: category == 'New'
+          ? '$type\'s ${category.toLowerCase()}'
+          : category == 'Sale'
+              ? '$type\'s ${category.toLowerCase()}'
+              : category == 'all'
+                  ? '$type\'s ${collection.toLowerCase()}'
+                  : '$type\'s ${category.toLowerCase()}s',
+      showSearchBtn: true,
+    );
+  }
 
-              return allProducts.isEmpty
-                  ? Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Список пуст!',
-                        style: AppTextStyles.grey16,
-                      ),
-                    )
-                  : state.orientation
-                      ? Expanded(
-                          child: GridView.builder(
-                            padding: REdgeInsets.all(16),
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisSpacing: 17.h,
-                              //mainAxisSpacing: 17.h,
-                              mainAxisExtent: 315.h,
-                              crossAxisCount: 2,
-                              //childAspectRatio: 90.h / 140.h,
-                            ),
-                            itemCount: allProducts.length,
-                            itemBuilder: (context, index) {
-                              final product = allProducts[index];
-                              return ProductVerticalCard(
-                                product: product,
-                                allProducts: allProducts,
-                              );
-                            },
-                          ),
-                        )
-                      : Expanded(
-                          child: ListView.separated(
-                            padding: REdgeInsets.all(14),
-                            itemCount: allProducts.length,
-                            //itemExtent: 155.h,
-                            itemBuilder: (context, index) {
-                              final product = allProducts[index];
-                              return ProductHorizontalCard(
-                                product: product,
-                                allProducts: allProducts,
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 12.h),
-                          ),
-                        );
-            },
+  Column buildBody() {
+    return Column(
+      children: [
+        /// Categories list
+        FilterGroupWidget(
+          allCategories: allCategories,
+          allProducts: allProducts,
+          type: type,
+          collection: collection,
+          category: category,
+        ),
+
+        /// Products List
+        Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              BlocBuilder<SortingBtnCubit, SortingState>(
+                builder: (context, state) {
+                  return BlocBuilder<OrientationCubit, OrientationState>(
+                    builder: (context, state) {
+                      // return state.orientation
+                      //     ? CatalogGridView(products: allProducts)
+                      //     : CatalogListView(products: allProducts);
+
+                      return allProducts.isEmpty
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Список пуст!',
+                                style: AppTextStyles.grey16,
+                              ),
+                            )
+                          : state.orientation
+                              ? Expanded(
+                                  child: GridView.builder(
+                                    padding: REdgeInsets.all(16),
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisSpacing: 17.h,
+                                      mainAxisSpacing: 5.h,
+                                      mainAxisExtent: 310.h,
+                                      crossAxisCount: 2,
+                                      //childAspectRatio: 90.h / 140.h,
+                                    ),
+                                    itemCount: allProducts.length,
+                                    itemBuilder: (context, index) {
+                                      final product = allProducts[index];
+                                      return ProductVerticalCard(
+                                        product: product,
+                                        allProducts: allProducts,
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Expanded(
+                                  child: ListView.separated(
+                                    padding:
+                                        REdgeInsets.symmetric(vertical: 10),
+                                    itemCount: allProducts.length,
+                                    //itemExtent: 155.h,
+                                    itemBuilder: (context, index) {
+                                      final product = allProducts[index];
+                                      return ProductHorizontalCard(
+                                        product: product,
+                                        allProducts: allProducts,
+                                      );
+                                    },
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 0.h),
+                                  ),
+                                );
+                    },
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

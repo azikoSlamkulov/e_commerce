@@ -10,6 +10,9 @@ class MobileOrderDetailsView extends StatelessWidget {
 
   final OrderEntity order;
 
+  String capitalize(String text) =>
+      '${text[0].toUpperCase()}${text.substring(1)}';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +34,8 @@ class MobileOrderDetailsView extends StatelessWidget {
                         style: AppTextStyles.black16Bold,
                       ),
                       Text(
-                        '${order.createdDate}',
+                        DateTimeFormatter.dateTimeFormater(order.createdDate!),
+                        //'${order.createdDate}',
                         style: AppTextStyles.grey14,
                       ),
                     ],
@@ -55,7 +59,8 @@ class MobileOrderDetailsView extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '${order.status}',
+                            capitalize(order.status!),
+                            //'${order.status}',
                             style: AppTextStyles.green14,
                           ),
                         ],
@@ -76,7 +81,7 @@ class MobileOrderDetailsView extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: order.items!.length,
-                itemExtent: 150.h,
+                //itemExtent: 150.h,
                 itemBuilder: (context, index) {
                   final product = order.items![index];
                   return Padding(
@@ -100,14 +105,33 @@ class MobileOrderDetailsView extends StatelessWidget {
                   34.verticalSpace,
                   Row(
                     children: [
-                      Text(
-                        'Shipping Address:',
-                        style: AppTextStyles.grey14,
+                      Column(
+                        children: [
+                          Text(
+                            'Shipping Address:',
+                            style: AppTextStyles.grey14,
+                          ),
+                          5.verticalSpace,
+                          Text(
+                            '',
+                            style: AppTextStyles.grey14,
+                          ),
+                        ],
                       ),
                       15.horizontalSpace,
-                      Text(
-                        '${order.shippingAddress}',
-                        style: AppTextStyles.black14Bold,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${order.shippingAddress!.address}',
+                            style: AppTextStyles.black14Bold,
+                          ),
+                          5.verticalSpace,
+                          Text(
+                            '${order.shippingAddress!.city},  ${order.shippingAddress!.country}',
+                            style: AppTextStyles.black14Bold,
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -124,7 +148,7 @@ class MobileOrderDetailsView extends StatelessWidget {
                           AppAssets.mastercard(height: 20, width: 20),
                           15.horizontalSpace,
                           Text(
-                            '${order.paymentMethod}',
+                            '${order.paymentMethod!.cardNumber}',
                             style: AppTextStyles.black14Bold,
                           ),
                         ],
@@ -140,7 +164,7 @@ class MobileOrderDetailsView extends StatelessWidget {
                       ),
                       27.horizontalSpace,
                       Text(
-                        '${order.deliveryMethod}',
+                        '${order.deliveryMethod}\$',
                         style: AppTextStyles.black14Bold,
                       ),
                     ],
@@ -180,14 +204,14 @@ class MobileOrderDetailsView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomButton(
-                        sizedBoxHeight: 36.h,
-                        sizedBoxWidth: 170.w,
+                        sizedBoxHeight: 36.w,
+                        sizedBoxWidth: 160.w,
                         isOutlinedButton: true,
                         onPressed: () {},
                         text: 'Reorder',
                       ),
                       CustomButton(
-                        sizedBoxHeight: 36.h,
+                        sizedBoxHeight: 36.w,
                         sizedBoxWidth: 160.w,
                         onPressed: () {},
                         text: 'Leave feedback',

@@ -83,21 +83,7 @@ class BagRepoImpl implements BagRepo {
     try {
       final orderID = await remoteProductsFromCart.getOrderID();
       final isCreated = await remoteProductsFromCart.setOrder(
-        order: OrderModel(
-          id: orderID,
-          userID: order.userID,
-          userName: order.userName,
-          orderNumber: order.orderNumber,
-          trackingNumber: order.trackingNumber,
-          status: order.status,
-          items: order.items,
-          shippingAddress: order.shippingAddress,
-          paymentMethod: order.paymentMethod,
-          deliveryMethod: order.deliveryMethod,
-          discount: order.discount,
-          totalAmount: order.totalAmount,
-          createdDate: order.createdDate,
-        ),
+        order: orderToModel(orderID, order),
       );
       return Right(isCreated);
     } on ServerException {

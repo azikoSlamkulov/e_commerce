@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:e_commerce/lib.dart';
 
 abstract class RemoteProduct {
   //Future<bool> checkUserExists({required String? userID});
-  //Future<ProductModel> getProductDatails({required String productID});
+  Future<ProductDatailModel> getProductDatails({required String productId});
   Future<String> getProductID();
 
   Future<List<ProductModel>> getAllProducts();
@@ -38,9 +40,20 @@ abstract class RemoteProduct {
 
   Future<bool> setProduct({
     required ProductModel product,
+    required ProductDatailModel productDatail,
   });
 
   Future<bool?> checkProductExist({required productID});
+
+  Future<ProductRatingAndReviewsModel> getRatingAndReviews({
+    required String productID,
+  });
+
+  Future<bool> setRatingAndReviews({
+    required String productId,
+    required int rating,
+    required ProductReviewModel review,
+  });
 
   // Future<List<ProductSizeModel>> getProductSizesList({
   //   required String productID,
@@ -61,18 +74,21 @@ class RemoteProductImpl implements RemoteProduct {
     //required this.fakeData,
   });
 
-  // @override
-  // Future<ProductModel> getProductDatails({required String productID}) async {
-  //   return await firestore.get(
-  //     id: productID,
-  //     collectionName: 'products',
-  //     fromJson: productFromJson,
-  //   );
-  // }
+  @override
+  Future<ProductDatailModel> getProductDatails(
+      {required String productId}) async {
+    return await firestore.getDocFromSecondCollection(
+      firstDocId: productId,
+      secondDocId: productId,
+      firstCollectionName: 'products',
+      secondCollectionName: 'productDatails',
+      fromJson: productDatailFromJson,
+    );
+  }
 
   @override
   Future<String> getProductID() async {
-    return await firestore.getID(
+    return await firestore.getId(
       collectionName: 'products',
     );
   }
@@ -111,20 +127,20 @@ class RemoteProductImpl implements RemoteProduct {
     required String typeName,
     required String collectionName,
   }) async {
-    // return await firestore.getListByQueryWithTwoValues(
-    //   collectionName: 'products',
-    //   mainFieldName: 'category.',
-    //   firstFieldName: 'type',
-    //   secondFieldName: 'collection',
-    //   firstQuery: typeName,
-    //   secondQuery: collectionName,
-    //   fromJson: productFromJson,
-    // );
-    return FakeData().getProductsWithTwoValues(
-      type: typeName,
-      collection: collectionName,
-      //category: thirdQuery,
+    return await firestore.getListByQueryWithTwoValues(
+      collectionName: 'products',
+      mainFieldName: 'category.',
+      firstFieldName: 'type',
+      secondFieldName: 'collection',
+      firstQuery: typeName,
+      secondQuery: collectionName,
+      fromJson: productFromJson,
     );
+    // return FakeLogic().getProductsWithTwoValues(
+    //   type: typeName,
+    //   collection: collectionName,
+    //   //category: thirdQuery,
+    // );
   }
 
   @override
@@ -133,22 +149,22 @@ class RemoteProductImpl implements RemoteProduct {
     required String collectionName,
     required String categoryName,
   }) async {
-    // return await firestore.getListByQueryWithThreeValues(
-    //   collectionName: 'products',
-    //   mainFieldName: 'category.',
-    //   firstFieldName: 'type',
-    //   secondFieldName: 'collection',
-    //   thirdFieldName: 'category',
-    //   firstQuery: typeName,
-    //   secondQuery: collectionName,
-    //   thirdQuery: categoryName,
-    //   fromJson: productFromJson,
-    // );
-    return FakeData().getProductsWithThreeValues(
-      type: typeName,
-      collection: collectionName,
-      category: categoryName,
+    return await firestore.getListByQueryWithThreeValues(
+      collectionName: 'products',
+      mainFieldName: 'category.',
+      firstFieldName: 'type',
+      secondFieldName: 'collection',
+      thirdFieldName: 'category',
+      firstQuery: typeName,
+      secondQuery: collectionName,
+      thirdQuery: categoryName,
+      fromJson: productFromJson,
     );
+    // return FakeLogic().getProductsWithThreeValues(
+    //   type: typeName,
+    //   collection: collectionName,
+    //   category: categoryName,
+    // );
   }
 
   @override
@@ -156,7 +172,7 @@ class RemoteProductImpl implements RemoteProduct {
     required String fieldName,
     required dynamic query,
   }) async {
-    return await firestore.getSortedListByQuery(
+    return await firestore.getListByQuery(
       collectionName: 'products',
       fieldName: fieldName,
       query: query,
@@ -170,24 +186,24 @@ class RemoteProductImpl implements RemoteProduct {
 
   @override
   Future<List<ProductModel>> getNewAndSaleProducts() async {
-    // final List<ProductModel> newAndSaleProducts = [];
-    // final newProducts = await firestore.getSortedListByQuery(
-    //   collectionName: 'products',
-    //   fieldName: 'isNew',
-    //   query: true,
-    //   fromJson: productFromJson,
-    // );
-    // final saleProducts = await firestore.getSortedListByQuery(
-    //   collectionName: 'products',
-    //   fieldName: 'isSale',
-    //   query: true,
-    //   fromJson: productFromJson,
-    // );
-    // newAndSaleProducts.addAll(newProducts);
-    // newAndSaleProducts.addAll(saleProducts);
-    // return newAndSaleProducts;
+    final List<ProductModel> newAndSaleProducts = [];
+    final newProducts = await firestore.getListByQuery(
+      collectionName: 'products',
+      fieldName: 'isNew',
+      query: true,
+      fromJson: productFromJson,
+    );
+    final saleProducts = await firestore.getListByQuery(
+      collectionName: 'products',
+      fieldName: 'isSale',
+      query: true,
+      fromJson: productFromJson,
+    );
+    newAndSaleProducts.addAll(newProducts);
+    newAndSaleProducts.addAll(saleProducts);
+    return newAndSaleProducts;
 
-    return FakeData().getNewAndSaleProducts();
+    // return FakeLogic().getNewAndSaleProducts();
   }
 
   @override
@@ -215,17 +231,113 @@ class RemoteProductImpl implements RemoteProduct {
   }
 
   @override
-  Future<bool> setProduct({required ProductModel product}) async {
-    return await firestore.create(
+  Future<bool> setProduct({
+    required ProductModel product,
+    required ProductDatailModel productDatail,
+  }) async {
+    final isProductAdded = await firestore.create(
+      docId: product.id!,
       objectModel: product,
       collectionName: 'products',
     );
+    final isProductDatailAdded = await firestore.setTwoCollections(
+      firstCollectionName: 'products',
+      secondCollectionName: 'productDatails',
+      firstDocId: product.id!,
+      secondDocId: product.id!,
+      objectModel: productDatail,
+    );
+    return isProductDatailAdded;
   }
 
   @override
   Future<bool?> checkProductExist({required productID}) {
     // TODO: implement checkProductExist
     throw UnimplementedError();
+  }
+
+  @override
+  Future<ProductRatingAndReviewsModel> getRatingAndReviews({
+    required String productID,
+    //required String userID,
+  }) async {
+    final product = await getProductDatails(productId: productID);
+
+    final rating = product.rating as ProductRatingModel;
+    final reviews = product.reviews as List<ProductReviewModel>;
+
+    return ProductRatingAndReviewsModel(
+      productId: product.id,
+      rating: rating,
+      reviews: reviews,
+    );
+  }
+
+  @override
+  Future<bool> setRatingAndReviews({
+    required String productId,
+    required int rating,
+    required ProductReviewModel review,
+  }) async {
+    if (review != const ProductReviewModel()) {
+      final user = await firestore.get(
+        docId: review.userId!,
+        collectionName: 'users',
+        fromJson: authFromJson,
+      );
+
+      UserModel newUser = FakeLogic().getUserWithNewReviews(user, review);
+
+      final isUserUpdated = await firestore.update(
+        docId: user.userID!,
+        collectionName: 'users',
+        objectModel: newUser,
+      );
+    }
+
+    final product = await getProductDatails(productId: productId);
+
+    ProductDatailModel newProductDatail =
+        FakeLogic().getProductWithNewRatingAndReviews(
+      product,
+      review,
+      rating,
+    );
+
+    ProductModel newProduct = ProductModel(
+      id: newProductDatail.id,
+      category: newProductDatail.category,
+      brand: newProductDatail.brand,
+      color: newProductDatail.color,
+      isNew: newProductDatail.isNew,
+      isSale: newProductDatail.isSale,
+      sale: newProductDatail.sale,
+      price: newProductDatail.price,
+      newPrice: newProductDatail.newPrice,
+      totalRating: newProductDatail.totalRating,
+      totalUser: newProductDatail.totalUser,
+      mainImgUrl: newProductDatail.mainImgUrl,
+    );
+
+    final isProductUpdated = await firestore.update(
+      docId: productId,
+      objectModel: newProduct,
+      collectionName: 'products',
+    );
+
+    final isProductDatailUpdated = await firestore.updateSecondCollection(
+      firstCollectionName: 'products',
+      secondCollectionName: 'productDatails',
+      firstDocId: productId,
+      secondDocId: productId,
+      objectModel: newProductDatail,
+    );
+
+    if (isProductUpdated || isProductDatailUpdated) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   // @override

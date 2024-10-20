@@ -7,10 +7,12 @@ abstract class ShippingAddressState extends Equatable {
   List<Object> get props => [];
 }
 
+class InitialShippingAddresState extends ShippingAddressState {}
+
 class LoadingShippingAddresState extends ShippingAddressState {}
 
 class LoadedShippingAddressState extends ShippingAddressState {
-  final List<AddressEntity> addressList;
+  final List<ShippingAddressEntity> addressList;
   const LoadedShippingAddressState(this.addressList);
   @override
   List<Object> get props => [addressList];
@@ -21,6 +23,20 @@ class AddedShippingAddresState extends ShippingAddressState {
   const AddedShippingAddresState(this.isCreated);
   @override
   List<Object> get props => [isCreated];
+}
+
+class UpdatedShippingAddresState extends ShippingAddressState {
+  final bool isUpdated;
+  const UpdatedShippingAddresState(this.isUpdated);
+  @override
+  List<Object> get props => [isUpdated];
+}
+
+class SelectedDefaultAddressState extends ShippingAddressState {
+  final bool isSelected;
+  const SelectedDefaultAddressState(this.isSelected);
+  @override
+  List<Object> get props => [isSelected];
 }
 
 class ShippingAddresFailureState extends ShippingAddressState {

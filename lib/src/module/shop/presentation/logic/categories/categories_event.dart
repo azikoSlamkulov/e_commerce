@@ -31,6 +31,20 @@ class SetCategoryEvent extends CategoriesEvent {
   );
 }
 
+class TypedCategoryEvent extends CategoriesEvent {
+  //final CategoriesEntity typedCategory;
+  final String type;
+  final String collection;
+  final String category;
+
+  const TypedCategoryEvent(
+    //this.typedCategory,
+    this.type,
+    this.collection,
+    this.category,
+  );
+}
+
 class DeleteCategoryEvent extends CategoriesEvent {
   final String id;
   final String categoryName;

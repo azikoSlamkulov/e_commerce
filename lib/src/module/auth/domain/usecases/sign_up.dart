@@ -2,13 +2,13 @@ import 'package:dartz/dartz.dart';
 import 'package:e_commerce/lib.dart';
 import 'package:equatable/equatable.dart';
 
-class SignUp extends UseCase<AuthUserEntity, SignUpParams> {
+class SignUp extends UseCase<UserEntity, SignUpParams> {
   final AuthRepo authRepo;
 
   SignUp(this.authRepo);
 
   @override
-  Future<Either<Failure, AuthUserEntity>> call(SignUpParams params) async {
+  Future<Either<Failure, UserEntity>> call(SignUpParams params) async {
     return await authRepo.signUp(
       email: params.email,
       password: params.password,

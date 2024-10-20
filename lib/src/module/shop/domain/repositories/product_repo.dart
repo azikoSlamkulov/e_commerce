@@ -4,6 +4,10 @@ import 'package:e_commerce/lib.dart';
 abstract class ProductRepo {
   Future<Either<Failure, List<ProductEntity>>> getAllProducts();
 
+  Future<Either<Failure, ProductDatailEntity>> getProductDatails({
+    required String productId,
+  });
+
   Future<Either<Failure, List<ProductEntity>>> getProductsOfTheCollection({
     required String typeName,
     required String collectionName,
@@ -14,15 +18,6 @@ abstract class ProductRepo {
     required String collectionName,
     required String categoryName,
   });
-
-  // Future<Either<Failure, List<ProductSizeEntity>>> getProductSizesList({
-  //   required String productID,
-  // });
-
-  // Future<Either<Failure, ProductSizeEntity>> getProductQuantity({
-  //   required String productID,
-  //   required String productSize,
-  // });
 
   Future<Either<Failure, List<ProductEntity>>> getNewAndSaleProducts();
 
@@ -52,7 +47,18 @@ abstract class ProductRepo {
     required List<String> brands,
   });
 
-  Future<Either<Failure, bool>> setProduct({required ProductEntity product});
+  Future<Either<Failure, bool>> setProduct(
+      {required ProductDatailEntity product});
 
   Future<Either<Failure, bool?>> checkProductExist({required String productID});
+
+  Future<Either<Failure, ProductRatingAndReviewsEntity>> getRatingAndReviews({
+    required String productId,
+  });
+
+  Future<Either<Failure, bool>> setRatingAndReviews({
+    required String productId,
+    required int rating,
+    required ProductReviewEntity review,
+  });
 }

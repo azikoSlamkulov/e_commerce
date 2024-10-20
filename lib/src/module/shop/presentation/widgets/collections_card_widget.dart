@@ -105,6 +105,7 @@ class CollectionsCardWidget extends StatelessWidget {
                 }
               },
               child: Card(
+                color: Colors.white,
                 clipBehavior: Clip.hardEdge,
                 //elevation: 3,
                 shape: RoundedRectangleBorder(

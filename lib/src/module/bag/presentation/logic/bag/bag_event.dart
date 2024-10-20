@@ -7,10 +7,12 @@ abstract class BagEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class SetProductToCartEvent extends BagEvent {
+class ClearProductCartEvent extends BagEvent {}
+
+class AddProductToCartEvent extends BagEvent {
   final BagEntity product;
 
-  const SetProductToCartEvent(this.product);
+  const AddProductToCartEvent(this.product);
 }
 
 class GetAllProductFromCartEvent extends BagEvent {
@@ -23,6 +25,12 @@ class DeleteProductFromCartEvent extends BagEvent {
   final String productID;
 
   const DeleteProductFromCartEvent(this.productID);
+}
+
+class AddNewQuantityEvent extends BagEvent {
+  final BagEntity product;
+
+  const AddNewQuantityEvent(this.product);
 }
 
 class SetOrderEvent extends BagEvent {

@@ -1,3 +1,4 @@
 export 'data/data.dart';
-export 'error/error.dart';
+export 'domain/domain.dart';
+export 'presentation/presentation.dart';
 export 'usecases/usecases.dart';

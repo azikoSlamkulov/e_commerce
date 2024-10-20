@@ -8,15 +8,15 @@ BagModel bagProductFromJson(Map docMap) =>
 String bagProductToJson(BagModel data) => json.encode(data.toJson());
 
 class BagModel extends BagEntity {
-  BagModel({
-    final String? productID,
-    final String? name,
-    final String? color,
-    final String? size,
-    final double? pricePerUnit,
-    final double? cardTotalPrice,
-    final int? quantity,
-    final String? productImgUrl,
+  const BagModel({
+    productID,
+    name,
+    color,
+    size,
+    pricePerUnit,
+    cardTotalPrice,
+    quantity,
+    productImgUrl,
   }) : super(
           productID: productID,
           name: name,

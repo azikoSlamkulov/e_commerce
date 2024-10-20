@@ -8,7 +8,7 @@ class UserProfileInfoWidget extends StatelessWidget {
     super.key,
   });
 
-  final AuthUserEntity user;
+  final UserEntity user;
 
   @override
   Widget build(BuildContext context) {

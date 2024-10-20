@@ -7,254 +7,205 @@ class BagHorizontalCard extends StatefulWidget {
   const BagHorizontalCard({
     super.key,
     required this.product,
-    required this.onTap,
-    this.callback,
+    //required this.productCallback,
   });
 
   final BagEntity product;
-  final VoidCallback onTap;
-  final ValueSetter<double>? callback;
+  //final ValueSetter<BagEntity> productCallback;
 
   @override
   State<BagHorizontalCard> createState() => _BagHorizontalCardState();
 }
 
 class _BagHorizontalCardState extends State<BagHorizontalCard> {
-  // @override
-  // void initState() {
-  //   _price = widget.product.price!;
-  //   super.initState();
-  // }
-
-  // int _quantity = 1;
-  // double? _price;
-
-  // void increment() => setState(() {
-  //       _quantity++;
-  //       _price = _price! + widget.product.price!;
-  //       widget.callback!(_price!);
-  //     });
-
-  // void decrement() {
-  //   setState(() {
-  //     if (_quantity > 1) {
-  //       setState(() {
-  //         _quantity--;
-  //         _price = _price! - widget.product.price!;
-  //         widget.callback!(_price!);
-  //       });
-  //     }
-  //   });
-  // }
+  double totalCardAmount = 0;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onTap,
-      child: Card(
-        //color: Colors.blue,
-        clipBehavior: Clip.hardEdge,
-        //elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0.r),
-        ),
-        margin: REdgeInsets.only(bottom: 16),
-        //color: Colors.redAccent.shade100,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+    return BlocProvider(
+      create: (context) => sl<CounterCubit>()
+        ..getPrise(widget.product.pricePerUnit!, widget.product.quantity!),
+      child: BlocListener<CounterCubit, CounterState>(
+        listener: (context, state) {
+          context.read<BagBloc>().add(
+                AddNewQuantityEvent(
+                  BagEntity(
+                    productID: widget.product.productID,
+                    name: widget.product.name,
+                    color: widget.product.color,
+                    size: widget.product.size,
+                    pricePerUnit: widget.product.pricePerUnit,
+                    cardTotalPrice: state.cardTotalPrice,
+                    quantity: state.quantity,
+                    productImgUrl: widget.product.productImgUrl,
+                  ),
+                ),
+              );
+        },
+        child: Stack(
           children: [
-            /// Image
-            Container(
-              height: 155.h,
-              width: 135.h,
-              decoration: BoxDecoration(
-                //color: Colors.greenAccent,
-                image: DecorationImage(
-                  image: NetworkImage(widget.product.productImgUrl!),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.r),
-                  bottomLeft: Radius.circular(10.r),
-                ),
+            Card(
+              color: Colors.white,
+              clipBehavior: Clip.hardEdge,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0.r),
               ),
-            ),
-            // Image.network(
-            //   product.photoURL!,
-            //   fit: BoxFit.fill,
-            //   width: 140.h,
-            //   height: 155.h,
-            // ),
-            Expanded(
-              child: Padding(
-                padding: REdgeInsets.only(left: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  /// Image
+                  CachedNetworkImageWidget(
+                    imageUrl: widget.product.productImgUrl!,
+                    height: 131.h,
+                    width: 135.w,
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: REdgeInsets.all(11),
+                      child: SizedBox(
+                        height: 100.h,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            11.verticalSpace,
-
-                            ///Item
-                            Text(
-                              widget.product.name!,
-                              style: AppTextStyles.black16Bold,
-                            ),
-                            10.verticalSpace,
-
-                            /// Color and size
-                            Row(
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Color: ',
-                                  style: AppTextStyles.grey11,
+                                  widget.product.name!,
+                                  style: AppTextStyles.black16Bold,
                                 ),
-                                Text(
-                                  widget.product.color!,
-                                  style: AppTextStyles.black11,
-                                ),
-                                10.horizontalSpace,
-                                Text(
-                                  'Size: ',
-                                  style: AppTextStyles.grey11,
-                                ),
-                                Text(
-                                  widget.product.size!,
-                                  style: AppTextStyles.black11,
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Color: ',
+                                      style: AppTextStyles.grey11,
+                                    ),
+                                    Text(
+                                      widget.product.color!,
+                                      style: AppTextStyles.black11,
+                                    ),
+                                    10.horizontalSpace,
+                                    Text(
+                                      'Size: ',
+                                      style: AppTextStyles.grey11,
+                                    ),
+                                    Text(
+                                      widget.product.size!,
+                                      style: AppTextStyles.black11,
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),
+                            BlocBuilder<CounterCubit, CounterState>(
+                              builder: (context, state) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Expanded(
+                                      child: Row(
+                                        children: [
+                                          /// Decrement
+                                          SizedBox(
+                                            height: 36.h,
+                                            width: 36.h,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 0,
+                                                        vertical: 0),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  side: BorderSide.none,
+                                                ),
+                                                backgroundColor:
+                                                    AppColors.white,
+                                              ),
+                                              child: const Icon(
+                                                Icons.remove,
+                                                color: AppColors.black26,
+                                              ),
+                                              onPressed: () =>
+                                                  BlocProvider.of<CounterCubit>(
+                                                          context)
+                                                      .decrement(),
+                                            ),
+                                          ),
+                                          16.horizontalSpace,
+
+                                          /// Quantity
+                                          Text(
+                                            '${widget.product.quantity}',
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 14),
+                                          ),
+                                          16.horizontalSpace,
+
+                                          /// Increment
+                                          SizedBox(
+                                            height: 36.h,
+                                            width: 36.h,
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 0,
+                                                        vertical: 0),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  side: BorderSide.none,
+                                                ),
+                                                backgroundColor:
+                                                    AppColors.white,
+                                              ),
+                                              child: const Icon(
+                                                Icons.add,
+                                                color: AppColors.black26,
+                                              ),
+                                              onPressed: () =>
+                                                  BlocProvider.of<CounterCubit>(
+                                                          context)
+                                                      .increment(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+
+                                    //Prise
+                                    Text(
+                                      '${widget.product.cardTotalPrice}\$',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 14.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                           ],
                         ),
-                        popUpMenuBtn(),
-                      ],
+                      ),
                     ),
-                    10.verticalSpace,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        buildCounter(),
-
-                        ///Prise
-                        Text(
-                          '${widget.product.cardTotalPrice}\$',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // BlocBuilder<CounterCubit, CounterState>(
-                        //   builder: (context, state) {
-                        //     final price = widget.product.price! * _count;
-                        //     return Text(
-                        //       '$price\$',
-                        //       style: TextStyle(
-                        //         color: Colors.black,
-                        //         fontSize: 14.sp,
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     );
-                        //   },
-                        // ),
-                        20.horizontalSpace,
-                      ],
-                    ),
-                    11.verticalSpace,
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
+            Positioned(
+              top: 5.h,
+              right: 5.h,
+              child: popUpMenuBtn(),
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  buildCounter() {
-    return Expanded(
-      child: Row(
-        children: [
-          /// Decrement
-          SizedBox(
-            height: 36.h,
-            width: 36.h,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  side: BorderSide.none,
-                ),
-                //primary: bgColor,
-                backgroundColor: AppColors.white,
-              ),
-              child: const Icon(
-                Icons.remove,
-                color: AppColors.black26,
-              ),
-              //onPressed: () => decrement(),
-              onPressed: () {
-                BlocProvider.of<BagBloc>(context).add(
-                  DecrementQuantityEvent(
-                    widget.product,
-                  ),
-                );
-                BlocProvider.of<BagBloc>(context).add(
-                  GetAllProductFromCartEvent(),
-                );
-              },
-            ),
-          ),
-          16.horizontalSpace,
-
-          /// Value
-          BlocBuilder<BagBloc, BagState>(
-            builder: (context, state) {
-              return Text(
-                '${widget.product.quantity}',
-                style: const TextStyle(color: Colors.black, fontSize: 14),
-              );
-            },
-          ),
-          16.horizontalSpace,
-
-          /// Increment
-          SizedBox(
-            height: 36.h,
-            width: 36.h,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                  side: BorderSide.none,
-                ),
-                //primary: bgColor,
-                backgroundColor: AppColors.white,
-              ),
-              child: const Icon(
-                Icons.add,
-                color: AppColors.black26,
-              ),
-              //onPressed: () => increment(),
-              onPressed: () {
-                BlocProvider.of<BagBloc>(context).add(
-                  IncrementQuantityEvent(
-                    widget.product,
-                  ),
-                );
-                BlocProvider.of<BagBloc>(context).add(
-                  GetAllProductFromCartEvent(),
-                );
-              },
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -289,9 +240,6 @@ class _BagHorizontalCardState extends State<BagHorizontalCard> {
         DeleteProductFromCartEvent(widget.product.productID!),
       );
       setState(() {});
-      // log(widget.product.userID!);
-      // log(widget.product.productID!);
-      //print('I Second Item');
     }
   }
 }
@@ -305,64 +253,3 @@ class Constants {
     secondItem,
   ];
 }
-
-
-
-// buildCounter(BuildContext context) {
-//   return Expanded(
-//     child: Row(
-//       children: [
-//         SizedBox(
-//           height: 36.h,
-//           width: 36.h,
-//           child: ElevatedButton(
-//             style: ElevatedButton.styleFrom(
-//               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-//               shape: RoundedRectangleBorder(
-//                 borderRadius: BorderRadius.circular(50),
-//                 side: BorderSide.none,
-//               ),
-//               //primary: bgColor,
-//               backgroundColor: AppColors.white,
-//             ),
-//             child: const Icon(
-//               Icons.remove,
-//               color: AppColors.black26,
-//             ),
-//             onPressed: () => BlocProvider.of<CounterCubit>(context).decrement(),
-//           ),
-//         ),
-//         16.horizontalSpace,
-//         BlocBuilder<CounterCubit, CounterState>(
-//           builder: (context, state) {
-//             return Text(
-//               state.count.toString(),
-//               style: const TextStyle(color: Colors.black, fontSize: 14),
-//             );
-//           },
-//         ),
-//         16.horizontalSpace,
-//         SizedBox(
-//           height: 36.h,
-//           width: 36.h,
-//           child: ElevatedButton(
-//             style: ElevatedButton.styleFrom(
-//               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-//               shape: RoundedRectangleBorder(
-//                 borderRadius: BorderRadius.circular(50),
-//                 side: BorderSide.none,
-//               ),
-//               //primary: bgColor,
-//               backgroundColor: AppColors.white,
-//             ),
-//             child: const Icon(
-//               Icons.add,
-//               color: AppColors.black26,
-//             ),
-//             onPressed: () => BlocProvider.of<CounterCubit>(context).increment(),
-//           ),
-//         ),
-//       ],
-//     ),
-//   );
-// }

@@ -4,35 +4,35 @@ import 'package:flutter/material.dart';
 
 abstract class FirebaseAuthWithFirestore {
   // CurrentUser
-  Future<AuthUserModel?> getCurrentUser();
+  Future<UserModel?> getCurrentUser();
 
   Future<bool> checkUserExistsFromForestore({required String userID});
 
-  Future<AuthUserModel> getUserFromForestore({required String userID});
+  Future<UserModel> getUserFromForestore({required String userID});
 
   Future<bool?> createUserToFirestore({required User user});
 
   // Sign Up
-  Future<AuthUserModel> signUp({
+  Future<UserModel> signUp({
     required String email,
     required String password,
   });
 
   // Sign In
-  Future<AuthUserModel> signInWithEmail({
+  Future<UserModel> signInWithEmail({
     required String email,
     required String password,
   });
-  Future<AuthUserModel> signInWithGoogle();
+  Future<UserModel> signInWithGoogle();
 
-  Future<AuthUserModel?> signInWithFacebook();
+  Future<UserModel?> signInWithFacebook();
 
   Future<void> signInWithPhoneNumber({
     BuildContext? context,
     required String phoneNumber,
   });
 
-  Future<AuthUserModel> validateOtp({required String smsCode});
+  Future<UserModel> validateOtp({required String smsCode});
 
   // Future<AuthUserModel> signInWithCredential({
   //   required AuthCredential credential,
@@ -54,7 +54,7 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
 
   // CurrentUser
   @override
-  Future<AuthUserModel?> getCurrentUser() async {
+  Future<UserModel?> getCurrentUser() async {
     final userFromServer = await firebaseAuth.getCurrentUser();
     if (userFromServer != null) {
       final isUserExists =
@@ -70,7 +70,7 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
 
   // Sign Up
   @override
-  Future<AuthUserModel> signUp({
+  Future<UserModel> signUp({
     required String email,
     required String password,
   }) async {
@@ -94,8 +94,26 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
   }
 
   // Sign In
+  // @override
+  // Future<AuthUserModel> signInWithGoogle() async {
+  //   try {
+  //     final currentUser = await firebaseAuth.signInWithGoogle();
+  //     final isUserExists = await checkUserExistsFromForestore(
+  //       userID: currentUser.uid,
+  //     );
+  //     if (!isUserExists) {
+  //       await createUserToFirestore(user: currentUser);
+  //     }
+  //     return await getUserFromForestore(
+  //       userID: currentUser.uid,
+  //     );
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
+
   @override
-  Future<AuthUserModel> signInWithGoogle() async {
+  Future<UserModel> signInWithGoogle() async {
     try {
       final currentUser = await firebaseAuth.signInWithGoogle();
       final isUserExists = await checkUserExistsFromForestore(
@@ -113,13 +131,13 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
   }
 
   @override
-  Future<AuthUserModel> signInWithFacebook() {
+  Future<UserModel> signInWithFacebook() {
     // TODO: implement signInWithFacebook
     throw UnimplementedError();
   }
 
   @override
-  Future<AuthUserModel> signInWithEmail({
+  Future<UserModel> signInWithEmail({
     required String email,
     required String password,
   }) async {
@@ -152,7 +170,7 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
   }
 
   @override
-  Future<AuthUserModel> validateOtp({
+  Future<UserModel> validateOtp({
     String? smsCode,
   }) async {
     final currentUser = await firebaseAuth.validateOtp(smsCode: smsCode!);
@@ -200,16 +218,16 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
 
   @override
   Future<bool> checkUserExistsFromForestore({required String userID}) async {
-    return firestore.checkExists(
-      id: userID,
+    return firestore.checkDocExists(
+      docId: userID,
       collectionName: 'users',
     );
   }
 
   @override
-  Future<AuthUserModel> getUserFromForestore({required String userID}) async {
+  Future<UserModel> getUserFromForestore({required String userID}) async {
     return firestore.get(
-      id: userID,
+      docId: userID,
       collectionName: 'users',
       fromJson: authFromJson,
     );
@@ -217,14 +235,20 @@ class FirebaseAuthImpl implements FirebaseAuthWithFirestore {
 
   @override
   Future<bool> createUserToFirestore({required User user}) async {
-    final currentUser = AuthUserModel(
+    final currentUser = UserModel(
       userID: user.uid,
       email: user.email,
       name: user.displayName,
       phoneNumber: user.phoneNumber,
+      orders: const [],
+      shippingAddresses: const [],
+      paymentMethods: const [],
+      //promocodes: const [],
+      reviews: const [],
       photoURL: user.photoURL,
     );
     return await firestore.create(
+      docId: currentUser.userID!,
       objectModel: currentUser,
       collectionName: 'users',
     );

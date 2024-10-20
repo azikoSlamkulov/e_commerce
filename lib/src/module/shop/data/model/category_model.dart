@@ -8,10 +8,10 @@ String categoryToJson(CategoryModel data) => json.encode(data.toJson());
 
 class CategoryModel extends CategoryEntity {
   const CategoryModel({
-    id,
-    typeName,
-    collectionName,
-    categoryName,
+    final String? id,
+    final String? typeName,
+    final String? collectionName,
+    final String? categoryName,
   }) : super(
           id: id,
           typeName: typeName,

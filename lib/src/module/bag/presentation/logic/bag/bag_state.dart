@@ -9,6 +9,8 @@ abstract class BagState extends Equatable {
 
 class LoadingBagState extends BagState {}
 
+class ClearedProductCartState extends BagState {}
+
 class LoadedAllProductsFromCartState extends BagState {
   final List<BagEntity> allProducts;
   final double totalAmount;
@@ -42,9 +44,11 @@ class DeletedProductFromCartState extends BagState {
   List<Object> get props => [isDeleted];
 }
 
-class AddedOrder extends BagState {
+class ExistsState extends BagState {}
+
+class AddedOrderState extends BagState {
   final bool isCreated;
-  const AddedOrder(this.isCreated);
+  const AddedOrderState(this.isCreated);
   @override
   List<Object> get props => [isCreated];
   // final FakeBagsData allProducts;
@@ -78,9 +82,9 @@ class NewQuantityState extends BagState {
   List<Object> get props => [newQuantity, newPrice];
 }
 
-class FailureState extends BagState {
+class BagFailureState extends BagState {
   final String message;
-  const FailureState(this.message);
+  const BagFailureState(this.message);
   @override
   List<Object> get props => [message];
 }

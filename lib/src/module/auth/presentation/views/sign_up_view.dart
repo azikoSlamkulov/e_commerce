@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:go_router/go_router.dart';
 
 class SignUpView extends StatelessWidget {
   const SignUpView({
@@ -80,10 +81,8 @@ class SignUpView extends StatelessWidget {
                   children: [
                     TextButton.icon(
                       onPressed: () {
-                        //GoRouter.of(context).goNamed(AppPage.signIn.toName);
-                        // BlocProvider.of<AuthBloc>(context).add(
-                        //   OpenSignInEvent(),
-                        // );
+                        //context.goNamed(AppPage.signIn.toName);
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -138,14 +137,14 @@ class SignUpView extends StatelessWidget {
                     //   ),
                     // ),
                     IconButton(
-                      iconSize: 50.h,
-                      icon: AppAssets.facebookLogo(),
+                      //iconSize: 50.h,
+                      icon: AppAssets.facebookLogo(width: 50.h, height: 50.h),
                       onPressed: () {},
                     ),
                     30.horizontalSpace,
                     IconButton(
-                      iconSize: 47.h,
-                      icon: AppAssets.googleLogo(),
+                      //iconSize: 47.h,
+                      icon: AppAssets.googleLogo(width: 47.h, height: 47.h),
                       onPressed: () {
                         BlocProvider.of<AuthBloc>(context).add(
                           SignInWithGoogleEvent(),

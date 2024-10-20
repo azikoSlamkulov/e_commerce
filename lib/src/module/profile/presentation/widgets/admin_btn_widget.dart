@@ -1,6 +1,8 @@
 import 'package:e_commerce/lib.dart';
 import 'package:flutter/material.dart';
 
+import '../../../admin/admin_products/admin_products.dart';
+
 class AdminBtnWidget extends StatelessWidget {
   const AdminBtnWidget({
     required this.user,
@@ -11,7 +13,7 @@ class AdminBtnWidget extends StatelessWidget {
     super.key,
   });
 
-  final AuthUserEntity user;
+  final UserEntity user;
   final BuildContext context;
   final String subtitle;
   final bool isTop;
@@ -85,12 +87,12 @@ class AdminBtnWidget extends StatelessWidget {
                 children: [
                   ListTile(
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const AdminProductsView(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminProductsView(),
+                        ),
+                      );
                     },
                     title: Text(
                       'All products',
@@ -100,12 +102,12 @@ class AdminBtnWidget extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const AdminCategoriesView(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AdminCategoriesView(),
+                        ),
+                      );
                     },
                     title: Text(
                       'All categories',
@@ -115,12 +117,12 @@ class AdminBtnWidget extends StatelessWidget {
                   ),
                   ListTile(
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const AdminProductsView(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MobileBrandListView(),
+                        ),
+                      );
                     },
                     title: Text(
                       'All brands',

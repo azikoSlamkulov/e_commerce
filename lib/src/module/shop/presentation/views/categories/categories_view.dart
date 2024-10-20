@@ -66,10 +66,12 @@ class MobileCategoriesView extends StatelessWidget {
       ),
     );
     List<CategoryEntity> allCategories = [];
+    List<String> searchList = [];
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Categories',
         showSearchBtn: true,
+        searchList: searchList,
       ),
       body: Column(
         children: [
@@ -112,11 +114,13 @@ class MobileCategoriesView extends StatelessWidget {
                     padding: REdgeInsets.symmetric(vertical: 16),
                     itemCount: state.allCategories.length,
                     separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(
+                        Divider(
+                      color: Colors.grey[300],
                       height: 0,
                     ),
                     itemBuilder: (BuildContext context, int index) {
                       final category = state.allCategories[index];
+                      searchList.add(category.categoryName!);
                       return ListTile(
                         contentPadding: REdgeInsets.symmetric(horizontal: 40),
                         minVerticalPadding: 1,

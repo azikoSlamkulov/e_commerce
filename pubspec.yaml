@@ -6,22 +6,23 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  #sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=3.3.4 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
 
   #state management
-  flutter_bloc: ^8.1.5
+  flutter_bloc: ^8.1.6
   bloc: ^8.1.4
 
   #remote data
-  firebase_core: ^2.14.0
-  cloud_firestore: ^4.8.1
-  firebase_auth: ^4.6.3
-  firebase_storage: ^11.2.3
-  google_sign_in: ^6.1.4
+  firebase_core: ^3.6.0 
+  cloud_firestore: ^5.4.4
+  firebase_auth: ^5.3.1
+  firebase_storage: ^12.3.2
+  google_sign_in: ^6.2.1
 
   #local data
   shared_preferences: ^2.0.17
@@ -44,6 +45,7 @@ dependencies:
   font_awesome_flutter: ^9.2.0
   country_icons: ^2.0.2
   fluttericon: ^2.0.0
+  
 
   # navigation
   go_router: ^6.0.5
@@ -53,12 +55,17 @@ dependencies:
   intl_utils: ^2.8.3
   pin_code_fields: ^7.4.0
   email_validator: ^2.0.1
-  top_snackbar_flutter: ^2.1.1
+  top_snackbar_flutter: ^3.1.0
   smooth_page_indicator: ^1.0.0+2
   clippy_flutter: ^2.0.0-nullsafety.1
-  flutter_screenutil: ^5.8.4
-  carousel_slider: ^4.1.1
+  flutter_screenutil: ^5.9.0
+  carousel_slider: ^5.0.0
   flutter_rating_bar: ^4.0.1
+
+  #SwipeableButtonAnimation
+  swipeable_button_view: ^0.0.2
+  page_transition: ^2.1.0
+  lottie: ^3.1.2
   
 
   cupertino_icons: ^1.0.2

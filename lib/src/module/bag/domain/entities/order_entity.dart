@@ -8,9 +8,9 @@ class OrderEntity extends Equatable {
   final int? orderNumber;
   final String? trackingNumber;
   final String? status;
-  final List<BagEntity>? items;
-  final String? shippingAddress;
-  final String? paymentMethod;
+  final List<dynamic>? items;
+  final ShippingAddressEntity? shippingAddress;
+  final PaymentCardEntity? paymentMethod;
   final String? deliveryMethod;
   final String? discount;
   final int? totalAmount;

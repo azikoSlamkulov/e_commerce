@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import '../../../../../../lib.dart';
 
 abstract class LocalAuth {
-  Future<bool>? addUserToCache(AuthUserModel userModel);
-  AuthUserModel? getUserFromCache();
+  Future<bool>? addUserToCache(UserModel userModel);
+  UserModel? getUserFromCache();
   Future<bool?> clearCache();
 }
 
@@ -13,19 +14,19 @@ class AuthSharedPreferencesImpl implements LocalAuth {
   AuthSharedPreferencesImpl({required this.authPreferences});
 
   @override
-  Future<bool>? addUserToCache(AuthUserModel userModel) async {
+  Future<bool>? addUserToCache(UserModel userModel) async {
     final _userData = json.encode(userModel.toJson());
     return await authPreferences.setString(
         key: AppTexts.authUserToCacheKey, value: _userData)!;
   }
 
   @override
-  AuthUserModel? getUserFromCache() {
+  UserModel? getUserFromCache() {
     final user = authPreferences.getString(key: AppTexts.authUserToCacheKey);
     if (user == null) {
       return null;
     }
-    return AuthUserModel.fromJson(json.decode(user));
+    return UserModel.fromJson(json.decode(user));
   }
 
   @override

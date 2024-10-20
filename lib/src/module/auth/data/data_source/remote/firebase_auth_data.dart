@@ -3,28 +3,28 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 abstract class FirebaseAuthData {
   // CurrentUser
-  Future<AuthUserModel?> getCurrentUser();
+  Future<UserModel?> getCurrentUser();
 
   Future<bool> checkUserExistsFromForestore({required String userID});
 
-  Future<AuthUserModel> getUserFromForestore({required String userID});
+  Future<UserModel> getUserFromForestore({required String userID});
 
   Future<bool?> createUserToFirestore({required User user});
 
   // Sign Up
-  Future<AuthUserModel> signUp({
+  Future<UserModel> signUp({
     required String email,
     required String password,
   });
 
   // Sign In
-  Future<AuthUserModel> signInWithEmail({
+  Future<UserModel> signInWithEmail({
     required String email,
     required String password,
   });
-  Future<AuthUserModel> signInWithGoogle();
+  Future<UserModel> signInWithGoogle();
 
-  Future<AuthUserModel?> signInWithFacebook();
+  Future<UserModel?> signInWithFacebook();
 
   // Sign Out
   Future<bool> signOut();
@@ -42,10 +42,10 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
 
   // CurrentUser
   @override
-  Future<AuthUserModel?> getCurrentUser() async {
+  Future<UserModel?> getCurrentUser() async {
     final userFromServer = await firebaseAuth.getCurrentUser();
     if (userFromServer != null) {
-      final userModel = AuthUserModel(
+      final userModel = UserModel(
         userID: userFromServer.uid,
         email: userFromServer.email,
         name: userFromServer.displayName,
@@ -59,7 +59,7 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
 
   // Sign Up
   @override
-  Future<AuthUserModel> signUp({
+  Future<UserModel> signUp({
     required String email,
     required String password,
   }) async {
@@ -72,7 +72,7 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
       if (!isUserExists) {
         await createUserToFirestore(user: currentUser.user!);
       }
-      final authUserModel = AuthUserModel(
+      final authUserModel = UserModel(
         userID: currentUser.user!.uid,
         email: currentUser.user!.email,
         name: currentUser.user!.displayName,
@@ -88,8 +88,31 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
   }
 
   // Sign In
+  // @override
+  // Future<AuthUserModel> signInWithGoogle() async {
+  //   try {
+  //     final currentUser = await firebaseAuth.signInWithGoogle();
+  //     final isUserExists = await checkUserExistsFromForestore(
+  //       userID: currentUser.uid,
+  //     );
+  //     if (!isUserExists) {
+  //       await createUserToFirestore(user: currentUser);
+  //     }
+  //     final authUserModel = AuthUserModel(
+  //       userID: currentUser.uid,
+  //       email: currentUser.email,
+  //       name: currentUser.displayName,
+  //       phoneNumber: currentUser.phoneNumber,
+  //       photoURL: currentUser.photoURL,
+  //     );
+  //     return authUserModel;
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
+
   @override
-  Future<AuthUserModel> signInWithGoogle() async {
+  Future<UserModel> signInWithGoogle() async {
     try {
       final currentUser = await firebaseAuth.signInWithGoogle();
       final isUserExists = await checkUserExistsFromForestore(
@@ -98,7 +121,7 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
       if (!isUserExists) {
         await createUserToFirestore(user: currentUser.user!);
       }
-      final authUserModel = AuthUserModel(
+      final authUserModel = UserModel(
         userID: currentUser.user!.uid,
         email: currentUser.user!.email,
         name: currentUser.user!.displayName,
@@ -112,13 +135,13 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
   }
 
   @override
-  Future<AuthUserModel> signInWithFacebook() {
+  Future<UserModel> signInWithFacebook() {
     // TODO: implement signInWithFacebook
     throw UnimplementedError();
   }
 
   @override
-  Future<AuthUserModel> signInWithEmail({
+  Future<UserModel> signInWithEmail({
     required String email,
     required String password,
   }) async {
@@ -131,7 +154,7 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
       if (!isUserExists) {
         await createUserToFirestore(user: currentUser.user!);
       }
-      final authUserModel = AuthUserModel(
+      final authUserModel = UserModel(
         userID: currentUser.user!.uid,
         email: currentUser.user!.email,
         name: currentUser.user!.displayName,
@@ -157,16 +180,16 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
 
   @override
   Future<bool> checkUserExistsFromForestore({required String userID}) async {
-    return firestore.checkExists(
-      id: userID,
+    return firestore.checkDocExists(
+      docId: userID,
       collectionName: 'users',
     );
   }
 
   @override
-  Future<AuthUserModel> getUserFromForestore({required String userID}) async {
+  Future<UserModel> getUserFromForestore({required String userID}) async {
     return firestore.get(
-      id: userID,
+      docId: userID,
       collectionName: 'users',
       fromJson: authFromJson,
     );
@@ -174,7 +197,7 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
 
   @override
   Future<bool> createUserToFirestore({required User user}) async {
-    final currentUser = AuthUserModel(
+    final currentUser = UserModel(
       userID: user.uid,
       email: user.email,
       name: user.displayName,
@@ -182,6 +205,7 @@ class FirebaseAuthDataImpl implements FirebaseAuthData {
       photoURL: user.photoURL,
     );
     return await firestore.create(
+      docId: currentUser.userID!,
       objectModel: currentUser,
       collectionName: 'users',
     );

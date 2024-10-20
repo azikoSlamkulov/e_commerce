@@ -1,67 +1,59 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_commerce/lib.dart';
 
 abstract class FirestoreCore {
-  Future<bool> checkExists({
-    required String id,
+  // Check
+  Future<bool> checkDocExists({
+    required String docId,
     required String collectionName,
   });
-  Future<T> get<T>({
-    required String id,
-    required String collectionName,
-    required T Function(Map body) fromJson,
-  });
-  Future<String> getID({
-    required String collectionName,
-  });
-  Future<String> getCollectionIdById({
+  Future<bool> checkDocExistsFromSecondCollection({
+    required String firstDocId,
+    required String secondDocId,
     required String firstCollectionName,
     required String secondCollectionName,
-    required String userID,
+  });
+
+  // Get Id
+  Future<String> getId({
+    required String collectionName,
+  });
+  Future<String> getDocIdFromSecondCollection({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+  });
+
+  // Get
+  Future<T> get<T>({
+    required String docId,
+    required String collectionName,
+    required T Function(Map body) fromJson,
   });
   Future<List<T>> getList<T>({
     required String collectionName,
     required T Function(Map<String, dynamic> body) fromJson,
   });
-  Future<List<T>> getListFromCollectionByUserID<T>({
-    required String firstCollection,
-    required String secondCollection,
-    required String userID,
+  Future<T> getDocFromSecondCollection<T>({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    required String secondDocId,
     required T Function(Map<String, dynamic> body) fromJson,
   });
-  Future<List<T>> getListFromCollectionByProductID<T>({
-    required String firstCollection,
-    required String secondCollection,
-    required String productID,
-    required T Function(Map<String, dynamic> body) fromJson,
-  });
-  Future<T> getProductQuantity<T>({
-    required String firstCollection,
-    required String secondCollection,
-    required String productID,
-    required String fieldName,
-    required dynamic query,
+  Future<List<T>> getListFromSecondCollection<T>({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
     required T Function(Map<String, dynamic> body) fromJson,
   });
 
-  Future<List<T>> getCategoriesList<T>({
-    required String typeName,
-    required String collectionName,
-    required T Function(Map<String, dynamic> body) fromJson,
-  });
-  Future<List<T>> getSortedListByQuery<T>({
+  Future<List<T>> getListByQuery<T>({
     required String collectionName,
     required String fieldName,
     required dynamic query,
     required T Function(Map<String, dynamic> body) fromJson,
-  });
-  Future<List<ProductModel>> getSortedFakeListByQuery<T>({
-    required String collectionName,
-    required String fieldName,
-    required dynamic query,
-    required ProductModel Function(Map<String, dynamic> body) fromJson,
   });
   Future<List<T>> getListByQueryWithTwoValues<T>({
     required String collectionName,
@@ -83,7 +75,7 @@ abstract class FirestoreCore {
     required dynamic thirdQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   });
-  Future<List<T>> getSortedListByQueryWithFourValues<T>({
+  Future<List<T>> getListByQueryWithFourValues<T>({
     required String collectionName,
     required String firstFieldName,
     required String secondFieldName,
@@ -95,8 +87,7 @@ abstract class FirestoreCore {
     required dynamic fourthQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   });
-
-  Future<List<T>> getSortedListByQueryWithfiveValues<T>({
+  Future<List<T>> getListByQueryWithFiveValues<T>({
     required String collectionName,
     required String firstFieldName,
     required String secondFieldName,
@@ -111,52 +102,104 @@ abstract class FirestoreCore {
     required T Function(Map<String, dynamic> body) fromJson,
   });
 
+  // Post
   Future<bool> create({
-    //required objectEntity,
+    required String docId,
     required objectModel,
     required String collectionName,
   });
-  Future<bool> setReview({
-    //required objectEntity,
-    required objectModel,
-    //required String collectionName,
-  });
-  Future<bool> setProduct({
-    //required objectEntity,
-    required objectModel,
-    // required String collectionName,
-    // required String typeName,
-    // required String categoryName,
-  });
-  Future<bool> setToCollection({
-    required String firstCollection,
-    required String secondCollection,
-    required String firstID,
-    required String secondID,
+  Future<bool> setTwoCollections({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    String? secondDocId,
     required objectModel,
   });
-  Future<bool> createCategory({
-    //required objectEntity,
+
+  //Update
+  Future<bool> update({
+    required String docId,
     required objectModel,
+    required String collectionName,
+  });
+
+  Future<bool> updateSecondCollection({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    String? secondDocId,
+    required objectModel,
+  });
+
+  // Delete
+  Future<bool> delete({
+    required String docId,
+    required String collectionName,
+  });
+  Future<bool> deleteDocFromSecondCollection({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    required String secondDocId,
+  });
+
+  // get Categories
+  Future<List<T>> getCategoriesList<T>({
     required String typeName,
     required String collectionName,
-    required String categoryName,
+    required T Function(Map<String, dynamic> body) fromJson,
   });
-  Future<bool> update({
-    required objectEntity,
-    required objectModel,
-    required String collectionName,
-  });
-  Future<bool> delete({
-    required String id,
-    required String collectionName,
-  });
-  Future<bool> deleteFromCollection({
-    required String firstCollection,
-    required String secondCollection,
-    required String userID,
-    required String productID,
-  });
+
+  // Future<bool> createCategory({
+  //   //required objectEntity,
+  //   required objectModel,
+  //   required String typeName,
+  //   required String collectionName,
+  //   required String categoryName,
+  // });
+
+  // Future<bool> setProduct({
+  //   //required objectEntity,
+  //   required objectModel,
+  //   // required String collectionName,
+  //   // required String typeName,
+  //   // required String categoryName,
+  // });
+
+  // Future<bool> setWithTwoCollections({
+  //   required objectModel,
+  //   required String firstCollectionName,
+  //   required String secondCollectionName,
+  //   required String firstDocId,
+  // });
+
+  // Future<List<ProductModel>> getSortedFakeListByQuery<T>({
+  //   required String collectionName,
+  //   required String fieldName,
+  //   required dynamic query,
+  //   required ProductModel Function(Map<String, dynamic> body) fromJson,
+  // });
+
+  // Future<List<T>> getListFromCollectionByUserID<T>({
+  //   required String firstCollection,
+  //   required String secondCollection,
+  //   required String userID,
+  //   required T Function(Map<String, dynamic> body) fromJson,
+  // });
+  // Future<List<T>> getListFromCollectionByProductID<T>({
+  //   required String firstCollection,
+  //   required String secondCollection,
+  //   required String productID,
+  //   required T Function(Map<String, dynamic> body) fromJson,
+  // });
+  // Future<T> getProductQuantity<T>({
+  //   required String firstCollection,
+  //   required String secondCollection,
+  //   required String productID,
+  //   required String fieldName,
+  //   required dynamic query,
+  //   required T Function(Map<String, dynamic> body) fromJson,
+  // });
 }
 
 // ------------------------------------------------------------------------------------------
@@ -166,35 +209,66 @@ class FirestoreCoreImpl implements FirestoreCore {
 
   FirestoreCoreImpl({required this.firestoreDB});
 
+  // Check
   @override
-  Future<bool> checkExists({
-    required String id,
+  Future<bool> checkDocExists({
+    required String docId,
     required String collectionName,
   }) async {
-    DocumentSnapshot _doc =
-        await firestoreDB.collection(collectionName).doc(id).get();
-    return _doc.exists;
+    DocumentSnapshot doc =
+        await firestoreDB.collection(collectionName).doc(docId).get();
+    return doc.exists;
   }
 
   @override
+  Future<bool> checkDocExistsFromSecondCollection({
+    required String firstDocId,
+    required String secondDocId,
+    required String firstCollectionName,
+    required String secondCollectionName,
+  }) async {
+    DocumentSnapshot doc = await firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
+        .doc(secondDocId)
+        .get();
+    return doc.exists;
+  }
+
+  // Get id
+  @override
+  Future<String> getId({
+    required String collectionName,
+  }) async {
+    return firestoreDB.collection(collectionName).doc().id;
+  }
+
+  @override
+  Future<String> getDocIdFromSecondCollection({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+  }) async {
+    return firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
+        .doc()
+        .id;
+  }
+
+  //------- Get ----------------------------------------------------------------------------------------
+  @override
   Future<T> get<T>({
-    required String id,
+    required String docId,
     required String collectionName,
     required T Function(Map body) fromJson,
   }) async {
-    DocumentSnapshot doc =
-        await firestoreDB.collection(collectionName).doc(id).get();
-    final docMap = doc.data() as Map<String, dynamic>;
-    final object = fromJson(docMap);
-    return object;
-    // if (_doc.exists) {
-    //   final _docMap = _doc.data() as Map<String, dynamic>;
-    //   final _object = fromJson(_docMap);
-    //   return _object;
-    // } else {
-    //   T _object = T();
-    //   return _object;
-    // }
+    DocumentSnapshot response =
+        await firestoreDB.collection(collectionName).doc(docId).get();
+    final docMap = response.data() as Map<String, dynamic>;
+    return fromJson(docMap);
   }
 
   @override
@@ -202,153 +276,73 @@ class FirestoreCoreImpl implements FirestoreCore {
     required String collectionName,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    final _response = await firestoreDB.collection(collectionName).get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    List<T> list = <T>[];
+    final response = await firestoreDB.collection(collectionName).get();
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
+    return list;
   }
 
   @override
-  Future<String> getID({
-    required String collectionName,
-  }) async {
-    return firestoreDB.collection(collectionName).doc().id;
-  }
-
-  @override
-  Future<String> getCollectionIdById({
+  Future<T> getDocFromSecondCollection<T>({
     required String firstCollectionName,
     required String secondCollectionName,
-    required String userID,
+    required String firstDocId,
+    required String secondDocId,
+    required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    return firestoreDB
+    DocumentSnapshot doc = await firestoreDB
         .collection(firstCollectionName)
-        .doc(userID)
+        .doc(firstDocId)
         .collection(secondCollectionName)
-        .doc()
-        .id;
-  }
-
-  // @override
-  // Future<String> getCollectionIdById({
-  //   required String firstCcollectionName,
-  //   required String secondCollectionName,
-  //   required objectModel,
-  // }) async {
-  //   return firestoreDB
-  //       .collection(firstCcollectionName)
-  //       .doc(objectModel.userId)
-  //       .collection(secondCollectionName)
-  //       .doc()
-  //       .id;
-  // }
-
-  @override
-  Future<List<T>> getListFromCollectionByUserID<T>({
-    required String firstCollection,
-    required String secondCollection,
-    required String userID,
-    required T Function(Map<String, dynamic> body) fromJson,
-  }) async {
-    List<T> _list = <T>[];
-    final _response = await firestoreDB
-        .collection(firstCollection)
-        .doc(userID)
-        .collection(secondCollection)
+        .doc(secondDocId)
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
-    }
-    return _list;
+    final docMap = doc.data() as Map<String, dynamic>;
+    return fromJson(docMap);
   }
 
   @override
-  Future<List<T>> getListFromCollectionByProductID<T>({
-    required String firstCollection,
-    required String secondCollection,
-    required String productID,
+  Future<List<T>> getListFromSecondCollection<T>({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    final _response = await firestoreDB
-        .collection(firstCollection)
-        .doc(productID)
-        .collection(secondCollection)
+    List<T> list = <T>[];
+    final response = await firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
-  }
-
-  Future<T> getProductQuantity<T>({
-    required String firstCollection,
-    required String secondCollection,
-    required String productID,
-    required String fieldName,
-    required dynamic query,
-    required T Function(Map<String, dynamic> body) fromJson,
-  }) async {
-    T? object;
-    final _response = await firestoreDB
-        .collection(firstCollection)
-        .doc(productID)
-        .collection(secondCollection)
-        .where(
-          fieldName,
-          isEqualTo: query,
-        )
-        .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      object = fromJson(_doc.data());
-    }
-    return object!;
+    return list;
   }
 
   @override
-  Future<List<T>> getSortedListByQuery<T>({
+  Future<List<T>> getListByQuery<T>({
     required String collectionName,
     required String fieldName,
     required dynamic query,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    //final _response = await firestoreDB.collection(collectionName).get();
-    final _response = await firestoreDB
+    List<T> list = <T>[];
+    final response = await firestoreDB
         .collection(collectionName)
         .where(
           fieldName,
           isEqualTo: query,
         )
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
-  }
-
-  @override
-  Future<List<ProductModel>> getSortedFakeListByQuery<T>({
-    required String collectionName,
-    required String fieldName,
-    required dynamic query,
-    required ProductModel Function(Map<String, dynamic> body) fromJson,
-  }) async {
-    // List<ProductsListModel> _list = FakeProductData().allFakeProducts;
-    // return _list;
-    // TODO: implement getSortedFakeListByQuery
-    throw UnimplementedError();
+    return list;
   }
 
   @override
@@ -361,9 +355,8 @@ class FirestoreCoreImpl implements FirestoreCore {
     required dynamic secondQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    //final _response = await firestoreDB.collection(collectionName).get();
-    final _response = await firestoreDB
+    List<T> list = <T>[];
+    final response = await firestoreDB
         .collection(collectionName)
         .where(
           mainFieldName + firstFieldName,
@@ -374,12 +367,11 @@ class FirestoreCoreImpl implements FirestoreCore {
           isEqualTo: secondQuery,
         )
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
+    return list;
   }
 
   @override
@@ -394,9 +386,8 @@ class FirestoreCoreImpl implements FirestoreCore {
     required dynamic thirdQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    //final _response = await firestoreDB.collection(collectionName).get();
-    final _response = await firestoreDB
+    List<T> list = <T>[];
+    final response = await firestoreDB
         .collection(collectionName)
         .where(
           mainFieldName + firstFieldName,
@@ -411,16 +402,15 @@ class FirestoreCoreImpl implements FirestoreCore {
           isEqualTo: thirdQuery,
         )
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
+    return list;
   }
 
   @override
-  Future<List<T>> getSortedListByQueryWithFourValues<T>({
+  Future<List<T>> getListByQueryWithFourValues<T>({
     required String collectionName,
     required String firstFieldName,
     required String secondFieldName,
@@ -432,9 +422,8 @@ class FirestoreCoreImpl implements FirestoreCore {
     required dynamic fourthQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    //final _response = await firestoreDB.collection(collectionName).get();
-    final _response = await firestoreDB
+    List<T> list = <T>[];
+    final response = await firestoreDB
         .collection(collectionName)
         .where(
           firstFieldName,
@@ -453,16 +442,15 @@ class FirestoreCoreImpl implements FirestoreCore {
           isEqualTo: fourthQuery,
         )
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
+    return list;
   }
 
   @override
-  Future<List<T>> getSortedListByQueryWithfiveValues<T>({
+  Future<List<T>> getListByQueryWithFiveValues<T>({
     required String collectionName,
     required String firstFieldName,
     required String secondFieldName,
@@ -476,9 +464,8 @@ class FirestoreCoreImpl implements FirestoreCore {
     required dynamic fifthQuery,
     required T Function(Map<String, dynamic> body) fromJson,
   }) async {
-    List<T> _list = <T>[];
-    //final _response = await firestoreDB.collection(collectionName).get();
-    final _response = await firestoreDB
+    List<T> list = <T>[];
+    final response = await firestoreDB
         .collection(collectionName)
         .where(
           firstFieldName,
@@ -501,13 +488,229 @@ class FirestoreCoreImpl implements FirestoreCore {
           whereIn: fifthQuery,
         )
         .get();
-    for (final _doc in _response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final _object = fromJson(_doc.data());
-      _list.add(_object);
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
     }
-    return _list;
+    return list;
   }
+
+  // ----- Post ---------------------------------------------------------------------------------
+  @override
+  Future<bool> create({
+    required String docId,
+    required objectModel,
+    required String collectionName,
+  }) async {
+    return await firestoreDB
+        .collection(collectionName)
+        .doc(docId)
+        .get()
+        .then((doc) {
+      final newObject = objectModel.toJson();
+      if (!doc.exists) {
+        firestoreDB
+            .collection(collectionName)
+            .doc(docId)
+            .set(newObject, SetOptions(merge: true));
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  @override
+  Future<bool> setTwoCollections({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    String? secondDocId,
+    required objectModel,
+  }) async {
+    final secondId = firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
+        .doc()
+        .id;
+    return await firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
+        .doc(secondDocId ?? secondId)
+        .get()
+        .then((doc) {
+      final newObject = objectModel.toJson();
+      if (!doc.exists) {
+        firestoreDB
+            .collection(firstCollectionName)
+            .doc(firstDocId)
+            .collection(secondCollectionName)
+            .doc(secondDocId ?? secondId)
+            .set(newObject, SetOptions(merge: true));
+      } else {
+        firestoreDB
+            .collection(firstCollectionName)
+            .doc(firstDocId)
+            .collection(secondCollectionName)
+            .doc(secondDocId ?? secondId)
+            .update(newObject);
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  // -----  Update  --------------------------------------------------------------
+  @override
+  Future<bool> update({
+    required String docId,
+    required objectModel,
+    required String collectionName,
+  }) async {
+    log('objectModel ===>> $objectModel');
+    return await firestoreDB
+        .collection(collectionName)
+        .doc(docId)
+        .get()
+        .then((doc) {
+      final newObjectModel = objectModel.toJson();
+      //log('newObjectModel ===>> ${objectModel.toJson()}');
+      if (doc.exists) {
+        firestoreDB
+            .collection(collectionName)
+            .doc(docId)
+            .update(newObjectModel);
+      }
+
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  @override
+  Future<bool> updateSecondCollection({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    String? secondDocId,
+    required objectModel,
+  }) async {
+    return await firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
+        .doc(firstDocId)
+        .get()
+        .then((doc) {
+      final newObjectModel = objectModel.toJson();
+      if (doc.exists) {
+        firestoreDB
+            .collection(firstCollectionName)
+            .doc(firstDocId)
+            .collection(secondCollectionName)
+            .doc(firstDocId)
+            .update(newObjectModel);
+      }
+      return true;
+    }).onError((error, stackTrace) {
+      return false;
+    });
+  }
+
+  // -------- Delete ------------------------------------------------------------------
+  @override
+  Future<bool> delete({
+    required String docId,
+    required String collectionName,
+  }) async {
+    return await firestoreDB
+        .collection(collectionName)
+        .doc(docId)
+        .delete()
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+  }
+
+  @override
+  Future<bool> deleteDocFromSecondCollection({
+    required String firstCollectionName,
+    required String secondCollectionName,
+    required String firstDocId,
+    required String secondDocId,
+  }) async {
+    return await firestoreDB
+        .collection(firstCollectionName)
+        .doc(firstDocId)
+        .collection(secondCollectionName)
+        .doc(secondDocId)
+        .delete()
+        .then((value) => true)
+        .onError((error, stackTrace) => false);
+  }
+
+  //  ------ Get categories ----------------------------------------------------
+
+  Future<List<T>> getCategoriesList<T>({
+    required String typeName,
+    required String collectionName,
+    required T Function(Map<String, dynamic> body) fromJson,
+  }) async {
+    List<T> list = <T>[];
+    final response = await firestoreDB
+        .collection('categories')
+        .where('type', isEqualTo: typeName)
+        .where('collection', isEqualTo: collectionName)
+        .get();
+    for (final doc in response.docs) {
+      final object = fromJson(doc.data());
+      list.add(object);
+    }
+    return list;
+  }
+
+  // @override
+  // Future<bool> createCategory({
+  //   //required objectEntity,
+  //   required objectModel,
+  //   required String typeName,
+  //   required String collectionName,
+  //   required String categoryName,
+  // }) async {
+  //   return await firestoreDB
+  //       .collection('categories')
+  //       .doc(typeName)
+  //       .collection(typeName)
+  //       // .doc(user.userID)
+  //       // .collection('profile')
+  //       .doc(collectionName)
+  //       .collection(collectionName)
+  //       // .doc('2')
+  //       // .collection(categoryName)
+  //       .doc()
+  //       .get()
+  //       .then((_doc) {
+  //     final newObject = objectModel.toJson();
+  //     if (!_doc.exists) {
+  //       firestoreDB
+  //           .collection('categories')
+  //           .doc(typeName)
+  //           .collection(typeName)
+  //           .doc(collectionName)
+  //           .collection(collectionName)
+  //           // .doc('2')
+  //           // .collection(categoryName)
+  //           .doc()
+  //           .set(newObject, SetOptions(merge: true));
+  //     }
+  //     return true;
+  //   }).onError((error, stackTrace) {
+  //     return false;
+  //   });
+  // }
 
   // @override
   // Future<bool?> create({
@@ -548,217 +751,61 @@ class FirestoreCoreImpl implements FirestoreCore {
   //   });
   // }
 
-  @override
-  Future<bool> setToCollection({
-    required String firstCollection,
-    required String secondCollection,
-    required String firstID,
-    required String secondID,
-    required objectModel,
-  }) async {
-    return await firestoreDB
-        .collection(firstCollection)
-        .doc(firstID)
-        .collection(secondCollection)
-        .doc(secondID)
-        .get()
-        .then((_doc) {
-      final newObject = objectModel.toJson();
-      if (!_doc.exists) {
-        firestoreDB
-            .collection(firstCollection)
-            .doc(firstID)
-            .collection(secondCollection)
-            .doc(secondID)
-            .set(newObject, SetOptions(merge: true));
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
+  //   @override
+  // Future<bool> setWithTwoCollections({
+  //   required objectModel,
+  //   required String firstCollectionName,
+  //   required String secondCollectionName,
+  //   required String firstDocId,
+  // }) async {
+  //   final secondDocId = firestoreDB
+  //       .collection(firstCollectionName)
+  //       .doc(firstDocId)
+  //       .collection(secondCollectionName)
+  //       .doc()
+  //       .id;
+  //   return await firestoreDB
+  //       .collection(firstCollectionName)
+  //       .doc(firstDocId)
+  //       .collection(secondCollectionName)
+  //       .doc(secondDocId)
+  //       .get()
+  //       .then((_doc) {
+  //     final newObject = objectModel.toJson();
+  //     if (!_doc.exists) {
+  //       firestoreDB
+  //           .collection(firstCollectionName)
+  //           .doc(firstDocId)
+  //           .collection(secondCollectionName)
+  //           .doc(secondDocId)
+  //           .set(newObject, SetOptions(merge: true));
+  //     }
+  //     // } else {
+  //     //   firestoreDB
+  //     //       .collection(firstCollectionName)
+  //     //       .doc(firstDocId)
+  //     //       .collection(secondCollectionName)
+  //     //       .doc(secondDocId)
+  //     //       .update(newObject);
+  //     // }
+  //     return true;
+  //   }).onError((error, stackTrace) {
+  //     return false;
+  //   });
+  // }
 
-  @override
-  Future<bool> create({
-    //required objectEntity,
-    required objectModel,
-    required String collectionName,
-  }) async {
-    return await firestoreDB
-        .collection(collectionName)
-        // .doc(user.userID)
-        // .collection('profile')
-        .doc(objectModel.id)
-        .get()
-        .then((_doc) {
-      final newObject = objectModel.toJson();
-      if (!_doc.exists) {
-        firestoreDB
-            .collection(collectionName)
-            .doc(objectModel.id)
-            .set(newObject, SetOptions(merge: true));
-        //log('newObject ====>>>> $newObject');
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
-
-  @override
-  Future<bool> setReview({
-    required objectModel,
-    //required String collectionName,
-  }) async {
-    return await firestoreDB
-        .collection('products')
-        .doc(objectModel.productID)
-        .collection('reviews')
-        .doc(objectModel.userID)
-        .get()
-        .then((_doc) {
-      final newObject = objectModel.toJson();
-      if (!_doc.exists) {
-        firestoreDB
-            .collection('products')
-            .doc(objectModel.productID)
-            .collection('reviews')
-            .doc(objectModel.userID)
-            .set(newObject, SetOptions(merge: true));
-      } else {
-        firestoreDB
-            .collection('products')
-            .doc(objectModel.productID)
-            .collection('reviews')
-            .doc(objectModel.userID)
-            .update(newObject);
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
-
-  @override
-  Future<bool> update({
-    required objectEntity,
-    required objectModel,
-    required String collectionName,
-  }) async {
-    return await firestoreDB
-        .collection(collectionName)
-        .doc(objectEntity.userID)
-        .get()
-        .then((_userDoc) {
-      final _newUser = objectModel.toJson();
-      if (_userDoc.exists) {
-        firestoreDB
-            .collection(collectionName)
-            .doc(objectEntity.userID)
-            .update(_newUser);
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
-
-  @override
-  Future<bool> setProduct({
-    //required objectEntity,
-    required objectModel,
-    //required String typeName,
-    // required String collectionName,
-    // required String categoryName,
-  }) async {
-    return await firestoreDB
-        .collection('products')
-        .doc(objectModel.type)
-        .collection(objectModel.type)
-        .doc(objectModel.collection)
-        .collection(objectModel.collection)
-        .doc(objectModel.category)
-        .collection(objectModel.category)
-        .doc()
-        .get()
-        .then((_doc) {
-      final newObject = objectModel.toJson();
-      if (!_doc.exists) {
-        firestoreDB
-            .collection('products')
-            .doc(objectModel.type)
-            .collection(objectModel.type)
-            .doc(objectModel.collection)
-            .collection(objectModel.collection)
-            .doc(objectModel.category)
-            .collection(objectModel.category)
-            .doc()
-            .set(newObject, SetOptions(merge: true));
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
-
-  Future<List<T>> getCategoriesList<T>({
-    required String typeName,
-    required String collectionName,
-    required T Function(Map<String, dynamic> body) fromJson,
-  }) async {
-    List<T> list = <T>[];
-    final response = await firestoreDB
-        .collection('categories')
-        .where('type', isEqualTo: typeName)
-        .where('collection', isEqualTo: collectionName)
-        .get();
-    for (final doc in response.docs) {
-      //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
-      final object = fromJson(doc.data());
-      list.add(object);
-    }
-    return list;
-  }
-
-  @override
-  Future<bool> createCategory({
-    //required objectEntity,
-    required objectModel,
-    required String typeName,
-    required String collectionName,
-    required String categoryName,
-  }) async {
-    return await firestoreDB
-        .collection('categories')
-        .doc(typeName)
-        .collection(typeName)
-        // .doc(user.userID)
-        // .collection('profile')
-        .doc(collectionName)
-        .collection(collectionName)
-        // .doc('2')
-        // .collection(categoryName)
-        .doc()
-        .get()
-        .then((_doc) {
-      final newObject = objectModel.toJson();
-      if (!_doc.exists) {
-        firestoreDB
-            .collection('categories')
-            .doc(typeName)
-            .collection(typeName)
-            .doc(collectionName)
-            .collection(collectionName)
-            // .doc('2')
-            // .collection(categoryName)
-            .doc()
-            .set(newObject, SetOptions(merge: true));
-      }
-      return true;
-    }).onError((error, stackTrace) {
-      return false;
-    });
-  }
+  // @override
+  // Future<List<ProductModel>> getSortedFakeListByQuery<T>({
+  //   required String collectionName,
+  //   required String fieldName,
+  //   required dynamic query,
+  //   required ProductModel Function(Map<String, dynamic> body) fromJson,
+  // }) async {
+  //   // List<ProductsListModel> _list = FakeProductData().allFakeProducts;
+  //   // return _list;
+  //   // TODO: implement getSortedFakeListByQuery
+  //   throw UnimplementedError();
+  // }
 
   // @override
   // Future<bool?> createNewUser({required UserEntity user}) async {
@@ -790,33 +837,108 @@ class FirestoreCoreImpl implements FirestoreCore {
   //   });
   // }
 
-  @override
-  Future<bool> delete({
-    required String id,
-    required String collectionName,
-  }) async {
-    return await firestoreDB
-        .collection(collectionName)
-        .doc(id)
-        .delete()
-        .then((value) => true)
-        .onError((error, stackTrace) => false);
-  }
+  // @override
+  // Future<bool> setProduct({
+  //   //required objectEntity,
+  //   required objectModel,
+  //   //required String typeName,
+  //   // required String collectionName,
+  //   // required String categoryName,
+  // }) async {
+  //   return await firestoreDB
+  //       .collection('products')
+  //       .doc(objectModel.type)
+  //       .collection(objectModel.type)
+  //       .doc(objectModel.collection)
+  //       .collection(objectModel.collection)
+  //       .doc(objectModel.category)
+  //       .collection(objectModel.category)
+  //       .doc()
+  //       .get()
+  //       .then((_doc) {
+  //     final newObject = objectModel.toJson();
+  //     if (!_doc.exists) {
+  //       firestoreDB
+  //           .collection('products')
+  //           .doc(objectModel.type)
+  //           .collection(objectModel.type)
+  //           .doc(objectModel.collection)
+  //           .collection(objectModel.collection)
+  //           .doc(objectModel.category)
+  //           .collection(objectModel.category)
+  //           .doc()
+  //           .set(newObject, SetOptions(merge: true));
+  //     }
+  //     return true;
+  //   }).onError((error, stackTrace) {
+  //     return false;
+  //   });
+  // }
 
-  @override
-  Future<bool> deleteFromCollection({
-    required String firstCollection,
-    required String secondCollection,
-    required String userID,
-    required String productID,
-  }) async {
-    return await firestoreDB
-        .collection(firstCollection)
-        .doc(userID)
-        .collection(secondCollection)
-        .doc(productID)
-        .delete()
-        .then((value) => true)
-        .onError((error, stackTrace) => false);
-  }
+  // @override
+  // Future<List<T>> getListFromCollectionByUserID<T>({
+  //   required String firstCollection,
+  //   required String secondCollection,
+  //   required String userID,
+  //   required T Function(Map<String, dynamic> body) fromJson,
+  // }) async {
+  //   List<T> _list = <T>[];
+  //   final _response = await firestoreDB
+  //       .collection(firstCollection)
+  //       .doc(userID)
+  //       .collection(secondCollection)
+  //       .get();
+  //   for (final _doc in _response.docs) {
+  //     //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+  //     final _object = fromJson(_doc.data());
+  //     _list.add(_object);
+  //   }
+  //   return _list;
+  // }
+
+  // @override
+  // Future<List<T>> getListFromCollectionByProductID<T>({
+  //   required String firstCollection,
+  //   required String secondCollection,
+  //   required String productID,
+  //   required T Function(Map<String, dynamic> body) fromJson,
+  // }) async {
+  //   List<T> _list = <T>[];
+  //   final _response = await firestoreDB
+  //       .collection(firstCollection)
+  //       .doc(productID)
+  //       .collection(secondCollection)
+  //       .get();
+  //   for (final _doc in _response.docs) {
+  //     //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+  //     final _object = fromJson(_doc.data());
+  //     _list.add(_object);
+  //   }
+  //   return _list;
+  // }
+
+  // Future<T> getProductQuantity<T>({
+  //   required String firstCollection,
+  //   required String secondCollection,
+  //   required String productID,
+  //   required String fieldName,
+  //   required dynamic query,
+  //   required T Function(Map<String, dynamic> body) fromJson,
+  // }) async {
+  //   T? object;
+  //   final _response = await firestoreDB
+  //       .collection(firstCollection)
+  //       .doc(productID)
+  //       .collection(secondCollection)
+  //       .where(
+  //         fieldName,
+  //         isEqualTo: query,
+  //       )
+  //       .get();
+  //   for (final _doc in _response.docs) {
+  //     //final _doc = <T>.fromJson(doc.data() as Map<String, dynamic>);
+  //     object = fromJson(_doc.data());
+  //   }
+  //   return object!;
+  // }
 }

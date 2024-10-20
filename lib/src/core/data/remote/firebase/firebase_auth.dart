@@ -265,6 +265,24 @@ class FirebaseAuthCoreImpl implements FirebaseAuthCore {
     }
   }
 
+  // @override
+  // Future<User> signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  //     final GoogleSignInAuthentication? googleAuth =
+  //         await googleUser?.authentication;
+  //     final authCredential = GoogleAuthProvider.credential(
+  //       accessToken: googleAuth?.accessToken,
+  //       idToken: googleAuth?.idToken,
+  //     );
+  //     User? result = firebaseAuth.currentUser;
+  //     return result!;
+  //     //return await signInWithCredential(credential: authCredential);
+  //   } catch (e) {
+  //     throw Exception(e.toString());
+  //   }
+  // }
+
   @override
   Future<UserCredential> signInWithGoogle() async {
     try {
@@ -298,14 +316,15 @@ class FirebaseAuthCoreImpl implements FirebaseAuthCore {
       verificationCompleted: (PhoneAuthCredential credential) async {},
       verificationFailed: (FirebaseAuthException e) async {
         if (e.code == 'invalid-phone-number') {
-          showTopSnackBar(
-            context!,
-            const CustomSnackBar.error(
-              message: "Предоставленный номер телефона недействителен.",
-            ),
-            animationDuration: const Duration(seconds: 3),
-            reverseAnimationDuration: const Duration(seconds: 1),
-          );
+          //TODO Сделать Snackbar
+          // showTopSnackBar(
+          //   context!,
+          //   const CustomSnackBar.error(
+          //     message: "Предоставленный номер телефона недействителен.",
+          //   ),
+          //   animationDuration: const Duration(seconds: 3),
+          //   reverseAnimationDuration: const Duration(seconds: 1),
+          // );
           // await CustomDialog().getDialog(
           //   title: "Ошибка!",
           //   contentText: "Предоставленный номер телефона недействителен.",
@@ -313,38 +332,38 @@ class FirebaseAuthCoreImpl implements FirebaseAuthCore {
           //   onPressed: Get.back,
           // );
         } else if (e.code == 'too-many-requests') {
-          showTopSnackBar(
-            context!,
-            const CustomSnackBar.error(
-              message:
-                  "Мы заблокировали из-за необычной активности. Попробуйте позже.",
-            ),
-            animationDuration: const Duration(seconds: 3),
-            reverseAnimationDuration: const Duration(seconds: 1),
-          );
+          // showTopSnackBar(
+          //   context!,
+          //   const CustomSnackBar.error(
+          //     message:
+          //         "Мы заблокировали из-за необычной активности. Попробуйте позже.",
+          //   ),
+          //   animationDuration: const Duration(seconds: 3),
+          //   reverseAnimationDuration: const Duration(seconds: 1),
+          // );
         } else {
-          showTopSnackBar(
-            context!,
-            const CustomSnackBar.error(
-              message: "Что-то пошло не так. Пожалуйста, попытайтесь еще раз",
-            ),
-            animationDuration: const Duration(seconds: 3),
-            reverseAnimationDuration: const Duration(seconds: 1),
-          );
+          // showTopSnackBar(
+          //   context!,
+          //   const CustomSnackBar.error(
+          //     message: "Что-то пошло не так. Пожалуйста, попытайтесь еще раз",
+          //   ),
+          //   animationDuration: const Duration(seconds: 3),
+          //   reverseAnimationDuration: const Duration(seconds: 1),
+          // );
         }
       },
       codeSent: (String? verificationId, int? resendToken) async {
         _verificationId = verificationId;
         _resendToken = resendToken;
         log('codeSent');
-        showTopSnackBar(
-          context!,
-          const CustomSnackBar.info(
-            message: "Код отправлен. Пожалуйста, проверьте свои сообщения.",
-          ),
-          animationDuration: const Duration(seconds: 3),
-          reverseAnimationDuration: const Duration(seconds: 1),
-        );
+        // showTopSnackBar(
+        //   context!,
+        //   const CustomSnackBar.info(
+        //     message: "Код отправлен. Пожалуйста, проверьте свои сообщения.",
+        //   ),
+        //   animationDuration: const Duration(seconds: 3),
+        //   reverseAnimationDuration: const Duration(seconds: 1),
+        // );
       },
       forceResendingToken: _resendToken,
       timeout: const Duration(seconds: 120),
@@ -418,6 +437,7 @@ class FirebaseAuthCoreImpl implements FirebaseAuthCore {
     required AuthCredential credential,
   }) async {
     try {
+      // User? result = firebaseAuth.currentUser;
       return await firebaseAuth.signInWithCredential(credential);
     } on FirebaseAuthException catch (e) {
       throw Exception(e);

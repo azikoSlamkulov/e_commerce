@@ -10,20 +10,20 @@ import '../../../../../lib.dart';
 
 abstract class AuthRepo {
   // Current User
-  Future<Either<Failure, AuthUserEntity?>> getCurrentUser();
+  Future<Either<Failure, UserEntity?>> getCurrentUser();
 
   // Sign Up
-  Future<Either<Failure, AuthUserEntity>> signUp({
+  Future<Either<Failure, UserEntity>> signUp({
     required String email,
     required String password,
   });
 
   // Sign In
-  Future<Either<Failure, AuthUserEntity>> signInWithGoogle();
+  Future<Either<Failure, UserEntity>> signInWithGoogle();
 
-  Future<Either<Failure, AuthUserEntity>> signInWithFacebook();
+  Future<Either<Failure, UserEntity>> signInWithFacebook();
 
-  Future<Either<Failure, AuthUserEntity>> signInWithEmail({
+  Future<Either<Failure, UserEntity>> signInWithEmail({
     required String email,
     required String password,
   });

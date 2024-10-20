@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:e_commerce/lib.dart';
-import 'package:equatable/equatable.dart';
+import 'package:e_commerce/src/module/admin/admin_products/presentation/logic/single_toggle_btn/single_toggle_btn_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,13 +29,13 @@ class Test extends StatelessWidget {
         children: [
           Text(itemName, style: TextStyle(color: Colors.black)),
           50.verticalSpace,
-          ProductSortWidget(
-            selectedSortBtnCallback: (value) {
-              final String asd;
-              asd = value;
-              log(asd);
-            },
-          ),
+          // ProductSortWidget(
+          //   selectedSortBtnCallback: (value) {
+          //     final String asd;
+          //     asd = value;
+          //     log(asd);
+          //   },
+          // ),
           ElevatedButton(
             onPressed: () {
               itemName = '444';
@@ -60,8 +60,8 @@ class Test extends StatelessWidget {
             create: (context) => SingleToggleBtnCubit(),
             child: BlocBuilder<SingleToggleBtnCubit, SingleToggleBtnState>(
               builder: (context, state) {
-                if (state is SingleToggleBtnSelectedState) {
-                  selectedBtn = state.selectedName;
+                if (state is SingleSelectedState) {
+                  selectedBtn = state.collectionChoice;
                 }
                 return Center(
                   child: Column(

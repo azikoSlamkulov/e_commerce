@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_commerce/lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,85 +7,126 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MobileCheckoutView extends StatelessWidget {
   const MobileCheckoutView({
-    Key? key,
     required this.allProducts,
     required this.totalAmount,
+    required this.userId,
+    Key? key,
   }) : super(key: key);
 
   final List<BagEntity> allProducts;
-  final double totalAmount;
+  final String totalAmount;
+  final String userId;
 
   @override
   Widget build(BuildContext context) {
-    String userID;
-    return BlocBuilder<AuthBloc, AuthState>(
-      builder: (context, state) {
-        if (state is AuthenticatedState) {
-          return NestedCheckoutView(
-            allProducts: allProducts,
-            totalAmount: totalAmount,
-            user: state.user,
+    return BlocListener<BagBloc, BagState>(
+      listener: (context, state) {
+        if (state is AddedOrderState) {
+          BlocProvider.of<BagBloc>(context).add(
+            ClearProductCartEvent(),
           );
-          // userID = state.user.userID!;
-          // BlocProvider.of<BagBloc>(context).add(
-          //   GetAllProductFromCartEvent(),
-          // );
-
-          // return BlocListener<BagBloc, BagState>(
-          //   listener: (context, state) {
-          //     if (state is DeletedProductFromCartState) {
-          //       BlocProvider.of<BagBloc>(context).add(
-          //         GetAllProductFromCartEvent(),
-          //       );
-          //     }
-          //     // if (state is NewQuantityState) {
-          //     //   BlocProvider.of<BagBloc>(context).add(
-          //     //     GetAllProductFromCartEvent(),
-          //     //   );
-          //     // }
-          //   },
-          //   child: BlocBuilder<BagBloc, BagState>(
-          //     builder: (context, state) {
-          //       if (state is LoadingBagState) {
-          //         return const Center(child: CircularProgressIndicator());
-          //       } else if (state is LoadedAllProductsFromCartState) {
-          //         return NestedMobileBagViwe(
-          //           allProducts: state.allProducts,
-          //           totalAmount: state.totalAmount,
-          //         );
-          //       } else if (state is FailureState) {
-          //         //return MyErrorWidget('${state.exception}');
-          //         return Text('11111');
-          //       }
-          //       return Text('22222');
-          //     },
-          //   ),
-          // );
-        } else if (state is UnAuthenticatedState) {
-          return AuthCheckView();
         }
-        return const Center(
-          child: Text(
-            'Some Error',
-            style: TextStyle(color: Colors.black),
-          ),
-        );
+        if (state is ClearedProductCartState) {
+          //context.goNamed(AppPage.success.toName);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SuccessViewSecond(),
+            ),
+          );
+        }
       },
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                sl<ProfileBloc>()..add(GetUserInfoEvent(userId)),
+          ),
+        ],
+        child: BlocListener<ProfileBloc, ProfileState>(
+          listener: (context, state) {
+            if (state is ProfileInitial) {
+              BlocProvider.of<ProfileBloc>(context)
+                  .add(GetUserInfoEvent(userId));
+            }
+          },
+          child: BlocBuilder<ProfileBloc, ProfileState>(
+            builder: (context, state) {
+              if (state is LoadingProfileState) {
+                return const LoadingWidget();
+              } else if (state is LoadedUserProfileState) {
+                final ShippingAddressEntity shippingAddress;
+                final PaymentCardEntity paymentCard;
+                shippingAddress = state.user.shippingAddresses!.isNotEmpty
+                    ? state.user.shippingAddresses!
+                        .firstWhere((e) => e.isCheked == true)
+                    : ShippingAddressEntity();
+                paymentCard = state.user.paymentMethods!.isNotEmpty
+                    ? state.user.paymentMethods!
+                        .firstWhere((e) => e.isCheked == true)
+                    : PaymentCardEntity();
+
+                return NestedCheckoutView(
+                  allProducts: allProducts,
+                  totalAmount: double.parse(totalAmount),
+                  user: state.user,
+                  shippingAddress: shippingAddress,
+                  paymentCard: paymentCard,
+                );
+              }
+              return const Center(
+                  child: Text(
+                'Some Error',
+                style: TextStyle(color: Colors.black),
+              ));
+            },
+          ),
+        ),
+      ),
     );
   }
 }
 
-class NestedCheckoutView extends StatelessWidget {
+class NestedCheckoutView extends StatefulWidget {
   final List<BagEntity> allProducts;
   final double totalAmount;
-  final AuthUserEntity user;
+  final UserEntity user;
+  final ShippingAddressEntity shippingAddress;
+  final PaymentCardEntity paymentCard;
 
   const NestedCheckoutView({
     super.key,
     required this.allProducts,
     required this.totalAmount,
     required this.user,
+    required this.shippingAddress,
+    required this.paymentCard,
   });
+
+  @override
+  State<NestedCheckoutView> createState() => _NestedCheckoutViewState();
+}
+
+class _NestedCheckoutViewState extends State<NestedCheckoutView> {
+  ShippingAddressEntity getShippingAddress(
+      List<ShippingAddressEntity> addresses) {
+    return addresses.firstWhere((e) => e.isCheked == true);
+  }
+
+  PaymentCardEntity getPaymentCard(List<PaymentCardEntity> cards) {
+    return cards.firstWhere((e) => e.isCheked == true);
+  }
+
+  bool isFinished = false;
+  ShippingAddressEntity newaddress = ShippingAddressEntity();
+
+  DelveryEntity selectedDeliveryMethod = DelveryEntity(
+    id: 1,
+    name: 'FedEx',
+    days: 3,
+    price: 15,
+    image: AppAssets.fedex(width: 60.h, height: 37.h),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -95,123 +138,54 @@ class NestedCheckoutView extends StatelessWidget {
         showBackBtn: true,
       ),
       body: Padding(
-        padding: REdgeInsets.symmetric(horizontal: 16, vertical: 36),
+        padding: REdgeInsets.symmetric(horizontal: 16, vertical: 20), // 36
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             /// Shipping address
-            checkoutTitle('Shipping address'),
+            const CheckoutTitleWidget(text: 'Shipping address'),
             20.verticalSpace,
-            Container(
-              height: 108.h,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5.r),
-              ),
-              child: Padding(
-                padding: REdgeInsets.symmetric(horizontal: 25, vertical: 18),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text('Jane Doe', style: AppTextStyles.black14Bold),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    MobileShippingAddressView(),
-                              ),
-                            );
-                          },
-                          child: Text('Change', style: AppTextStyles.red14),
-                        ),
-                      ],
-                    ),
-                    12.verticalSpace,
-                    Text('Toktogul, 45', style: AppTextStyles.black14),
-                    5.verticalSpace,
-                    Text(
-                      'Bishkek, Kyrgyzstan',
-                      style: AppTextStyles.black14,
-                    ),
-                  ],
-                ),
+            BlocProvider.value(
+              value: BlocProvider.of<ProfileBloc>(context),
+              child: CheckoutShippingAddressCardWidget(
+                user: widget.user,
+                shippingAddress: widget.shippingAddress,
+                //shippingAddress: ShippingAddressEntity(),
               ),
             ),
             57.verticalSpace,
 
             /// Payment method
-            Padding(
-              padding: REdgeInsets.only(right: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  checkoutTitle('Payment'),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              const MobilePaymentMethodsView(),
-                        ),
-                      );
-                    },
-                    child: Text('Change', style: AppTextStyles.red14),
-                  ),
-                ],
+            BlocProvider.value(
+              value: BlocProvider.of<ProfileBloc>(context),
+              child: CheckoutPaymentCardWidget(
+                user: widget.user,
+                paymentCard: widget.paymentCard,
+                //paymentCard: PaymentCardEntity(),
               ),
-            ),
-            20.verticalSpace,
-            Row(
-              children: [
-                Container(
-                  height: 38.h,
-                  width: 64.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5.r),
-                  ),
-                  child: AppAssets.mastercard(width: 64.h, height: 38.h),
-                ),
-                17.horizontalSpace,
-                Text('***** ***** ***** ***3947', style: AppTextStyles.black14),
-              ],
             ),
             57.verticalSpace,
 
             /// Delivery method
-            checkoutTitle('Delivery method'),
+            const CheckoutTitleWidget(text: 'Delivery method'),
             21.verticalSpace,
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                buildDileveryCard(
-                  image: AppAssets.fedex(width: 60.h, height: 37.h),
-                ),
-                22.horizontalSpace,
-                buildDileveryCard(
-                  image: AppAssets.usps(width: 60.h, height: 37.h),
-                ),
-                22.horizontalSpace,
-                buildDileveryCard(
-                  image: AppAssets.dhl(width: 60.h, height: 37.h),
-                ),
-              ],
+            DeliveryCardToggleButton(
+              selectedItemsCallback: (value) => setState(() {
+                selectedDeliveryMethod = value;
+              }),
             ),
-            52.verticalSpace,
+            40.verticalSpace,
 
-            ///
-            buildOrder(text: 'Order:', value: '112'),
+            /// Order info
+            buildOrder(text: 'Order:', value: widget.totalAmount.toInt()),
             14.verticalSpace,
-            buildOrder(text: 'Delivery:', value: '15'),
+            buildOrder(text: 'Delivery:', value: selectedDeliveryMethod.price!),
             14.verticalSpace,
-            buildOrder(text: 'Summary:', value: '127'),
-            45.verticalSpace,
+            buildOrder(
+                text: 'Summary:',
+                value: (widget.totalAmount + selectedDeliveryMethod.price!)
+                    .toInt()),
+            40.verticalSpace,
 
             /// Button
             CustomButton(
@@ -219,25 +193,29 @@ class NestedCheckoutView extends StatelessWidget {
                 SetOrderEvent(
                   OrderEntity(
                     orderNumber: 1947034,
-                    userID: user.userID,
-                    userName: user.name,
+                    userID: widget.user.userID,
+                    userName: widget.user.name,
                     trackingNumber: 'IW3475453455',
                     //status: 'delivered',
-                    items: allProducts,
-                    shippingAddress: 'United States',
-                    paymentMethod: 'paymentMethod',
-                    deliveryMethod: 'FedEx, 3 days, 15',
+                    items: widget.allProducts,
+                    // shippingAddress: getShippingAddress(
+                    //   widget.user.shippingAddresses!
+                    //       as List<ShippingAddressEntity>,
+                    // ),
+                    shippingAddress: widget.shippingAddress,
+                    // paymentMethod: getPaymentCard(
+                    //   widget.user.paymentMethods! as List<PaymentCardEntity>,
+                    // ),
+                    paymentMethod: widget.paymentCard,
+                    deliveryMethod:
+                        '${selectedDeliveryMethod.name}, ${selectedDeliveryMethod.days} days, ${selectedDeliveryMethod.price}',
                     discount: '10%, Personal promo code',
-                    totalAmount: totalAmount.toInt(),
+                    totalAmount:
+                        (widget.totalAmount + selectedDeliveryMethod.price!)
+                            .toInt(),
                   ),
                 ),
               ),
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const SuccessViewSecond(),
-              //   ),
-              // );
               text: 'SUBMIT ORDER',
             ),
           ],
@@ -245,51 +223,20 @@ class NestedCheckoutView extends StatelessWidget {
       ),
     );
   }
-}
 
-checkoutTitle(String text) {
-  return Text(
-    text,
-    style: AppTextStyles.black16Bold,
-  );
-}
-
-buildDileveryCard({required Image image}) {
-  return Expanded(
-    child: Container(
-      height: 72.h,
-      width: 100.h,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5.r),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          image,
-          //3.verticalSpace,
-          Text(
-            '2-3 days',
-            style: AppTextStyles.grey11,
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-buildOrder({required String text, required String value}) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        text,
-        style: AppTextStyles.grey16,
-      ),
-      Text(
-        '$value\$',
-        style: AppTextStyles.black16Bold,
-      ),
-    ],
-  );
+  buildOrder({required String text, required int value}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          text,
+          style: AppTextStyles.grey16,
+        ),
+        Text(
+          '$value\$',
+          style: AppTextStyles.black16Bold,
+        ),
+      ],
+    );
+  }
 }

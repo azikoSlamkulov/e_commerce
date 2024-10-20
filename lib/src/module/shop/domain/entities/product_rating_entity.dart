@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class ProductRatingEntity extends Equatable {
-  final int? totalRating;
+  final double? totalRating;
   final int? totalUser;
   final int? one;
   final int? two;

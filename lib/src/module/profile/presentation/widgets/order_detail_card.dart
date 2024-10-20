@@ -13,7 +13,7 @@ class OrderDetailCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      //color: Colors.blue,
+      color: Colors.white,
       clipBehavior: Clip.hardEdge,
       //elevation: 10,
       shape: RoundedRectangleBorder(
@@ -25,21 +25,26 @@ class OrderDetailCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           /// Image
-          Container(
-            height: 155.h,
-            width: 104.h,
-            decoration: BoxDecoration(
-              //color: Colors.greenAccent,
-              image: DecorationImage(
-                image: NetworkImage(product.productImgUrl!),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.r),
-                bottomLeft: Radius.circular(10.r),
-              ),
-            ),
+          CachedNetworkImageWidget(
+            imageUrl: product.productImgUrl!,
+            height: 126.h,
+            width: 135.w,
           ),
+          // Container(
+          //   height: 155.h,
+          //   width: 104.w,
+          //   decoration: BoxDecoration(
+          //     //color: Colors.greenAccent,
+          //     image: DecorationImage(
+          //       image: NetworkImage(product.productImgUrl!),
+          //       fit: BoxFit.cover,
+          //     ),
+          //     borderRadius: BorderRadius.only(
+          //       topLeft: Radius.circular(10.r),
+          //       bottomLeft: Radius.circular(10.r),
+          //     ),
+          //   ),
+          // ),
           // Image.network(
           //   product.photoURL!,
           //   fit: BoxFit.fill,
@@ -48,83 +53,86 @@ class OrderDetailCard extends StatelessWidget {
           // ),
           Expanded(
             child: Padding(
-              padding: REdgeInsets.all(15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          //11.verticalSpace,
+              padding: REdgeInsets.all(11),
+              child: SizedBox(
+                height: 104.h,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            //11.verticalSpace,
 
-                          ///Category
-                          Text(
-                            product.name!,
-                            style: AppTextStyles.black16Bold,
-                          ),
-                          5.verticalSpace,
+                            ///Category
+                            Text(
+                              product.name!,
+                              style: AppTextStyles.black16Bold,
+                            ),
+                            //5.verticalSpace,
 
-                          ///Brand
-                          Text(
-                            product.name!,
-                            style: AppTextStyles.grey11,
-                          ),
-                          7.verticalSpace,
+                            ///Brand
+                            Text(
+                              product.name!,
+                              style: AppTextStyles.grey11,
+                            ),
+                            //7.verticalSpace,
 
-                          /// Color and size
-                          Row(
-                            children: [
-                              Text(
-                                'Color: ',
-                                style: AppTextStyles.grey11,
-                              ),
-                              Text(
-                                product.color!,
-                                style: AppTextStyles.black11,
-                              ),
-                              12.horizontalSpace,
-                              Text(
-                                'Size: ',
-                                style: AppTextStyles.grey11,
-                              ),
-                              Text(
-                                product.size!,
-                                style: AppTextStyles.black11,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-
-                  /// Quantity and prise
-                  10.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text('Quantity: ', style: AppTextStyles.grey11),
-                          Text('${product.quantity}',
-                              style: AppTextStyles.black11),
-                        ],
-                      ),
-                      Text(
-                        '${product.pricePerUnit}\$',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
+                            /// Color and size
+                            Row(
+                              children: [
+                                Text(
+                                  'Color: ',
+                                  style: AppTextStyles.grey11,
+                                ),
+                                Text(
+                                  product.color!,
+                                  style: AppTextStyles.black11,
+                                ),
+                                12.horizontalSpace,
+                                Text(
+                                  'Size: ',
+                                  style: AppTextStyles.grey11,
+                                ),
+                                Text(
+                                  product.size!,
+                                  style: AppTextStyles.black11,
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                  //11.verticalSpace,
-                ],
+                      ],
+                    ),
+
+                    /// Quantity and prise
+                    //10.verticalSpace,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text('Quantity: ', style: AppTextStyles.grey11),
+                            Text('${product.quantity}',
+                                style: AppTextStyles.black11),
+                          ],
+                        ),
+                        Text(
+                          '${product.cardTotalPrice}\$',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    //11.verticalSpace,
+                  ],
+                ),
               ),
             ),
           ),

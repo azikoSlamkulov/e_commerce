@@ -27,7 +27,7 @@ class RemoteCategoriesImpl implements RemoteCategories {
 
   @override
   Future<String> getCategoryID() async {
-    return await firestore.getID(
+    return await firestore.getId(
       collectionName: 'categories',
     );
   }
@@ -71,6 +71,7 @@ class RemoteCategoriesImpl implements RemoteCategories {
     );
 
     return await firestore.create(
+      docId: id,
       objectModel: categoryModel,
       collectionName: 'categories',
     );
@@ -81,7 +82,7 @@ class RemoteCategoriesImpl implements RemoteCategories {
     required String id,
   }) async {
     return await firestore.delete(
-      id: id,
+      docId: id,
       collectionName: 'categories',
     );
   }

@@ -1,27 +1,63 @@
+import 'dart:developer';
+
 import 'package:e_commerce/lib.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MobileBrandView extends StatelessWidget {
-  const MobileBrandView({Key? key}) : super(key: key);
+  const MobileBrandView({
+    Key? key,
+    required this.selectedBrandsCallback,
+  }) : super(key: key);
+
+  final ValueSetter<List<String>> selectedBrandsCallback;
 
   @override
   Widget build(BuildContext context) {
-    final brands = FakeBrandsData().allFakeBrands;
-    return NestedMobileBrandView(brands: brands);
+    //final brands = FakeBrandsData().allFakeBrands;
+    return BlocProvider(
+      create: (context) => sl<BrandsBloc>()..add(GetAllBrandsEvent()),
+      child: BlocBuilder<BrandsBloc, BrandsState>(
+        builder: (context, state) {
+          if (state is BrandLoadingState) {
+            return const LoadingWidget();
+          } else if (state is LoadedAllBrandsState) {
+            return NestedMobileBrandView(
+              brands: state.allBrands,
+              selectedBrandsCallback: selectedBrandsCallback,
+            );
+          } else if (state is ProductFailureState) {
+            //return MyErrorWidget('//${state.exception}');
+            return Text('');
+          } else {
+            //return const SomeError();,
+            return Text('');
+          }
+        },
+      ),
+    );
+
+    //return NestedMobileBrandView(brands: brands);
   }
 }
 
 class NestedMobileBrandView extends StatefulWidget {
-  const NestedMobileBrandView({super.key, required this.brands});
+  const NestedMobileBrandView({
+    super.key,
+    required this.brands,
+    required this.selectedBrandsCallback,
+  });
 
   final List<BrandEntity> brands;
+  final ValueSetter<List<String>> selectedBrandsCallback;
 
   @override
   State<NestedMobileBrandView> createState() => _NestedMobileBrandViewState();
 }
 
 class _NestedMobileBrandViewState extends State<NestedMobileBrandView> {
+  List<String> selectedBrands = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,6 +85,7 @@ class _NestedMobileBrandViewState extends State<NestedMobileBrandView> {
               ),
               itemBuilder: (BuildContext context, int index) {
                 final brand = widget.brands[index];
+
                 return buildSingleCheckBox(brand);
               },
             ),
@@ -70,13 +107,18 @@ class _NestedMobileBrandViewState extends State<NestedMobileBrandView> {
                   sizedBoxHeight: 36.h,
                   sizedBoxWidth: 160.w,
                   isOutlinedButton: true,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   text: 'Discard',
                 ),
                 CustomButton(
                   sizedBoxHeight: 36.h,
                   sizedBoxWidth: 160.w,
-                  onPressed: () {},
+                  onPressed: () {
+                    widget.selectedBrandsCallback(selectedBrands);
+                    Navigator.pop(context);
+                  },
                   text: 'Apply',
                 ),
               ],
@@ -91,6 +133,7 @@ class _NestedMobileBrandViewState extends State<NestedMobileBrandView> {
     return buildCheckbox(
         brand: brand,
         onClicked: () {
+          selectedBrands.add(brand.name!);
           final newValue = !brand.isCheked!;
           brand.isCheked = newValue;
           setState(() {});

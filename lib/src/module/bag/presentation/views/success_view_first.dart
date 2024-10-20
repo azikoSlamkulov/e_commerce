@@ -28,7 +28,12 @@ class SuccessViewFirst extends StatelessWidget {
                   style: AppTextStyles.black14),
               163.verticalSpace,
               CustomButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MobileHomeView(),
+                  ),
+                ),
                 text: 'CONTINUE SHOPPING',
               ),
             ],

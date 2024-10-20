@@ -17,14 +17,14 @@ class AuthLoadingState extends AuthState {}
 class UnAuthenticatedState extends AuthState {}
 
 class AuthenticatedState extends AuthState {
-  final AuthUserEntity user;
+  final UserEntity user;
   const AuthenticatedState(this.user);
   @override
   List<Object> get props => [user];
 }
 
 class AuthenticatedAdminState extends AuthState {
-  final AuthUserEntity user;
+  final UserEntity user;
   const AuthenticatedAdminState(this.user);
   @override
   List<Object> get props => [user];
@@ -60,7 +60,7 @@ class OpenPasswordRecoveryState extends AuthState {}
 class OpenSignInWithEmailState extends AuthState {}
 
 class SignUpState extends AuthState {
-  final AuthUserEntity user;
+  final UserEntity user;
   SignUpState(this.user);
   @override
   List<Object> get props => [user];

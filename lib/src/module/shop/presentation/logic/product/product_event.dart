@@ -8,8 +8,8 @@ abstract class ProductEvent extends Equatable {
 }
 
 class GetProductDatailsEvent extends ProductEvent {
-  final String? productID;
-  const GetProductDatailsEvent({required this.productID});
+  final String productId;
+  const GetProductDatailsEvent({required this.productId});
 }
 
 class GetProductsListEvent extends ProductEvent {}
@@ -29,7 +29,7 @@ class GetProductsByQueryEvent extends ProductEvent {
 class GetNewAndSaleProductsEvent extends ProductEvent {}
 
 class SetProductEvent extends ProductEvent {
-  final ProductEntity product;
+  final ProductDatailEntity product;
 
   const SetProductEvent(this.product);
 }

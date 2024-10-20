@@ -139,29 +139,36 @@ class FavoritesVerticalCard extends StatelessWidget {
                 Positioned(
                   bottom: 00.h,
                   left: -1.h,
-                  child: Row(
-                    children: [
-                      RatingBarIndicator(
-                        rating: sumRating,
-                        //rating: product.rating!,
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        unratedColor: Colors.black12,
-                        itemCount: 5,
-                        itemSize: 16.0.h,
-                        direction: Axis.horizontal,
-                      ),
-                      5.horizontalSpace,
-                      Text(
-                        '($totalUser)',
-                        //'(105)',
-
-                        style: AppTextStyles.grey10,
-                      )
-                    ],
+                  // TODO Переделать totalRating и totalUser
+                  child: AppRatingBarIndicator(
+                    totalRating: 0,
+                    totalUser: 0,
+                    itemSize: 16.h,
+                    textStyle: AppTextStyles.grey10,
                   ),
+                  // child: Row(
+                  //   children: [
+                  //     RatingBarIndicator(
+                  //       rating: sumRating,
+                  //       //rating: product.rating!,
+                  //       itemBuilder: (context, index) => const Icon(
+                  //         Icons.star,
+                  //         color: Colors.amber,
+                  //       ),
+                  //       unratedColor: Colors.black12,
+                  //       itemCount: 5,
+                  //       itemSize: 16.0.h,
+                  //       direction: Axis.horizontal,
+                  //     ),
+                  //     5.horizontalSpace,
+                  //     Text(
+                  //       '($totalUser)',
+                  //       //'(105)',
+
+                  //       style: AppTextStyles.grey10,
+                  //     )
+                  //   ],
+                  // ),
                 ),
               ],
             ),

@@ -1,14 +1,20 @@
+import 'dart:convert';
 import 'package:e_commerce/lib.dart';
+
+ProductRatingModel ratingFromJson(Map docMap) =>
+    ProductRatingModel.fromJson(docMap as Map<String, dynamic>);
+
+String ratingToJson(ProductRatingModel data) => json.encode(data.toJson());
 
 class ProductRatingModel extends ProductRatingEntity {
   const ProductRatingModel({
-    totalRating,
-    totalUser,
-    one,
-    two,
-    three,
-    four,
-    five,
+    final double? totalRating,
+    final int? totalUser,
+    final int? one,
+    final int? two,
+    final int? three,
+    final int? four,
+    final int? five,
   }) : super(
           totalRating: totalRating,
           totalUser: totalUser,
@@ -21,7 +27,7 @@ class ProductRatingModel extends ProductRatingEntity {
 
   factory ProductRatingModel.fromJson(Map<String, dynamic> json) =>
       ProductRatingModel(
-        totalRating: json['totalRating'] as int,
+        totalRating: json['totalRating'] as double,
         totalUser: json['totalUser'] as int,
         one: json['one'] as int,
         two: json['two'] as int,
@@ -39,15 +45,4 @@ class ProductRatingModel extends ProductRatingEntity {
         "four": four ?? 0,
         "five": five ?? 0,
       };
-
-  @override
-  List<Object?> get props => [
-        totalRating,
-        totalUser,
-        one,
-        two,
-        three,
-        four,
-        five,
-      ];
 }

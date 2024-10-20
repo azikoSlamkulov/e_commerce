@@ -25,6 +25,22 @@ class TypedBrandState extends BrandsState {
   List<Object> get props => [typedBrandName];
 }
 
+class CreatedBrandState extends BrandsState {
+  final bool isCreated;
+  final String brandName;
+  const CreatedBrandState(this.isCreated, this.brandName);
+  @override
+  List<Object> get props => [isCreated, brandName];
+}
+
+class DeletedBrandState extends BrandsState {
+  final bool isDeleted;
+  final String brandName;
+  const DeletedBrandState(this.isDeleted, this.brandName);
+  @override
+  List<Object> get props => [isDeleted, brandName];
+}
+
 class BrandsFailureState extends BrandsState {
   final String message;
   const BrandsFailureState(this.message);

@@ -1,0 +1,54 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "e_commerce",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "e_commerce (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "e_commerce (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+
+    //     {
+    //         "name": "emulator_small",
+    //         "request": "launch",
+    //         "type": "dart",
+    //         "program": "lib/main.dart",
+    //         "deviceId": "emulator-5554"
+    //     },
+    //     {
+    //         "name": "mi_note",
+    //         "request": "launch",
+    //         "type": "dart",
+    //         "program": "lib/main.dart",
+    //         "deviceId": "a6b8b41a0013"
+    //     },
+
+    //     // {
+    //     //     "name": "emulator_big",
+    //     //     "request": "launch",
+    //     //     "type": "dart",
+    //     //     "program": "lib/main.dart",
+    //     //     "deviceId": "emulator-5556"
+    //     // },
+    // ],
+    // "compounds": [
+    //     {
+    //         "name": "All Devices",
+    //         "configurations": ["emulator_small", "mi_note"]
+    //     }
+    ]
+}

@@ -11,7 +11,7 @@ class SliderCaruselWidget extends StatefulWidget {
 }
 
 class _SliderCaruselWidgetState extends State<SliderCaruselWidget> {
-  final controller = CarouselController();
+  final controller = CarouselSliderController();
   int activeIndex = 0;
   final urlImages = [
     //877 x 1080

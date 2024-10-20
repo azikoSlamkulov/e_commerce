@@ -36,11 +36,18 @@ class MobileCatalogFiltersView extends StatelessWidget {
     const FilterModel(name: 'Children', isSelected: false),
   ];
 
+  final List<String> productSizes = <String>['XS', 'S', 'L', 'M', 'XL'];
+  final List<String> productFilterCategory = <String>[
+    'Women',
+    'Men',
+    'Children'
+  ];
+
   RangeValues prise = const RangeValues(0, 0);
   List<String> colors = [];
   List<String> sizes = [];
   List<String> category = [];
-  List<String> brand = [];
+  List<String> brands = [];
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +55,6 @@ class MobileCatalogFiltersView extends StatelessWidget {
       backgroundColor: AppColors.bgColorMain,
       appBar: CustomAppBar(
         title: 'Filters',
-        showSearchBtn: true,
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -71,14 +77,14 @@ class MobileCatalogFiltersView extends StatelessWidget {
               /// Sizes
               titles('Sizes'),
               MultiSelectToggleButton(
-                itemList: filterSizes,
+                itemList: productSizes,
                 selectedItemsCallback: (value) => sizes.add(value),
               ),
 
               /// Category
               titles('Category'),
               MultiSelectToggleButton(
-                itemList: filterCategory,
+                itemList: productFilterCategory,
                 selectedItemsCallback: (value) => category.add(value),
                 containerHeight: 105,
                 sizedBoxWidth: 120,
@@ -100,7 +106,9 @@ class MobileCatalogFiltersView extends StatelessWidget {
                         sizedBoxHeight: 36.h,
                         sizedBoxWidth: 160.w,
                         isOutlinedButton: true,
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
                         text: 'Discard',
                         textStyle: AppTextStyles.black14,
                       ),
@@ -108,11 +116,12 @@ class MobileCatalogFiltersView extends StatelessWidget {
                         sizedBoxHeight: 36.h,
                         sizedBoxWidth: 160.w,
                         onPressed: () {
-                          log('Prise range ===>>> $prise');
-                          log('Colors ===>>> $colors');
-                          log('Sizes ===>>> $sizes');
-                          log('Category ===>>> $category');
-                          log('Brand ===>>> $brand');
+                          MyDialog.getDialog(context: context);
+                          // log('Prise range ===>>> $prise');
+                          // log('Colors ===>>> $colors');
+                          // log('Sizes ===>>> $sizes');
+                          // log('Category ===>>> $category');
+                          // log('brands ===>>> $brands');
                         },
                         text: 'Apply',
                         textStyle: AppTextStyles.white14,
@@ -125,6 +134,33 @@ class MobileCatalogFiltersView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  brandButton(BuildContext context) {
+    return ListTile(
+      onTap: () {
+        // context.goNamed(
+        //   AppPage.filtersBrand.toName,
+        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MobileBrandView(
+              selectedBrandsCallback: (value) => brands = value,
+            ),
+          ),
+        );
+      },
+      title: Text(
+        'Brand',
+        style: AppTextStyles.black16Bold,
+      ),
+      subtitle: Text(
+        brands.isEmpty ? 'Бренд не выбран' : brands.map((e) => e).toString(),
+        style: AppTextStyles.grey11,
+      ),
+      trailing: const Icon(Icons.chevron_right),
     );
   }
 }
@@ -142,31 +178,6 @@ titles(String title) {
         ),
       ),
     ),
-  );
-}
-
-brandButton(BuildContext context) {
-  return ListTile(
-    onTap: () {
-      // context.goNamed(
-      //   AppPage.filtersBrand.toName,
-      // );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MobileBrandView(),
-        ),
-      );
-    },
-    title: Text(
-      'Brand',
-      style: AppTextStyles.black16Bold,
-    ),
-    subtitle: Text(
-      'adidas Originals, Jack & Jones, s.Oliver',
-      style: AppTextStyles.grey11,
-    ),
-    trailing: const Icon(Icons.chevron_right),
   );
 }
 

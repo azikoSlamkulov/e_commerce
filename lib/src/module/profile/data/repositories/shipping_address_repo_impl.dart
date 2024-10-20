@@ -10,16 +10,16 @@ class ShippingAddressRepoImpl implements ShippingAddressRepo {
 
   @override
   Future<Either<Failure, bool>> addShippingAddress({
-    required AddressEntity address,
+    required ShippingAddressEntity address,
   }) async {
     try {
       final addresID = await remoteShippingAddress.getShippingAddresID(
           userID: address.userId!);
       final isCreated = await remoteShippingAddress.addShippingAddress(
-        address: AddressModel(
+        address: ShippingAddressModel(
           id: addresID,
           userId: address.userId!,
-          name: address.name!,
+          userName: address.userName!,
           address: address.address!,
           city: address.city,
           isCheked: address.isCheked!,
@@ -32,18 +32,25 @@ class ShippingAddressRepoImpl implements ShippingAddressRepo {
   }
 
   @override
-  Future<Either<Failure, List<AddressEntity>>> getAllShippingAddress({
+  Future<Either<Failure, List<ShippingAddressEntity>>> getAllShippingAddress({
     required String userId,
   }) async {
     try {
-      final allShippingaddress =
+      final allShippingAddresses =
           await remoteShippingAddress.getAllShippingAddress(
         userId: userId,
       );
       //log('====>>>>>>>  $allProducts');
-      return Right(allShippingaddress);
+      return Right(allShippingAddresses);
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, bool>> updateShippingAddress(
+      {required ShippingAddressEntity address}) {
+    // TODO: implement updateShippingAddress
+    throw UnimplementedError();
   }
 }

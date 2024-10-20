@@ -42,6 +42,13 @@ class DeletedCategoryState extends CategoriesState {
   List<Object> get props => [isDeleted, categoryName];
 }
 
+class TypedCategoryState extends CategoriesState {
+  final CategoryEntity typedCategory;
+  const TypedCategoryState(this.typedCategory);
+  @override
+  List<Object> get props => [typedCategory];
+}
+
 class CategoriesFailureState extends CategoriesState {
   final String message;
   const CategoriesFailureState(this.message);

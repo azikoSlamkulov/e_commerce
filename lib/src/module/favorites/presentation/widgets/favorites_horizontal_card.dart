@@ -28,7 +28,7 @@ class FavoritesHorizontalCard extends StatelessWidget {
       child: Stack(
         children: [
           Card(
-            //color: Colors.blue,
+            color: Colors.white,
             clipBehavior: Clip.hardEdge,
             //elevation: 10,
             shape: RoundedRectangleBorder(

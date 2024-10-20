@@ -55,7 +55,7 @@ class MobileFavoritesVew extends StatelessWidget {
                       allProducts: state.allProducts,
                       categories: fakeCategories,
                     );
-                  } else if (state is FailureState) {
+                  } else if (state is BagFailureState) {
                     //return MyErrorWidget('${state.exception}');
                     return Text('11111');
                   } else {
@@ -101,171 +101,205 @@ class NestedMobileFavoritesVew extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: AppColors.bgColorMain,
-      appBar: CustomAppBar(
-        title: 'Favorites',
-        showSearchBtn: true,
-      ),
-      body: Column(
-        children: [
-          /// Categories list
-          Container(
-            color: Colors.white,
-            height: 46.h,
-            width: double.infinity,
-            child: categories.isNotEmpty
-                ? ListView.separated(
-                    padding: REdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: categories.length,
-                    itemBuilder: (context, index) {
-                      final newCategory = categories[index];
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          backgroundColor: Colors.black,
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          newCategory.categoryName!,
-                          style: AppTextStyles.white14,
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) => SizedBox(width: 8.h),
-                  )
-                : CustomButton(
-                    sizedBoxHeight: 60,
-                    text: 'CATEGORIES',
-                    onPressed: () {
-                      context.goNamed(
-                        AppPage.collections.toName,
-                      );
-                    },
-                  ),
-          ),
+      appBar: allProducts.isNotEmpty ? buildAppBar() : null,
+      body: buildBody(context),
+    );
+  }
 
-          ///
-          Container(
-            color: Colors.white,
-            height: 44.h,
-            child: Padding(
-              padding: REdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  CustomAppBar buildAppBar() {
+    return CustomAppBar(
+      title: 'Favorites',
+      showBackBtn: false,
+      showSearchBtn: true,
+    );
+  }
+
+  buildBody(
+    BuildContext context,
+  ) {
+    return allProducts.isNotEmpty
+        ? Column(
+            children: [
+              /// Categories list
+              // Container(
+              //   color: Colors.white,
+              //   height: 46.h,
+              //   width: double.infinity,
+              //   child: categories.isNotEmpty
+              //       ? ListView.separated(
+              //           padding: REdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              //           scrollDirection: Axis.horizontal,
+              //           itemCount: categories.length,
+              //           itemBuilder: (context, index) {
+              //             final newCategory = categories[index];
+              //             return ElevatedButton(
+              //               style: ElevatedButton.styleFrom(
+              //                 shape: RoundedRectangleBorder(
+              //                   borderRadius: BorderRadius.circular(30),
+              //                 ),
+              //                 backgroundColor: Colors.black,
+              //               ),
+              //               onPressed: () {},
+              //               child: Text(
+              //                 newCategory.categoryName!,
+              //                 style: AppTextStyles.white14,
+              //               ),
+              //             );
+              //           },
+              //           separatorBuilder: (context, index) => SizedBox(width: 8.h),
+              //         )
+              //       : CustomButton(
+              //           sizedBoxHeight: 60,
+              //           text: 'CATEGORIES',
+              //           onPressed: () {
+              //             context.goNamed(
+              //               AppPage.collections.toName,
+              //             );
+              //           },
+              //         ),
+              // ),
+
+              ///
+              Container(
+                color: Colors.white,
+                height: 44.h,
+                child: Padding(
+                  padding: REdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      /// Filters
+                      TextButton.icon(
+                        onPressed: () {
+                          // GoRouter.of(context).goNamed(
+                          //   APP_PAGE.shopFilters.toName,
+                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MobileCatalogFiltersView(),
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.filter_list,
+                          color: Colors.black,
+                        ),
+                        label: Text(
+                          'Filters',
+                          style: AppTextStyles.black11,
+                        ),
+                      ),
+
+                      // Sort
+                      // ProductSortWidget(
+                      //   selectedSortBtnCallback: (value) => _choice = value,
+                      //   allProducts: allProducts,
+                      // ),
+                      // TextButton.icon(
+                      //   onPressed: () {
+                      //     modalBottomSheet(context
+                      //         // type,
+                      //         // collection,
+                      //         // category,
+                      //         );
+                      //   },
+                      //   icon: const Icon(
+                      //     Icons.swap_vert_outlined,
+                      //     color: Colors.black,
+                      //   ),
+                      //   label: BlocListener<SortToggleBtnCubit, SortToggleBtnState>(
+                      //     listener: (context, state) {
+                      //       // if (state is InitialState) {
+                      //       //   _choice = state.selectedText;
+                      //       //   BlocProvider.of<ProductBloc>(context).add(
+                      //       //     GetFakeSortedListEvent(
+                      //       //       type: type,
+                      //       //       collection: collection,
+                      //       //       category: category,
+                      //       //       choice: state.selectedText,
+                      //       //     ),
+                      //       //   );
+                      //       // } else if (state is SelectedState) {
+                      //       //   _choice = state.selectedText;
+                      //       //   BlocProvider.of<ProductBloc>(context).add(
+                      //       //     GetFakeSortedListEvent(
+                      //       //       type: type,
+                      //       //       collection: collection,
+                      //       //       category: category,
+                      //       //       choice: state.selectedText,
+                      //       //     ),
+                      //       //   );
+                      //       // }
+                      //     },
+                      //     child:
+                      //         BlocBuilder<SortToggleBtnCubit, SortToggleBtnState>(
+                      //       builder: (context, state) {
+                      //         return Text(
+                      //           state.selectedText,
+                      //           style: AppTextStyles.black11,
+                      //         );
+                      //       },
+                      //     ),
+                      //   ),
+                      // ),
+
+                      /// Orientation
+                      IconButton(
+                        onPressed: () {
+                          BlocProvider.of<OrientationCubit>(context)
+                              .getOrientation();
+                        },
+                        icon: BlocBuilder<OrientationCubit, OrientationState>(
+                          builder: (context, state) {
+                            return state.orientation
+                                ? const Icon(
+                                    Icons.view_list,
+                                    color: Colors.black,
+                                  )
+                                : const Icon(
+                                    Icons.view_module,
+                                    color: Colors.black,
+                                  );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              /// Products List
+              BlocBuilder<OrientationCubit, OrientationState>(
+                builder: (context, state) {
+                  return state.orientation
+                      ? FavoritesGridView(userID: userID, products: allProducts)
+                      : FavoritesListView(
+                          userID: userID, products: allProducts);
+                },
+              ),
+            ],
+          )
+        : Align(
+            alignment: Alignment.center,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  /// Filters
-                  TextButton.icon(
-                    onPressed: () {
-                      // GoRouter.of(context).goNamed(
-                      //   APP_PAGE.shopFilters.toName,
-                      // );
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MobileCatalogFiltersView(),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.filter_list,
-                      color: Colors.black,
-                    ),
-                    label: Text(
-                      'Filters',
-                      style: AppTextStyles.black11,
-                    ),
+                  Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.grey,
+                    size: 100.h,
                   ),
-
-                  // Sort
-                  ProductSortWidget(
-                    selectedSortBtnCallback: (value) => _choice = value,
-                  ),
-                  // TextButton.icon(
-                  //   onPressed: () {
-                  //     modalBottomSheet(context
-                  //         // type,
-                  //         // collection,
-                  //         // category,
-                  //         );
-                  //   },
-                  //   icon: const Icon(
-                  //     Icons.swap_vert_outlined,
-                  //     color: Colors.black,
-                  //   ),
-                  //   label: BlocListener<SortToggleBtnCubit, SortToggleBtnState>(
-                  //     listener: (context, state) {
-                  //       // if (state is InitialState) {
-                  //       //   _choice = state.selectedText;
-                  //       //   BlocProvider.of<ProductBloc>(context).add(
-                  //       //     GetFakeSortedListEvent(
-                  //       //       type: type,
-                  //       //       collection: collection,
-                  //       //       category: category,
-                  //       //       choice: state.selectedText,
-                  //       //     ),
-                  //       //   );
-                  //       // } else if (state is SelectedState) {
-                  //       //   _choice = state.selectedText;
-                  //       //   BlocProvider.of<ProductBloc>(context).add(
-                  //       //     GetFakeSortedListEvent(
-                  //       //       type: type,
-                  //       //       collection: collection,
-                  //       //       category: category,
-                  //       //       choice: state.selectedText,
-                  //       //     ),
-                  //       //   );
-                  //       // }
-                  //     },
-                  //     child:
-                  //         BlocBuilder<SortToggleBtnCubit, SortToggleBtnState>(
-                  //       builder: (context, state) {
-                  //         return Text(
-                  //           state.selectedText,
-                  //           style: AppTextStyles.black11,
-                  //         );
-                  //       },
-                  //     ),
-                  //   ),
-                  // ),
-
-                  /// Orientation
-                  IconButton(
-                    onPressed: () {
-                      BlocProvider.of<OrientationCubit>(context)
-                          .getOrientation();
-                    },
-                    icon: BlocBuilder<OrientationCubit, OrientationState>(
-                      builder: (context, state) {
-                        return state.orientation
-                            ? const Icon(
-                                Icons.view_list,
-                                color: Colors.black,
-                              )
-                            : const Icon(
-                                Icons.view_module,
-                                color: Colors.black,
-                              );
-                      },
-                    ),
+                  50.verticalSpace,
+                  Text(
+                    'Список пуст!',
+                    style: AppTextStyles.grey16,
                   ),
                 ],
               ),
             ),
-          ),
-
-          /// Products List
-          BlocBuilder<OrientationCubit, OrientationState>(
-            builder: (context, state) {
-              return state.orientation
-                  ? FavoritesGridView(userID: userID, products: allProducts)
-                  : FavoritesListView(userID: userID, products: allProducts);
-            },
-          ),
-        ],
-      ),
-    );
+          );
   }
 }
 

@@ -11,16 +11,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final GetNewAndSaleProducts getNewAndSaleProducts;
   final SetProduct setProducts;
   final GetAllProducts getAllProducts;
+  final GetProductDatails getProductDatails;
   ProductBloc({
     required this.getProductsByQuery,
     required this.getNewAndSaleProducts,
     required this.setProducts,
     required this.getAllProducts,
+    required this.getProductDatails,
   }) : super(LoadingProductstState()) {
     on<GetNewAndSaleProductsEvent>(_getNewAndSaleProducts);
     on<GetProductsByQueryEvent>(_getProductsByQuery);
     on<SetProductEvent>(_setProduct);
     on<GetAllProductEvent>(_getAllProducts);
+    on<GetProductDatailsEvent>(_getProductDatails);
   }
 
   void _getAllProducts(
@@ -30,6 +33,19 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     allProducts.fold(
       (error) => emit(ProductFailureState(error)),
       (_allProducts) => emit(LoadedAllProductState(_allProducts)),
+    );
+  }
+
+  void _getProductDatails(
+      GetProductDatailsEvent event, Emitter<ProductState> emit) async {
+    final productDatails = await getProductDatails(
+      GetProductDatailsParams(
+        productId: event.productId,
+      ),
+    );
+    productDatails.fold(
+      (error) => emit(ProductFailureState(error)),
+      (datails) => emit(LoadedProductDatailsState(datails)),
     );
   }
 

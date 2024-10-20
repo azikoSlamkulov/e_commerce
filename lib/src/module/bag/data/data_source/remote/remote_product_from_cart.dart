@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_commerce/lib.dart';
 
 abstract class RemoteProductsFromCart {
@@ -12,6 +14,7 @@ abstract class RemoteProductsFromCart {
   });
 
   Future<bool> setOrder({
+    //required UserEntity user,
     required OrderModel order,
   });
 
@@ -25,7 +28,7 @@ class RemoteProductsFromCartImpl implements RemoteProductsFromCart {
 
   @override
   Future<String> getOrderID() async {
-    return await firestore.getID(
+    return await firestore.getId(
       collectionName: 'orders',
     );
   }
@@ -33,10 +36,10 @@ class RemoteProductsFromCartImpl implements RemoteProductsFromCart {
   @override
   Future<List<BagEntity>> getAllProductsFromCart(
       {required String userID}) async {
-    return await firestore.getListFromCollectionByUserID(
-      firstCollection: 'users',
-      secondCollection: 'bags',
-      userID: userID,
+    return await firestore.getListFromSecondCollection(
+      firstCollectionName: 'users',
+      secondCollectionName: 'bags',
+      firstDocId: userID,
       fromJson: bagProductFromJson,
     );
 
@@ -60,20 +63,44 @@ class RemoteProductsFromCartImpl implements RemoteProductsFromCart {
     required String userID,
     required String productID,
   }) async {
-    return await firestore.deleteFromCollection(
-      firstCollection: 'users',
-      secondCollection: 'bags',
-      userID: userID,
-      productID: productID,
+    return await firestore.deleteDocFromSecondCollection(
+      firstCollectionName: 'users',
+      secondCollectionName: 'bags',
+      firstDocId: userID,
+      secondDocId: productID,
     );
   }
 
   @override
-  Future<bool> setOrder({required OrderModel order}) async {
-    return await firestore.create(
-      objectModel: order,
-      collectionName: 'orders',
+  Future<bool> setOrder({
+    //required UserEntity user,
+    required OrderModel order,
+  }) async {
+    final user = await firestore.get(
+      docId: order.userID!,
+      collectionName: 'users',
+      fromJson: authFromJson,
     );
-    //return FakeBagsData().addProductToBag(product: product);
+    List<OrderModel> ordersList = [];
+    ordersList = user.orders as List<OrderModel>;
+    ordersList.add(order);
+
+    return await firestore.update(
+      docId: user.userID!,
+      objectModel: UserModel(
+        userID: user.userID,
+        name: user.name,
+        phoneNumber: user.phoneNumber,
+        email: user.email,
+        orders: ordersList,
+        shippingAddresses: user.shippingAddresses,
+        paymentMethods: user.paymentMethods,
+        //promocodes: promocodes,
+        reviews: user.reviews,
+        photoURL: user.photoURL,
+        role: user.role,
+      ),
+      collectionName: 'users',
+    );
   }
 }

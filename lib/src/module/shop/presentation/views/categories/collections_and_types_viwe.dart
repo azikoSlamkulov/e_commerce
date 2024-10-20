@@ -25,8 +25,8 @@ class NestedCollectionsAndTypesView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.bgColorMain,
       appBar: CustomAppBar(
-        title: 'Collections',
-        showSearchBtn: true,
+        title: 'Categories',
+        //showSearchBtn: true,
         showBackBtn: false,
       ),
       body: Center(

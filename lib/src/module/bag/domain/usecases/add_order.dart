@@ -8,18 +8,14 @@ class SetOrder extends UseCase<bool, SetOrderParams> {
 
   @override
   Future<Either<Failure, bool>> call(SetOrderParams params) async {
-    return await bagRepo.setOrder(
-      order: params.order,
-    );
+    return await bagRepo.setOrder(order: params.order);
   }
 }
 
 class SetOrderParams extends Equatable {
   final OrderEntity order;
 
-  const SetOrderParams({
-    required this.order,
-  });
+  const SetOrderParams({required this.order});
 
   @override
   List<Object?> get props => [order];

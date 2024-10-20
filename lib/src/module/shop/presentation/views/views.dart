@@ -1,4 +1,3 @@
-export 'admin_products/admin_products.dart';
 export 'catalog/catalog.dart';
 export 'categories/categories.dart';
 export 'home/home.dart';

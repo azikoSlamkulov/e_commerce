@@ -19,7 +19,7 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
   }) : super(InitialState()) {
     on<GetCategoriesEvent>(_getSortedCategories);
     on<GetAllCategoriesEvent>(_getAllCategories);
-    //on<TypedCategoryEvent>(_typedCategory);
+    on<TypedCategoryEvent>(_typedCategory);
     on<SetCategoryEvent>(_setCategory);
     on<DeleteCategoryEvent>(_deleteCategory);
   }
@@ -73,14 +73,14 @@ class CategoriesBloc extends Bloc<CategoriesEvent, CategoriesState> {
     );
   }
 
-  // void _typedCategory(
-  //     TypedCategoryEvent event, Emitter<CategoriesState> emit) async {
-  //   emit(LoadingState());
-  //   final typedCategory = CategoryEntity(
-  //     type: event.type,
-  //     collection: event.collection,
-  //     category: event.category,
-  //   );
-  //   emit(TypedCategoryState(typedCategory));
-  // }
+  void _typedCategory(
+      TypedCategoryEvent event, Emitter<CategoriesState> emit) async {
+    emit(LoadingCategoriesState());
+    final typedCategory = CategoryEntity(
+      typeName: event.type,
+      collectionName: event.collection,
+      categoryName: event.category,
+    );
+    emit(TypedCategoryState(typedCategory));
+  }
 }

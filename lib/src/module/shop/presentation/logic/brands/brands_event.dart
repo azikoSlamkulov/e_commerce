@@ -16,3 +16,18 @@ class TypedBrandsEvent extends BrandsEvent {
     this.typedBrandName,
   );
 }
+
+class SetBrandEvent extends BrandsEvent {
+  final String brandName;
+
+  const SetBrandEvent(
+    this.brandName,
+  );
+}
+
+class DeleteBrandEvent extends BrandsEvent {
+  final String id;
+  final String brandName;
+
+  const DeleteBrandEvent(this.id, this.brandName);
+}

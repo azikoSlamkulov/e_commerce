@@ -14,29 +14,45 @@ class FavoritesListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return products.isNotEmpty
-        ? Expanded(
-            child: ListView.separated(
-              padding: REdgeInsets.all(14),
-              itemCount: products.length,
-              //itemExtent: 155.h,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return FavoritesHorizontalCard(
-                  userID: userID,
-                  product: product,
-                  onTap: () {},
-                );
-              },
-              separatorBuilder: (context, index) => SizedBox(height: 12.h),
-            ),
-          )
-        : Align(
-            alignment: Alignment.center,
-            child: Text(
-              'Список пуст!',
-              style: AppTextStyles.grey16,
-            ),
+    // return products.isNotEmpty
+    //     ? Expanded(
+    //         child: ListView.separated(
+    //           padding: REdgeInsets.all(14),
+    //           itemCount: products.length,
+    //           //itemExtent: 155.h,
+    //           itemBuilder: (context, index) {
+    //             final product = products[index];
+    //             return FavoritesHorizontalCard(
+    //               userID: userID,
+    //               product: product,
+    //               onTap: () {},
+    //             );
+    //           },
+    //           separatorBuilder: (context, index) => SizedBox(height: 12.h),
+    //         ),
+    //       )
+    //     : Align(
+    //         alignment: Alignment.center,
+    //         child: Text(
+    //           'Список пуст!',
+    //           style: AppTextStyles.grey16,
+    //         ),
+    //       );
+    return Expanded(
+      child: ListView.separated(
+        padding: REdgeInsets.all(14),
+        itemCount: products.length,
+        //itemExtent: 155.h,
+        itemBuilder: (context, index) {
+          final product = products[index];
+          return FavoritesHorizontalCard(
+            userID: userID,
+            product: product,
+            onTap: () {},
           );
+        },
+        separatorBuilder: (context, index) => SizedBox(height: 12.h),
+      ),
+    );
   }
 }

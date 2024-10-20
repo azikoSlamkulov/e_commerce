@@ -8,13 +8,16 @@ class OrdersListView extends StatelessWidget {
 
   final List<OrderEntity> allOrders;
 
+  String capitalize(String text) =>
+      '${text[0].toUpperCase()}${text.substring(1)}';
+
   @override
   Widget build(BuildContext context) {
     return allOrders.isNotEmpty
         ? ListView.builder(
             //padding: REdgeInsets.symmetric(vertical: 37),
             itemCount: allOrders.length,
-            itemExtent: 206.h,
+            //itemExtent: 206.h,
             itemBuilder: (context, index) {
               final order = allOrders[index];
               return Card(
@@ -31,7 +34,9 @@ class OrdersListView extends StatelessWidget {
                           style: AppTextStyles.black16,
                         ),
                         Text(
-                          '${order.createdDate}',
+                          DateTimeFormatter.dateTimeFormater(
+                              order.createdDate!),
+                          //'${order.createdDate}',
                           style: AppTextStyles.grey14,
                         ),
                       ],
@@ -97,10 +102,18 @@ class OrdersListView extends StatelessWidget {
                             backgroundColor: Colors.white,
                           ),
                           onPressed: () {
-                            context.goNamed(
-                              AppPage.orderDetails.toName,
-                              extra: order,
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MobileOrderDetailsView(
+                                  order: order,
+                                ),
+                              ),
                             );
+                            // context.goNamed(
+                            //   AppPage.orderDetails.toName,
+                            //   extra: order,
+                            // );
                           },
                           child: Text(
                             'Details',
@@ -108,7 +121,8 @@ class OrdersListView extends StatelessWidget {
                           ),
                         ),
                         Text(
-                          '${order.status}',
+                          capitalize(order.status!),
+                          //'${order.status}',
                           style: AppTextStyles.green14,
                         ),
                       ],

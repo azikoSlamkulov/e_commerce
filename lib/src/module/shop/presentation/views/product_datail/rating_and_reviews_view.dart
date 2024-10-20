@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:e_commerce/lib.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,84 +8,110 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class RatingAndReviewsView extends StatelessWidget {
   const RatingAndReviewsView({
-    required this.product,
+    required this.currentUserId,
+    required this.currentProductId,
+    required this.currentProductRating,
+    required this.currentProductReviews,
     Key? key,
   }) : super(key: key);
 
-  final ProductEntity product;
+  final String currentUserId;
+  final String currentProductId;
+  final ProductRatingEntity currentProductRating;
+  final List<ProductReviewEntity> currentProductReviews;
+
+  //TODO Переделать BlocProvider.value. Без запуска на bootstrap
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<ReviewsBloc>(
-      create: (context) => sl<ReviewsBloc>()
-        ..add(GetAllReviewsEvent(productID: product.productID)),
-      child: BlocListener<ReviewsBloc, ReviewsState>(
-        listener: (context, state) {
-          if (state is AddedReviewState) {
-            AppSnackbar.showSnackbar(context: context, title: 'Добавлен.');
-            BlocProvider.of<ReviewsBloc>(context).add(
-              GetAllReviewsEvent(productID: product.productID),
+    return BlocListener<RatingAndReviewsBloc, RatingAndReviewsState>(
+      listener: (context, state) {
+        if (state is AddedReviewState) {
+          AppSnackbar.showSnackbar(context: context, title: 'Добавлен.');
+          BlocProvider.of<RatingAndReviewsBloc>(context).add(
+            GetRatingAndReviewsEvent(
+              productID: currentProductId,
+            ),
+          );
+          //Navigator.pop(context);
+        }
+      },
+      child: BlocBuilder<RatingAndReviewsBloc, RatingAndReviewsState>(
+        builder: (context, state) {
+          if (state is LoadingRatingAndReviewsState) {
+            return const LoadingWidget();
+          } else if (state is LoadedRatingAndReviewsState) {
+            return NestedRatingAndReviewsView(
+              userId: currentUserId,
+              productId: state.ratingAndReviews.productId!,
+              productRating: state.ratingAndReviews.rating!,
+              productReviews: state.ratingAndReviews.reviews!,
+              // user: user,
+              //allNewProducts: allNewProducts,
             );
-            Navigator.pop(context);
+          } else if (state is InitialRatingAndReviewsState) {
+            return NestedRatingAndReviewsView(
+              userId: currentUserId,
+              productId: currentProductId,
+              productRating: currentProductRating,
+              productReviews: currentProductReviews,
+            );
           }
+          return const Center(child: Text('Some Error'));
         },
-        // child: BlocBuilder<ReviewsBloc, ReviewsState>(
-        //   builder: (context, state) {
-        //     if (state is LoadingReviewsState) {
-        //       return const Scaffold(
-        //         backgroundColor: AppColors.white,
-        //         body: Center(
-        //           child: CircularProgressIndicator(),
-        //         ),
-        //       );
-        //     } else if (state is LoadedReviewsState) {
-        //       return NestedRatingAndReviewsView(
-        //         allReviews: state.allReviews,
-        //         product: product,
-        //         //allNewProducts: allNewProducts,
-        //       );
-        //     } else {
-        //       return const Center(child: Text('Login'));
-        //     }
-        //   },
-        // ),
-        child: BlocBuilder<ReviewsBloc, ReviewsState>(
-          builder: (context, state) {
-            if (state is LoadingReviewsState) {
-              return const Scaffold(
-                backgroundColor: AppColors.white,
-                body: Center(
-                  child: CircularProgressIndicator(),
-                ),
-              );
-            } else if (state is LoadedReviewsState) {
-              return NestedRatingAndReviewsView(
-                allReviews: state.allReviews,
-                product: product,
-                // user: user,
-                //allNewProducts: allNewProducts,
-              );
-            } else {
-              return const Center(child: Text('Login'));
-            }
-          },
-        ),
       ),
+      // child: BlocProvider<RatingAndReviewsBloc>(
+      //   create: (context) => sl<RatingAndReviewsBloc>(),
+      //   // ..add(
+      //   //   GetRatingAndReviewsEvent(
+      //   //     productID: productId,
+      //   //     //userID: user.userID!,
+      //   //   ),
+      //   // ),
+      //   child: BlocBuilder<RatingAndReviewsBloc, RatingAndReviewsState>(
+      //     builder: (context, state) {
+      //       if (state is LoadingRatingAndReviewsState) {
+      //         return const LoadingWidget();
+      //       } else if (state is LoadedRatingAndReviewsState) {
+      //         return NestedRatingAndReviewsView(
+      //           userId: currentUserId,
+      //           productId: state.ratingAndReviews.productId!,
+      //           productRating: state.ratingAndReviews.rating!,
+      //           productReviews: state.ratingAndReviews.reviews!,
+      //           // user: user,
+      //           //allNewProducts: allNewProducts,
+      //         );
+      //       } else if (state is InitialRatingAndReviewsState) {
+      //         return NestedRatingAndReviewsView(
+      //           userId: currentUserId,
+      //           productId: currentProductId,
+      //           productRating: currentProductRating,
+      //           productReviews: currentProductReviews,
+      //         );
+      //       }
+      //       return const Center(child: Text('Some Error'));
+      //     },
+      //   ),
+      // ),
     );
   }
 }
 
 class NestedRatingAndReviewsView extends StatefulWidget {
   const NestedRatingAndReviewsView({
-    required this.product,
-    required this.allReviews,
-    //required this.user,
+    required this.productId,
+    // required this.ratingAndReviews,
+    required this.userId,
+    required this.productRating,
+    required this.productReviews,
     super.key,
   });
 
-  final ProductEntity product;
-  final List<ReviewEntity> allReviews;
-  //final AuthUserEntity user;
+  final String productId;
+  // final ProductRatingAndReviewsEntity ratingAndReviews;
+  final String userId;
+  final ProductRatingEntity productRating;
+  final List<ProductReviewEntity> productReviews;
 
   @override
   State<NestedRatingAndReviewsView> createState() =>
@@ -93,25 +121,48 @@ class NestedRatingAndReviewsView extends StatefulWidget {
 class _NestedRatingAndReviewsViewState
     extends State<NestedRatingAndReviewsView> {
   bool isCheked = false;
-  bool isWithPhoto = false;
+  //bool isWithPhoto = false;
+  List<ProductReviewEntity> reviewsList = [];
   TextEditingController textController = TextEditingController();
+
+  // void getReviewsWithPhoto() {
+  //   if (isCheked) {
+  //     reviewsImgUrlList = widget.ratingAndReviews.reviews!
+  //         .where((e) => e.imgUrlList!.first != '')
+  //         .toList();
+  //   } else {
+  //     reviewsImgUrlList = widget.ratingAndReviews.reviews!
+  //         .where((e) => e.imgUrlList!.first == '')
+  //         .toList();
+  //   }
+  // }
+
+  // void getReviewsWithPhoto() {
+  //   if (isCheked) {
+  //     reviewsList = widget.ratingAndReviews.reviews!
+  //         .where((e) => e.imgUrlList!.isNotEmpty)
+  //         .toList();
+  //   } else {
+  //     reviewsList = widget.ratingAndReviews.reviews!
+  //         .where((e) => e.imgUrlList!.isEmpty)
+  //         .toList();
+  //   }
+  // }
+  void getReviewsWithPhoto() {
+    if (isCheked) {
+      reviewsList =
+          widget.productReviews.where((e) => e.imgUrlList!.isNotEmpty).toList();
+    } else {
+      reviewsList =
+          widget.productReviews.where((e) => e.imgUrlList!.isEmpty).toList();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // return Scaffold(
-    //   body: Stack(
-    //     children: <Widget>[
-    //       ListView.builder(
-    //         //physics: const NeverScrollableScrollPhysics(),
-    //         shrinkWrap: true,
-    //         itemCount: 8,
-    //         itemBuilder: (BuildContext context, int index) {
-    //           return reviewText(isCheked);
-    //         },
-    //       ),
-    //       bottomToggyEffect(context),
-    //     ],
-    //   ),
-    // );
+    log('totalUser ===>>>>>  ${widget.productRating.totalUser}');
+    getReviewsWithPhoto();
+
     return Scaffold(
       backgroundColor: AppColors.bgColorMain,
       appBar: isCheked
@@ -133,14 +184,14 @@ class _NestedRatingAndReviewsViewState
                 children: [
                   //41.verticalSpace,
                   !isCheked
-                      ? ratingContainer(widget.product.rating!)
-                      : SizedBox(),
+                      ? ratingContainer(widget.productRating)
+                      : const SizedBox(),
                   25.verticalSpace,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.allReviews.length} reviews',
+                        '${reviewsList.length} reviews',
                         style: AppTextStyles.black24Bold,
                       ),
                       //130.horizontalSpace,
@@ -166,13 +217,13 @@ class _NestedRatingAndReviewsViewState
                   ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: widget.allReviews.length,
+                    itemCount: reviewsList.length,
                     itemBuilder: (BuildContext context, int index) {
-                      final review = widget.allReviews[index];
-                      return buildReviewText(
+                      final review = reviewsList[index];
+                      return buildReviewCard(
                         isCheked,
                         review,
-                        widget.product.productID!,
+                        //widget.productId,
                       );
                     },
                   ),
@@ -181,19 +232,24 @@ class _NestedRatingAndReviewsViewState
               ),
             ),
           ),
-          bottomToggyEffect(context, textController, widget.product.productID!)
+          bottomToggyEffect(context, textController)
         ],
       ),
       floatingActionButton: myFloatingActionButton(
         context,
         textController,
-        widget.product.productID!,
+        widget.productId,
+        widget.userId,
       ),
     );
   }
 }
 
-bottomToggyEffect(BuildContext context, textController, String id) {
+bottomToggyEffect(
+  BuildContext context,
+  textController,
+  //String id,
+) {
   return Positioned(
     bottom: 0,
     top: MediaQuery.of(context).size.height / 1.4,
@@ -222,8 +278,8 @@ bottomToggyEffect(BuildContext context, textController, String id) {
 myFloatingActionButton(
   BuildContext context,
   textController,
-  String id,
-  //AuthUserEntity user,
+  String productId,
+  String user,
 ) {
   return ElevatedButton.icon(
     style: ElevatedButton.styleFrom(
@@ -236,11 +292,22 @@ myFloatingActionButton(
       backgroundColor: AppColors.mainColor,
     ),
     onPressed: () {
-      showCustomBottomSheet(context, textController, id);
+      AppBottomSheet.showBottomSheet(
+        context: context,
+        title: 'What is you rate?',
+        content: ratingAndReviewContent(
+          context,
+          textController,
+          productId,
+          user,
+        ),
+      );
+      //showCustomBottomSheet(context, textController, productId);
     },
     icon: Icon(
       Icons.edit,
       size: 15.h,
+      color: Colors.white,
     ),
     label: Text(
       'Write a review',
@@ -249,14 +316,15 @@ myFloatingActionButton(
   );
 }
 
-buildReviewText(
+buildReviewCard(
   bool isCheked,
-  ReviewEntity review,
-  String id,
+  ProductReviewEntity review,
+  //String id,
 ) {
   return Stack(
     children: [
       Card(
+        color: Colors.white,
         margin: REdgeInsets.only(top: 35, left: 15),
         child: Padding(
           padding: REdgeInsets.all(24),
@@ -283,30 +351,39 @@ buildReviewText(
                     direction: Axis.horizontal,
                   ),
                   Text(
-                    'June 5, 2019',
+                    DateTimeFormatter.dateTimeFormater(review.createdDate!),
                     style: AppTextStyles.grey11,
                   ),
                 ],
               ),
               10.verticalSpace,
               Text(
-                'The dress is great! Very classy and comfortable. It fit perfectly! I\'m 5\'7" and 130 pounds. I am a 34B chest. This dress would be too long for those who are shorter but could be hemmed. I wouldn\'t recommend it for those big chested as I am smaller chested and it fit me perfectly. The underarms were not too wide and the dress was made well.',
+                review.reviewText!,
                 style: AppTextStyles.black14,
               ),
               20.verticalSpace,
               isCheked
                   ? SizedBox(
                       height: 100.h,
-                      child: ListView.builder(
+                      child: ListView.separated(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 8,
+                        itemCount: review.imgUrlList!.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: REdgeInsets.only(right: 8),
+                          final imgUrl = review.imgUrlList![index];
+                          return CachedNetworkImageWidget(
+                            imageUrl: imgUrl,
+                            borderRadius: BorderRadius.circular(1),
+                            //height: 100,
                             width: 100,
-                            color: Colors.greenAccent,
                           );
+                          // return Container(
+                          //   margin: REdgeInsets.only(right: 8),
+                          //   width: 100,
+                          //   color: Colors.greenAccent,
+                          // );
                         },
+                        separatorBuilder: (context, index) =>
+                            SizedBox(width: 13.h),
                       ),
                     )
                   : SizedBox(),
@@ -328,6 +405,16 @@ buildReviewText(
               )
             ],
           ),
+        ),
+      ),
+      Positioned(
+        top: 15.h,
+        //left: -5.h,
+        child: CircleAvatar(
+          radius: 20,
+          backgroundImage: NetworkImage(review.userPhotoUrl!),
+          // backgroundColor: Colors.red,
+          // foregroundColor: Colors.green,
         ),
       ),
       // Positioned(
@@ -365,7 +452,8 @@ ratingContainer(ProductRatingEntity rating) {
           Column(
             children: [
               Text(
-                '${rating.totalRating}',
+                rating.totalRating!.toStringAsFixed(1),
+                //'${rating.totalRating}',
                 style: AppTextStyles.black44Bold,
               ),
               10.verticalSpace,
@@ -384,10 +472,10 @@ ratingContainer(ProductRatingEntity rating) {
                 children: [
                   stars(0),
                   11.horizontalSpace,
-                  container1(114),
+                  container1(120),
                   27.horizontalSpace,
                   Text(
-                    '12',
+                    rating.five.toString(),
                     style: AppTextStyles.black14,
                   ),
                 ],
@@ -400,7 +488,7 @@ ratingContainer(ProductRatingEntity rating) {
                   container1(40),
                   105.horizontalSpace,
                   Text(
-                    '5',
+                    rating.four.toString(),
                     style: AppTextStyles.black14,
                   ),
                 ],
@@ -413,7 +501,7 @@ ratingContainer(ProductRatingEntity rating) {
                   container1(29),
                   115.horizontalSpace,
                   Text(
-                    '4',
+                    rating.three.toString(),
                     style: AppTextStyles.black14,
                   ),
                 ],
@@ -426,7 +514,7 @@ ratingContainer(ProductRatingEntity rating) {
                   container1(15),
                   130.horizontalSpace,
                   Text(
-                    '2',
+                    rating.two.toString(),
                     style: AppTextStyles.black14,
                   ),
                 ],
@@ -439,7 +527,7 @@ ratingContainer(ProductRatingEntity rating) {
                   container1(8),
                   135.horizontalSpace,
                   Text(
-                    '0',
+                    rating.one.toString(),
                     style: AppTextStyles.black14,
                   ),
                 ],
@@ -478,129 +566,132 @@ container1(double width) {
   );
 }
 
-showCustomBottomSheet(
+Widget ratingAndReviewContent(
   BuildContext context,
   TextEditingController textController,
-  //List<bool> isSelected,
-  String id,
-  //AuthUserEntity user,
+  String productId,
+  String userId,
 ) {
-  return showModalBottomSheet<void>(
-    isScrollControlled: true,
-    context: context,
-    backgroundColor: AppColors.bgColorMain,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(30.r),
-        topRight: Radius.circular(30.r),
-      ),
-    ),
-    builder: (BuildContext context) {
-      return BlocBuilder<AuthBloc, AuthState>(
-        builder: (context, state) {
-          if (state is AuthenticatedState) {
-            final user = state.user;
-            return SingleChildScrollView(
-              child: SizedBox(
-                height: 640.h,
-                child: Padding(
-                  padding: REdgeInsets.all(16.0),
-                  child: Column(
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: REdgeInsets.only(top: 36),
-                          child: Text(
-                            'What is you rate?',
-                            style: AppTextStyles.black18Bold,
-                          ),
-                        ),
-                      ),
-                      22.verticalSpace,
-                      RatingBarIndicator(
-                        rating: 0,
-                        itemBuilder: (context, index) => const Icon(
-                          Icons.star,
-                          color: Colors.amber,
-                        ),
-                        unratedColor: Colors.black12,
-                        itemCount: 5,
-                        itemSize: 60.0.h,
-                        direction: Axis.horizontal,
-                      ),
-                      30.verticalSpace,
-                      Text(
-                        'Please share your opinion about the product',
-                        style: AppTextStyles.black18Bold,
-                      ),
-                      30.verticalSpace,
-                      // SizedBox(
-                      //   height: 154,
-                      //   child: TextFormField(
-                      //     keyboardType: TextInputType.multiline,
-                      //     maxLines: null,
-                      //     decoration: InputDecoration(
-                      //       fillColor: Colors.white,
-                      //     ),
-                      //   ),
-                      // ),
-                      CustomTextFormField(
-                        controller: textController,
-                        sizedBoxHeight: 154.h,
-                        //sizedBoxWidth: MediaQuery.of(context).size.width,
-                        keyboardType: TextInputType.multiline,
-                        labelText: 'Your review',
-                        fillColor: Colors.white,
-                        maxLines: 10,
-                      ),
-                      30.verticalSpace,
-                      SizedBox(
-                        height: 100.h,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 8,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: REdgeInsets.only(right: 8),
-                              width: 100,
-                              color: Colors.greenAccent,
-                            );
-                          },
-                        ),
-                      ),
-                      20.verticalSpace,
-                      Padding(
-                        padding: REdgeInsets.all(16),
-                        child: CustomButton(
-                          onPressed: () {
-                            BlocProvider.of<ReviewsBloc>(context).add(
-                              SetReviewEvent(
-                                  review: ReviewEntity(
-                                productID: id,
-                                userID: user.userID,
-                                rate: 0,
-                                reviewText: '',
-                                userImg: user.photoURL,
+  List<String> imagesUrl = [];
+  double rating = 0.0;
+  return BlocBuilder<AuthBloc, AuthState>(
+    builder: (context, state) {
+      if (state is AuthenticatedState) {
+        final user = state.user;
+        return Column(
+          children: [
+            /// Rating Bar Indicator
+            //22.verticalSpace,
+            AppRatingBarBuilder(
+              //product: product,
+              itemSize: 60.0.h,
+              callback: (value) => rating = value,
+            ),
+            // RatingBarIndicator(
+            //   rating: 0,
+            //   itemBuilder: (context, index) => const Icon(
+            //     Icons.star,
+            //     color: Colors.amber,
+            //   ),
+            //   unratedColor: Colors.black12,
+            //   itemCount: 5,
+            //   itemSize: 60.0.h,
+            //   direction: Axis.horizontal,
+            // ),
+            35.verticalSpace,
+            Text(
+              'Please share your opinion about the product',
+              style: AppTextStyles.black18Bold,
+            ),
+            30.verticalSpace,
+            // SizedBox(
+            //   height: 154,
+            //   child: TextFormField(
+            //     keyboardType: TextInputType.multiline,
+            //     maxLines: null,
+            //     decoration: InputDecoration(
+            //       fillColor: Colors.white,
+            //     ),
+            //   ),
+            // ),
+            CustomTextFormField(
+              controller: textController,
+              sizedBoxHeight: 154.h,
+              //sizedBoxWidth: MediaQuery.of(context).size.width,
+              keyboardType: TextInputType.multiline,
+              labelText: 'Your review',
+              fillColor: Colors.white,
+              maxLines: 10,
+            ),
+            30.verticalSpace,
+
+            /// Images
+            AppAddImagesWidget(
+              callback: (value) {
+                final imageUrl = value;
+                imagesUrl.add(imageUrl);
+              },
+            ),
+            // SizedBox(
+            //   height: 100.h,
+            //   child: ListView.builder(
+            //     scrollDirection: Axis.horizontal,
+            //     itemCount: 8,
+            //     itemBuilder: (context, index) {
+            //       return Container(
+            //         margin: REdgeInsets.only(right: 8),
+            //         width: 100,
+            //         color: Colors.greenAccent,
+            //       );
+            //     },
+            //   ),
+            // ),
+
+            /// Button
+            20.verticalSpace,
+            Padding(
+              padding: REdgeInsets.all(16),
+              child: CustomButton(
+                onPressed: () {
+                  if (rating != 0.0) {
+                    BlocProvider.of<RatingAndReviewsBloc>(context).add(
+                      SetRatingAndReviewsEvent(
+                        productId: productId,
+                        rating: rating.toInt(),
+                        review: textController.text.isNotEmpty
+                            ? ProductReviewEntity(
+                                rate: 4,
+                                productId: productId,
+                                userId: userId,
+                                reviewText: textController.text,
+                                userPhotoUrl: user.photoURL,
                                 userName: user.name,
-                                imgUrlList: [],
-                                //createdDate: '',
-                              )),
-                            );
-                            //showBottomSheet(context, isSelected);
-                          },
-                          text: 'SEND REVIEW',
-                        ),
+                                imgUrlList: imagesUrl,
+                              )
+                            : const ProductReviewEntity(),
                       ),
-                    ],
-                  ),
-                ),
+                    );
+                    rating = 0.0;
+                    textController.clear();
+                    Navigator.pop(context);
+                  } else {
+                    Navigator.pop(context);
+                    AppSnackbar.showSnackbar(
+                      context: context,
+                      isError: true,
+                      title: 'Поля рейтинга должен быть заполнен!',
+                    );
+                  }
+                },
+                text: 'SEND REVIEW',
               ),
-            );
-          } else {
-            return const Center(child: Text('Login'));
-          }
-        },
-      );
+            ),
+            20.verticalSpace,
+          ],
+        );
+      } else {
+        return const Center(child: Text('Login'));
+      }
     },
   );
 }

@@ -69,11 +69,10 @@ class CustomHorizontalListViewWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'You can also like this',
+                      title,
                       style: AppTextStyles.black18Bold,
                     ),
                     Text(
-                      //'12 items',
                       '${products.length} items',
                       style: AppTextStyles.grey11,
                     ),
@@ -88,7 +87,7 @@ class CustomHorizontalListViewWidget extends StatelessWidget {
 
   buildHorizontalListView() {
     return SizedBox(
-      height: 300.h,
+      height: 310.h,
       child: products.isNotEmpty
           ? ListView.separated(
               //padding: REdgeInsets.symmetric(horizontal: 13),
@@ -98,7 +97,7 @@ class CustomHorizontalListViewWidget extends StatelessWidget {
                 final product = products[index];
                 //final isNew = DateTimeFormatter().isNew(product.createdDate!);
                 return SizedBox(
-                  width: 155.h,
+                  width: 150.w,
                   child: ProductVerticalCard(product: product),
                 );
                 //return ProductVerticalCard(product: product);

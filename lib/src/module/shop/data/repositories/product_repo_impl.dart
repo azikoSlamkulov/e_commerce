@@ -9,17 +9,18 @@ class ProductRepoImpl implements ProductRepo {
 
   final RemoteProduct remoteProduct;
 
-  // @override
-  // Future<Either<Failure, ProductEntity>> getProductDatails(
-  //     {required String productID}) async {
-  //   try {
-  //     final product =
-  //         await remoteProduct.getProductDatails(productID: productID);
-  //     return Right(product);
-  //   } on ServerException {
-  //     return Left(ServerFailure());
-  //   }
-  // }
+  @override
+  Future<Either<Failure, ProductDatailEntity>> getProductDatails(
+      {required String productId}) async {
+    try {
+      log('productId ===>>>> $productId');
+      final productDatails =
+          await remoteProduct.getProductDatails(productId: productId);
+      return Right(productDatails);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
 
   @override
   Future<Either<Failure, List<ProductEntity>>> getAllProducts() async {
@@ -153,29 +154,61 @@ class ProductRepoImpl implements ProductRepo {
 
   @override
   Future<Either<Failure, bool>> setProduct({
-    required ProductEntity product,
+    required ProductDatailEntity product,
   }) async {
     try {
       final productID = await remoteProduct.getProductID();
       final isCreated = await remoteProduct.setProduct(
-        product: ProductModel(
-          productID: productID,
-          category: product.category,
-          brand: product.brand,
-          colors: product.colors,
-          sizes: product.sizes,
-          //isNew: product.isNew,
-          // isSale: product.isSale,
-          // sale: product.sale,
-          price: product.price,
-          //newPrice: product.newPrice,
-          quantity: product.quantity,
-          description: product.description,
-
-          imgUrl: product.imgUrl,
-        ),
+        product: productToModel(productID, product),
+        productDatail: productDatailToModel(productID, product),
       );
       return Right(isCreated);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ProductRatingAndReviewsEntity>> getRatingAndReviews({
+    required String productId,
+  }) async {
+    try {
+      // final remoteRating = await remoteRatingAndReviews.getProductRating(
+      //   productID: productID,
+      // );
+      // final allRemoteReviews = await remoteRatingAndReviews.getProductReviews(
+      //   productID: productID,
+      // );
+      // final allRatingAndreviews = ProductRatingAndReviewsEntity(
+      //   productId: productID,
+      //   rating: remoteRating,
+      //   reviews: allRemoteReviews,
+      // );
+      final allRatingAndreviews = await remoteProduct.getRatingAndReviews(
+        productID: productId,
+      );
+      return Right(allRatingAndreviews);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, bool>> setRatingAndReviews({
+    required String productId,
+    required int rating,
+    required ProductReviewEntity review,
+  }) async {
+    try {
+      final isAdded = await remoteProduct.setRatingAndReviews(
+        productId: productId,
+        rating: rating,
+        review: review != const ProductReviewEntity()
+            ? productReviewToModel(review.userId!, review)
+            : const ProductReviewModel(),
+      );
+      //log('====>>>>>>>  $allProducts');
+      return Right(isAdded);
     } on ServerException {
       return Left(ServerFailure());
     }

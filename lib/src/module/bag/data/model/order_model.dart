@@ -7,6 +7,22 @@ OrderModel ordersFromJson(Map docMap) =>
 
 String orderstToJson(OrderModel data) => json.encode(data.toJson());
 
+OrderModel orderToModel(String id, OrderEntity entity) => OrderModel(
+      id: id,
+      userID: entity.userID,
+      userName: entity.userName,
+      orderNumber: entity.orderNumber,
+      trackingNumber: entity.trackingNumber,
+      status: entity.status,
+      items: entity.items,
+      shippingAddress: entity.shippingAddress,
+      paymentMethod: entity.paymentMethod,
+      deliveryMethod: entity.deliveryMethod,
+      discount: entity.discount,
+      totalAmount: entity.totalAmount,
+      createdDate: entity.createdDate,
+    );
+
 class OrderModel extends OrderEntity {
   const OrderModel({
     id,
@@ -46,12 +62,14 @@ class OrderModel extends OrderEntity {
         trackingNumber: json['trackingNumber'] as String,
         status: json['status'] as String,
         items: (json['items'] as List<dynamic>)
-            .map(
-              (e) => BagModel.fromJson(json['items']),
-            )
+            .map((e) => BagModel.fromJson(e))
             .toList(),
-        shippingAddress: json['shippingAddress'] as String,
-        paymentMethod: json['paymentMethod'] as String,
+        shippingAddress: json['shippingAddress'] != null
+            ? ShippingAddressModel.fromJson(json['shippingAddress'])
+            : ShippingAddressModel(),
+        paymentMethod: json['paymentMethod'] != null
+            ? PaymentCardModel.fromJson(json['paymentMethod'])
+            : PaymentCardModel(),
         deliveryMethod: json['deliveryMethod'] as String,
         discount: json['discount'] as String,
         totalAmount: json['totalAmount'] as int,
@@ -77,8 +95,25 @@ class OrderModel extends OrderEntity {
                   productImgUrl: item.productImgUrl,
                 ).toJson())
             .toList(),
-        "shippingAddress": shippingAddress ?? '',
-        "paymentMethod": paymentMethod ?? '',
+        "shippingAddress": ShippingAddressModel(
+          id: shippingAddress!.id,
+          userId: shippingAddress!.userId,
+          userName: shippingAddress!.userName,
+          address: shippingAddress!.address,
+          city: shippingAddress!.city,
+          country: shippingAddress!.country,
+          isCheked: shippingAddress!.isCheked,
+        ).toJson(),
+        "paymentMethod": PaymentCardModel(
+          id: id,
+          userId: paymentMethod!.userId,
+          name: paymentMethod!.name,
+          cardNumber: paymentMethod!.cardNumber,
+          expireDate: paymentMethod!.expireDate,
+          cvv: paymentMethod!.cvv,
+          isCheked: paymentMethod!.isCheked,
+          createdDate: paymentMethod!.createdDate,
+        ).toJson(),
         "deliveryMethod": deliveryMethod ?? '',
         "discount": discount ?? '',
         "totalAmount": totalAmount ?? 0.0,

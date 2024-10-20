@@ -1,2 +1,2 @@
-export 'address_entity.dart';
-export 'card_entity.dart';
+export 'payment_card_entity.dart';
+export 'shipping_address_entity.dart';

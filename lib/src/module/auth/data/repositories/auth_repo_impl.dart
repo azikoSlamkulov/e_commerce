@@ -16,7 +16,7 @@ class AuthRepoImpl implements AuthRepo {
   final LocalAuth localAuth;
 
   @override
-  Future<Either<Failure, AuthUserEntity?>> getCurrentUser() async {
+  Future<Either<Failure, UserEntity?>> getCurrentUser() async {
     try {
       final userFromCache = localAuth.getUserFromCache();
 
@@ -26,7 +26,10 @@ class AuthRepoImpl implements AuthRepo {
       } else {
         final userFromServer = await remoteAuth.getCurrentUser();
         if (userFromServer != null) {
-          log('userFromServer =====>>>>> NULL');
+          log('Current User =====>>>>> userFromServer');
+          localAuth.addUserToCache(userFromServer);
+          log('cach ====>>>>>   user saved to cache');
+
           return Right(userFromServer);
         }
       }
@@ -37,7 +40,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, AuthUserEntity>> signUp({
+  Future<Either<Failure, UserEntity>> signUp({
     required String email,
     required String password,
   }) async {
@@ -53,7 +56,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, AuthUserEntity>> signInWithGoogle() async {
+  Future<Either<Failure, UserEntity>> signInWithGoogle() async {
     try {
       final currentUser = await remoteAuth.signInWithGoogle();
       localAuth.addUserToCache(currentUser);
@@ -65,7 +68,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, AuthUserEntity>> signInWithFacebook() async {
+  Future<Either<Failure, UserEntity>> signInWithFacebook() async {
     // TODO: implement signInWithFacebook
     throw UnimplementedError();
     // try {
@@ -104,7 +107,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, AuthUserEntity>> signInWithEmail(
+  Future<Either<Failure, UserEntity>> signInWithEmail(
       {required String email, required String password}) async {
     try {
       final currentUser =

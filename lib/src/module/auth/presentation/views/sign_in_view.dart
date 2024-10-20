@@ -126,14 +126,14 @@ class SignInView extends StatelessWidget {
                     //   ),
                     // ),
                     IconButton(
-                      iconSize: 50.h,
-                      icon: AppAssets.facebookLogo(),
+                      //iconSize: 50.h,
+                      icon: AppAssets.facebookLogo(width: 50.h, height: 50.h),
                       onPressed: () {},
                     ),
                     30.horizontalSpace,
                     IconButton(
-                      iconSize: 47.h,
-                      icon: AppAssets.googleLogo(),
+                      //iconSize: 47.h,
+                      icon: AppAssets.googleLogo(width: 47.h, height: 47.h),
                       onPressed: () {
                         BlocProvider.of<AuthBloc>(context).add(
                           SignInWithGoogleEvent(),

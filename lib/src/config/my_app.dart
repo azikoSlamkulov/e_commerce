@@ -38,28 +38,48 @@ class MyApp extends StatelessWidget {
     final router = AppRouter(context.watch<AuthBloc>()).router;
 
     return ScreenUtilInit(
+      //designSize: const Size(375, 812),
       designSize: const Size(393, 851),
-      minTextAdapt: true,
-      splitScreenMode: true,
+      // minTextAdapt: true,
+      // splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          //title: 'Flutter Demo',
-          theme: ThemeData(
-            // useMaterial3: true,
-            // colorSchemeSeed: Colors.red,
-            primarySwatch: Colors.red,
-            textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
-            //canvasColor: Colors.transparent,
-          ),
+          // theme: ThemeData(
+          //   primarySwatch: Colors.red,
+          //   textTheme: Typography.englishLike2018.apply(fontSizeFactor: 1.sp),
+          //   //canvasColor: Colors.transparent,
+          // ),
           routerConfig: router,
-          // routeInformationProvider: router.routeInformationProvider,
-          // routeInformationParser: router.routeInformationParser,
-          // routerDelegate: router.routerDelegate,
         );
       },
     );
   }
+
+  // Navigation 2.0 (GoRouter) with theme mode
+  // @override
+  // Widget build(BuildContext context) {
+  //   final router = AppRouter(context.watch<AuthBloc>()).router;
+
+  //   return ScreenUtilInit(
+  //     designSize: const Size(393, 851),
+  //     minTextAdapt: true,
+  //     splitScreenMode: true,
+  //     builder: (context, child) {
+  //       return BlocBuilder<ThemeBloc, ThemeMode>(
+  //         builder: (context, state) {
+  //           return MaterialApp.router(
+  //             debugShowCheckedModeBanner: false,
+  //             theme: lightTheme,
+  //             themeMode: state,
+  //             darkTheme: darkTheme,
+  //             routerConfig: router,
+  //           );
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   // @override
   // Widget build(BuildContext context) {
